@@ -1,0 +1,227 @@
+/* استيراد الخط من جوجل - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #595db8;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sortable-list {
+  width: 425px;
+  padding: 25px;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.sortable-list .item {
+  list-style: none;
+  display: flex;
+  cursor: move;
+  background: #fff;
+  align-items: center;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border: 2px solid #ddd;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.item .details {
+  display: flex;
+  align-items: center;
+}
+
+.item .details img {
+  height: 50px;
+  width: 50px;
+  pointer-events: none;
+  margin-right: 15px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.item .details span {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.item i {
+  color: #474747;
+  font-size: 1.5rem;
+}
+
+.item.dragging {
+  opacity: 0.7;
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.item.dragging :where(.details, i) {
+  opacity: 0;
+}
+
+.status-message {
+  display: none;
+  padding: 15px;
+  background: #4caf50;
+  color: white;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* === Contact Section === */
+.contactMe {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  padding: 80px 60px;
+  background-color: #111;
+}
+
+.contactMe h1 {
+  grid-column: 1 / -1;
+  font-size: 2.5rem;
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.contactinfo {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactinfo i {
+  font-size: 2.5rem;
+  color: #80ed99;
+  margin-bottom: 10px;
+}
+
+.contactinfo h3 {
+  margin: 0;
+  color: #80ed99;
+}
+
+.contactinfo p {
+  margin: 0;
+}
+
+.contactMe form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  color: white;
+  width: 100%;
+}
+
+.contactMe form h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 10px;
+}
+
+.SocialLinks {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background-color: #212529;
+  padding: 10px;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
+.SocialLinks i {
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  transition: 0.25s ease-in-out;
+}
+
+.SocialLinks i:hover {
+  background-color: #176d2d;
+}
+
+.contactMe form input,
+.contactMe form textarea {
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1em;
+  background-color: #212529;
+  color: white;
+  width: 100%;
+}
+
+.contactMe form textarea {
+  grid-column: 1 / -1;
+  resize: none;
+  height: 150px;
+}
+
+.contactMe form input:focus,
+.contactMe form textarea:focus {
+  outline: 2px solid #85f69f;
+}
+
+.contactMe button {
+  grid-column: 1 / -1;
+  padding: 10px 20px;
+  background-color: #80ed99;
+  border: none;
+  border-radius: 10px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.contactMe button:hover {
+  background-color: #61c87a;
+}
+
+footer {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: white;
+  margin-top: 40px;
+  font-size: 0.9em;
+}
+footer li {
+  list-style: none;
+}

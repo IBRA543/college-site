@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الأزرار المتقدمة</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .popup.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #2575fc;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #2575fc;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn:active {
+            transform: scale(1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode {
+            background-color: #333;
+            color: white;
+        }
+
+        .dark-mode button {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .dark-mode button:hover {
+            background-color: #2575fc;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="toggleDarkMode()">تبديل الوضع الليلي</button>
+    <div class="container">
+        <button onclick="showPopup('popup1')">الفصل الأول</button>
+        <button onclick="showPopup('popup2')">الفصل الثاني</button>
+        <button onclick="showPopup('popup3')">الفصل الثالث</button>
+        <button onclick="showPopup('popup4')">الفصل الرابع</button>
+        <button onclick="showPopup('popup5')">الفصل الخامس</button>
+        <button onclick="showPopup('popup6')">الفصل السادس</button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+
+    <div class="popup" id="popup1">
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class='btn'>
+            قراءة و تحليل الخرائط الطبوغرافية
+        </button>
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class="btn">
+            اللغات الأحنبية
+        </button>
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class="btn">
+            مدخل لدراسة تاريخ المغرب الوسيط
+        </button>
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class="btn">
+            جغرافية السكان و الديمغرافيا
+        </button>
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class="btn">
+            الجيومورفلوجيا العامة
+        </button>
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class="btn">
+            منهجية العمل الجماعي
+        </button>
+        <button data-url="{{ url_for('lessons', teacher='teacher1') }}" onclick="navigateTo(this)" class="btn">
+            مدخل إلى علم الإجتماع
+        </button>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+
+    <script>
+        function navigateTo(button) {
+            window.location.href = button.getAttribute('data-url');
+        }
+    </script>
+
+
+    <div class="popup" id="popup2">
+
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class='btn'>الإتجاهات
+            الكلاسيكية و الحديثة في علم الإجتماع</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'"
+            class="btn">المناخ</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">اللغات
+            الأجنبية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">جغرافية المغرب
+            العامة</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">مدخل لدراسة
+            تاريخ المغرب المعاصر و الراهن</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'"
+            class="btn">جغرافيةالأرياف</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">المهارات
+            الرقمية</button>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+    <div class="popup" id="popup3">
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class='btn'>قراءة وتحليل
+            الخرائط الجيومورفولوجية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">مناخ
+            دينامي</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">الجيومورفلوجيا
+            البنيوية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">دينامية المجال
+            الريفي</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">جغرافية
+            المدن</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">المهارات
+            الفنية و الثقافية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">اللغات
+            الأجنبية</button>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+    <div class="popup" id="popup4">
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class='btn'>الخرائط
+            والسيميولوجيا</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">اللغات
+            الأجنبية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">النظم البيئية
+            والتربة والنبات</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">المهارات
+            الحياتية والذاتية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">جغرافية البحر
+            المتوسط وإفريقيا جنوب الصحراء</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">جغرافية
+            الطاقة</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">دينامية المجال
+            الحضري</button>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+    <div class="popup" id="popup5">
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class='btn'>S1</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">S2</button>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+    <div class="popup" id="popup6">
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class='btn'>قراءة و تحليل
+            الخرائط الطبوغرافية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'"
+            class="btn">اللغاتالأحنبية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">مدخل
+            لدراسةتاريخ المغرب الوسيط</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">جغرافية
+            السكانو الديمغرافيا</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'"
+            class="btn">الجيومورفلوجياالعامة</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">منهجية
+            العملالجماعي</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">مدخل إلى
+            علمالإجتماع</button>
+
+        <button>الكيمياء</button>
+        <button>الأحياء</button>
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+
+    <div class="popup" id="popup7">
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class='btn'>قراءة و تحليل
+            الخرائط الطبوغرافية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'"
+            class="btn">اللغاتالأحنبية</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">مدخل
+            لدراسةتاريخ المغرب الوسيط</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">جغرافية
+            السكانو الديمغرافيا</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'"
+            class="btn">الجيومورفلوجياالعامة</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">منهجية
+            العملالجماعي</button>
+        <button onclick="window.location.href='{{ url_for('lessons', teacher='teacher1') }}'" class="btn">مدخل إلى
+            علمالإجتماع</button>
+
+        <button onclick="closePopup()">إغلاق</button>
+    </div>
+
+    <script>
+        function showPopup(popupId) {
+            document.getElementById(popupId).classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closePopup() {
+            document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('active'));
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+
+</html>

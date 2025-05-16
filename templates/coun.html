@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edu Dashboard</title>
+    <link rel="stylesheet" href="static/css/coun.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- ✅ الشريط الجانبي -->
+      <div class="sidebar">
+        <div class="logo">
+          <img src="static/images/logo.png" alt="Logo" />
+        </div>
+
+        <div class="selectorsCombined">
+          <div class="selectors default activeBar" id="dashboardButton">
+            <i class="fa-solid fa-table-cells-large dashboardIcon"></i>
+            <div>لوحة التحكم</div>
+          </div>
+
+          <div class="selectors default" id="teacherButton">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <div>الامتحانات</div>
+          </div>
+
+          <div class="selectors default" id="studentButton">
+            <i class="fa-solid fa-bullhorn"></i>
+            <div>إستعمال الزمن</div>
+          </div>
+          <div class="selectors default" id="announcementsButton">
+            <i class="fa-solid fa-bullhorn"></i>
+            <div>الإعلانات</div>
+          </div>
+          <div class="selectors default" id="resultsButton">
+            <i class="fa-solid fa-chart-column"></i>
+            <div>تغيير كلمة المرور</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ محتوى الصفحة الرئيسي -->
+      <div class="body">
+        <div id="dashboardSection" class="section active">
+          <!-- 🔷 شريط علوي -->
+          <div class="topBar">
+            <h2 class="h2">لوحة التحكم</h2>
+            <div class="right-section">
+              <input class="searchBar" type="text" placeholder="بحث" />
+              <button class="searchButton">
+                <img
+                  class="searchIcon"
+                  src="static/images/logo.png"
+                  alt="بحث"
+                />
+              </button>
+            </div>
+          </div>
+
+          <div class="container">
+            <!-- 🟡 الشريط الجانبي للبيانات الشخصية -->
+            <aside>
+              <div class="profile">
+                <div class="top">
+                  <div class="profile-photo">
+                    <img
+                      id="side-profile-image"
+                      src="{{ profile_image }}"
+                      alt="Side Profile"
+                    />
+                  </div>
+                  <div class="info">
+                    <p>مرحباً، <b>{{ student.name }}</b></p>
+                    <small class="text-muted"
+                      >{{ student.student_number }}</small
+                    >
+                  </div>
+                </div>
+                <div class="about">
+                  <h5>الدورة الدراسية</h5>
+                  <p>{{ student.course }}</p>
+                  <h5>تاريخ الميلاد</h5>
+                  <p>{{ student.dob }}</p>
+                  <h5>جهة الاتصال</h5>
+                  <p>{{ student.contact }}</p>
+                  <h5>البريد الإلكتروني</h5>
+                  <p>{{ student.email }}</p>
+                  <h5>العنوان</h5>
+                  <p>{{ student.address }}</p>
+                </div>
+              </div>
+            </aside>
+
+            <!-- 🔷 المحتوى الرئيسي -->
+            <main>
+              <h1>الحضور</h1>
+              <div class="subjects">
+                <!-- 🔹 أعلى نقطة -->
+                <div class="eg">
+                  <div class="info-icon">
+                    <button
+                      onclick="showHigherScores({{ student.max_point }}, {{ student.all_scores | tojson }})"
+                    >
+                      <span class="material-icons-sharp">help_outline</span>
+                    </button>
+                  </div>
+                  <span class="material-icons-sharp">architecture</span>
+                  <h3>أعلى نقطة</h3>
+                  <h2>{{ student.max_point }}/20</h2>
+                  <div class="progress">
+                    <svg>
+                      <circle cx="38" cy="38" r="36"></circle>
+                      <circle
+                        cx="38"
+                        cy="38"
+                        r="36"
+                        style="stroke-dasharray: 226.2; stroke-dashoffset: {{ student.circle_offset_max }};
+                      stroke: {% if student.percentage_max >= 75 %}#4caf50{% elif student.percentage_max >= 50 %}#ff9800{% else %}#f44336{% endif %};"
+                      ></circle>
+                    </svg>
+                    <div class="number">
+                      <p>{{ student.percentage_max }}%</p>
+                    </div>
+                  </div>
+                  <small class="text-muted">مقارنة بأعلى نقطة في الفصل</small>
+                </div>
+
+                <!-- 🔹 أدنى نقطة -->
+                <div class="mth">
+                  <div class="info-icon">
+                    <button
+                      onclick="showLowerScores({{ student.min_point }}, {{ student.all_scores | tojson }})"
+                    >
+                      <span class="material-icons-sharp">help_outline</span>
+                    </button>
+                  </div>
+                  <span class="material-icons-sharp">functions</span>
+                  <h3>أدنى نقطة</h3>
+                  <h2>{{ student.min_point }}/20</h2>
+                  <div class="progress">
+                    <svg>
+                      <circle cx="38" cy="38" r="36"></circle>
+                      <circle
+                        cx="38"
+                        cy="38"
+                        r="36"
+                        style="stroke-dasharray: 226.2; stroke-dashoffset: {{ student.circle_offset_min }};
+                      stroke: {{ student.color_min }};"
+                      ></circle>
+                    </svg>
+                    <div class="number">
+                      <p>{{ student.percentage_min }}%</p>
+                    </div>
+                  </div>
+                  <small class="text-muted">مقارنة بأدنى نقطة في الفصل</small>
+                </div>
+
+                <!-- 🔹 أعلى معدل -->
+                <div class="cs">
+                  <div class="info-icon">
+                    <button
+                      onclick="showHigherAverages({{ student.average_score }}, {{ student.all_scores | tojson }})"
+                    >
+                      <span class="material-icons-sharp">help_outline</span>
+                    </button>
+                  </div>
+                  <span class="material-icons-sharp">computer</span>
+                  <h3>أعلى معدل</h3>
+                  <h2>{{ student.average_score }}/20</h2>
+                  <div class="progress">
+                    <svg>
+                      <circle cx="38" cy="38" r="36"></circle>
+                      <circle
+                        cx="38"
+                        cy="38"
+                        r="36"
+                        style="stroke-dasharray: 226.2; stroke-dashoffset: {{ student.circle_offset_avg }};
+                      stroke: {{ student.color_avg }};"
+                      ></circle>
+                    </svg>
+                    <div class="number">
+                      <p>{{ student.average_percentage }}%</p>
+                    </div>
+                  </div>
+                  <small class="text-muted">مقارنة بطلاب الفصل</small>
+                </div>
+
+                <!-- 🔹 أدنى معدل -->
+                <div class="cg">
+                  <div class="info-icon">
+                    <button
+                      onclick="showLowerAverages({{ student.min_average_score }}, {{ student.all_scores | tojson }})"
+                    >
+                      <span class="material-icons-sharp">help_outline</span>
+                    </button>
+                  </div>
+                  <span class="material-icons-sharp">dns</span>
+                  <h3>أدنى معدل</h3>
+                  <h2>{{ student.min_average_score }}/20</h2>
+                  <div class="progress">
+                    <svg>
+                      <circle cx="38" cy="38" r="36"></circle>
+                      <circle
+                        cx="38"
+                        cy="38"
+                        r="36"
+                        style="stroke-dasharray: 226.2; stroke-dashoffset: {{ student.circle_offset_min_avg }};
+                      stroke: {{ student.color_min_avg }};"
+                      ></circle>
+                    </svg>
+                    <div class="number">
+                      <p>{{ student.percentage_min_avg }}%</p>
+                    </div>
+                  </div>
+                  <small class="text-muted">مقارنة بطلاب الفصل</small>
+                </div>
+
+                <!-- 🔹 نسبة النجاح -->
+                <div class="net">
+                  <div class="info-icon">
+                    <button
+                      onclick="showSuccessRate({{ student.success_average }}, {{ student.all_scores | tojson }})"
+                    >
+                      <span class="material-icons-sharp">help_outline</span>
+                    </button>
+                  </div>
+                  <span class="material-icons-sharp">router</span>
+                  <h3>نسبة النجاح</h3>
+                  <h2>{{ student.success_average }}/20</h2>
+                  <div class="progress">
+                    <svg>
+                      <circle cx="38" cy="38" r="36"></circle>
+                      <circle
+                        cx="38"
+                        cy="38"
+                        r="36"
+                        style="stroke-dasharray: 226.2; stroke-dashoffset: {{ student.success_offset }};
+                      stroke: {{ student.success_color }};"
+                      ></circle>
+                    </svg>
+                    <div class="number">
+                      <p>{{ student.success_percentage }}%</p>
+                    </div>
+                  </div>
+                  <small class="text-muted"
+                    >متوسط المعدل العام لجميع الملفات</small
+                  >
+                </div>
+              </div>
+            </main>
+          </div>
+          <div id="teacherSection" class="section">
+            <!-- بحث الجدول -->
+            <div class="search-container">
+              <input type="text" id="search" placeholder="Search timetable" />
+            </div>
+
+            <!-- الجدول الأول: الجدول اليومي -->
+            <div class="timetable active" id="timetable">
+              <h3 class="semester-title">الفصل الثاني</h3>
+              <div class="time-navigation">
+                <span id="prevDay">&lt;</span>
+                <h2 id="todayDate">Monday, April 14, 2025</h2>
+                <!-- تم تغيير النص هنا -->
+                <span id="nextDay">&gt;</span>
+              </div>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>الوقت</th>
+                    <th>رقم القاعة</th>
+                    <th>المادة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="timetable active" id="timetable1">
+              <h3 class="semester-title">الفصل الرابع</h3>
+              <div class="time-navigation">
+                <span id="prevDay1">&lt;</span>
+                <h2 id="todayDate1"></h2>
+                <span id="nextDay1">&gt;</span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>الوقت</th>
+                    <th>رقم القاعة</th>
+                    <th>المادة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="timetable active" id="timetable2">
+              <h3 class="semester-title">الفصل السادس - مسار البيئة</h3>
+              <div class="time-navigation">
+                <span id="prevDay2">&lt;</span>
+                <h2 id="todayDate2"></h2>
+                <span id="nextDay2">&gt;</span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>الوقت</th>
+                    <th>رقم القاعة</th>
+                    <th>المادة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="timetable active" id="timetable3">
+              <h3 class="semester-title">الفصل السادس - مسار التهيئة</h3>
+              <div class="time-navigation">
+                <span id="prevDay3">&lt;</span>
+                <h2 id="todayDate3"></h2>
+                <span id="nextDay3">&gt;</span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>الوقت</th>
+                    <th>رقم القاعة</th>
+                    <th>المادة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="announcements-section" class="section">
+            <div class="exam timetable">
+              <h2>الفصل الثاني</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>التاريخ</th>
+                    <th>التوقيت</th>
+                    <th>المادة</th>
+                    <th>رقم القاعة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>13 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>المناخ</td>
+                    <td>38-718</td>
+                    <td>muhammed.hn</td>
+                  </tr>
+                  <tr>
+                    <td>16 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>الإتجاهات الكلاسيكية الحديثة في علم الإجتماع</td>
+                    <td>38-718</td>
+                    <td>wasila.bn</td>
+                  </tr>
+                  <tr>
+                    <td>18 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>جغرافية المغرب العامة</td>
+                    <td>38-718</td>
+                    <td>bansalem.rj</td>
+                  </tr>
+                  <tr>
+                    <td>20 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>جغرافية الأرياف"</td>
+                    <td>38-718</td>
+                    <td>muhammad.zr</td>
+                  </tr>
+                  <tr>
+                    <td>23 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>مدخل لدراسة تاريخ المغرب المعاصر والراهن"</td>
+                    <td>38-718</td>
+                    <td>hisham.mr</td>
+                  </tr>
+                  <tr>
+                    <td>23 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>المهارات الحياتية والذاتية"</td>
+                    <td>38-718</td>
+                    <td>muhammed.fs</td>
+                  </tr>
+                  <tr>
+                    <td>23 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>اللغات الأجنبية</td>
+                    <td>38-718</td>
+                    <td>
+                      ali.ch <br />
+                      zainab.fr
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- فصل ثالث -->
+            <div class="exam timetable">
+              <h2>فصل الرابع</h2>
+              <table id="second-table">
+                <!-- إضافة id هنا -->
+                <thead>
+                  <tr>
+                    <th>التاريخ</th>
+                    <th>التوقيت</th>
+                    <th>المادة</th>
+                    <th>رقم القاعة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>الخرائط والسيميولوجيا</td>
+                    <td>38-719</td>
+                    <td>muhammed.hm</td>
+                  </tr>
+                  <tr>
+                    <td>12 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>النظم البيئية والتربة والنبات</td>
+                    <td>38-719</td>
+                    <td>abdulsalam.sa</td>
+                  </tr>
+                  <tr>
+                    <td>15 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>جغرافية البحر المتوسط وإفريقيا جنوب الصحراء</td>
+                    <td>38-719</td>
+                    <td>abdulsalam.sa</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>جغرافية الطاقة</td>
+                    <td>38-719</td>
+                    <td>muhammed.hn</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>دينامية المجال الحضري</td>
+                    <td>38-719</td>
+                    <td>bushra.sb</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>المهارات الهياتية والذاتية</td>
+                    <td>38-719</td>
+                    <td>muhammed.by</td>
+                  </tr>
+                  <tr>
+                    <td>23 May 2022</td>
+                    <td>09-12 AM</td>
+                    <td>اللغات الأجنبية</td>
+                    <td>38-718</td>
+                    <td>
+                      ali.ch <br />
+                      nawar.af
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="exam timetable">
+              <h2>فصل السادس - مسار البيئة</h2>
+              <table id="third-table">
+                <!-- إضافة id هنا -->
+                <thead>
+                  <tr>
+                    <th>التاريخ</th>
+                    <th>التوقيت</th>
+                    <th>المادة</th>
+                    <th>رقم القاعة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>تهيئة الجبل</td>
+                    <td>38-719</td>
+                    <td>muhammed.hn</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>التربة</td>
+                    <td>38-719</td>
+                    <td>najm.al</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>المخاطر البيئية</td>
+                    <td>38-719</td>
+                    <td>muhammed.ht</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>الهيدرولوجيا</td>
+                    <td>38-719</td>
+                    <td>souad.bn</td>
+                  </tr>
+                  <tr>
+                    <td>12 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>DBMS140</td>
+                    <td>38-719</td>
+                    <td>38-718</td>
+                  </tr>
+                  <tr>
+                    <td>15 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>MTH200</td>
+                    <td>38-719</td>
+                    <td>38-718</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>NS250</td>
+                    <td>38-719</td>
+                    <td>38-718</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="exam timetable">
+              <h2>فصل السادس - مسار التهيئة</h2>
+              <table id="fourth-table">
+                <!-- إضافة id هنا -->
+                <thead>
+                  <tr>
+                    <th>التاريخ</th>
+                    <th>التوقيت</th>
+                    <th>المادة</th>
+                    <th>رقم القاعة</th>
+                    <th>الاستاذ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>10 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>البيئة الحضرية</td>
+                    <td>38-719</td>
+                    <td>magda.sb</td>
+                  </tr>
+                  <tr>
+                    <td>12 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>الجهة والجهوية</td>
+                    <td>38-719</td>
+                    <td>muhammad.zr</td>
+                  </tr>
+                  <tr>
+                    <td>15 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>اقتصاد محلي</td>
+                    <td>38-719</td>
+                    <td>idris.zh</td>
+                  </tr>
+                  <tr>
+                    <td>18 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>مقاربة مقولاتية</td>
+                    <td>38-719</td>
+                    <td>bushti.kh</td>
+                  </tr>
+                  <tr>
+                    <td>10 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>CS300</td>
+                    <td>38-719</td>
+                    <td>38-718</td>
+                  </tr>
+                  <tr>
+                    <td>12 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>DBMS140</td>
+                    <td>38-719</td>
+                    <td>38-718</td>
+                  </tr>
+                  <tr>
+                    <td>15 June 2022</td>
+                    <td>10-01 PM</td>
+                    <td>MTH200</td>
+                    <td>38-719</td>
+                    <td>38-718</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- 🟡 قسم الإعلانات (يبدأ مخفي) -->
+          <div id="timetableSection" class="section">
+            <div class="section-title text-center mb-5">
+              <h2 class="fw-bold text-primary" data-translate="important_notes">
+                إدخال إعلان جديد
+              </h2>
+            </div>
+
+            <form
+              action="/submit_announcement"
+              method="POST"
+              id="announcement-form"
+              class="border p-4 rounded shadow-sm bg-light mb-4"
+            >
+              <div class="form-group mb-3">
+                <label for="announcement-type" class="fw-bold mb-2"
+                  >نوع الإعلان:</label
+                >
+                <select
+                  id="announcement-type"
+                  name="announcement-type"
+                  class="form-control"
+                  required
+                >
+                  <option value="urgent">▼ إشعار عاجل</option>
+                  <option value="important">إعلان هام من الأستاذ</option>
+                  <option value="lecture">إعلان عن محاضرة جديدة</option>
+                  <option value="other">إعلان من الأستاذ</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="announcement-content" class="fw-bold mb-2"
+                  >محتوى الإعلان:</label
+                >
+                <textarea
+                  id="announcement-content"
+                  name="announcement-content"
+                  class="form-control"
+                  rows="6"
+                  required
+                  placeholder="أدخل محتوى الإعلان هنا..."
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 fw-bold">
+                التالي
+              </button>
+            </form>
+
+            <button
+              id="show-announcements-btn"
+              class="btn btn-success w-100 mb-4"
+            >
+              <i class="fas fa-eye"></i> عرض الإعلانات
+            </button>
+
+            <div
+              id="announcement-list"
+              class="announcement-list border p-4 rounded shadow-sm bg-white"
+              style="display: none"
+            >
+              <h3 class="mb-4 text-info text-center">الإعلانات السابقة:</h3>
+
+              <div class="row mb-4">
+                <div class="col-md-6 mb-2">
+                  <label for="filter-type" class="fw-bold"
+                    >تصفية حسب نوع الإعلان:</label
+                  >
+                  <select id="filter-type" class="form-control">
+                    <option value="all">الكل</option>
+                    <option value="urgent">إشعار عاجل</option>
+                    <option value="important">إعلان هام من الأستاذ</option>
+                    <option value="lecture">محاضرة جديدة</option>
+                    <option value="other">إعلان من الأستاذ</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label for="sort-order" class="fw-bold">ترتيب زمني:</label>
+                  <select id="sort-order" class="form-control">
+                    <option value="newest">الأحدث أولاً</option>
+                    <option value="oldest">الأقدم أولاً</option>
+                  </select>
+                </div>
+              </div>
+
+              <div
+                id="announcements-container"
+                class="d-flex flex-column gap-3"
+              >
+                <!-- يتم إدراج الإعلانات هنا -->
+              </div>
+            </div>
+          </div>
+          <div id="resultsSection" class="section">
+            <input type="checkbox" id="flip" hidden />
+            <div class="cover">
+              <div class="front">
+                <img src="static/images/logo.png" alt="" />
+                <div class="text">
+                  <span class="text-1">
+                    إنجازات اليوم تُمهّد طريق الريادة غدًا <br />
+                    اسعَ، تميّز، واصنع مستقبلك بنفسك!
+                  </span>
+
+                  <span class="text-2">"اجتهد، ازدهر، انجح"</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="forms">
+              <div class="form-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %} {% for category, message in messages %}
+                <div class="alert alert-{{ category }} flash-message">
+                  {{ message }}
+                  <button
+                    class="close-btn"
+                    onclick="this.parentElement.style.display='none';"
+                  >
+                    &times;
+                  </button>
+                </div>
+                {% endfor %} {% endif %} {% endwith %}
+
+                <div class="login-form">
+                  <div class="title">تغيير كلمة المرور</div>
+                  <form action="{{ url_for('change_password') }}" method="POST">
+                    <div class="input-boxes">
+                      <!-- خانة كلمة المرور الحالية -->
+                      <div class="input-box">
+                        <i class="fas fa-lock"></i>
+                        <input
+                          type="password"
+                          name="current_password"
+                          id="current_password"
+                          placeholder="كلمة المرور الحالية"
+                          required
+                          autocomplete="new-password"
+                        />
+                        <span
+                          class="eye-icon"
+                          onclick="togglePassword('current_password')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+
+                      <!-- خانة كلمة المرور الجديدة -->
+                      <div class="input-box">
+                        <i class="fas fa-lock"></i>
+                        <input
+                          type="password"
+                          name="new_password"
+                          id="new_password"
+                          placeholder="كلمة المرور الجديدة"
+                          required
+                          autocomplete="new-password"
+                        />
+                        <span
+                          class="eye-icon"
+                          onclick="togglePassword('new_password')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+
+                      <!-- خانة تأكيد كلمة المرور -->
+                      <div class="input-box">
+                        <i class="fas fa-lock"></i>
+                        <input
+                          type="password"
+                          name="confirm_password"
+                          id="confirm_password"
+                          placeholder="تأكيد كلمة المرور"
+                          required
+                          autocomplete="new-password"
+                        />
+                        <span
+                          class="eye-icon"
+                          onclick="togglePassword('confirm_password')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+
+                      <div class="text sign-up-text">
+                        <label for="flip">هل نسيت كلمة المرور؟</label>
+                      </div>
+                      <div class="button input-box">
+                        <input type="submit" value="تأكيد" />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="signup-form">
+                  <div class="title">إعادة تعيين كلمة المرور</div>
+                  <form action="{{ url_for('reset_password') }}" method="POST">
+                    <div class="input-boxes">
+                      <!-- كود مسار -->
+                      <div class="input-box">
+                        <i class="bx bxs-school"></i>
+                        <input
+                          type="text"
+                          name="username"
+                          placeholder="أدخل كود مسار"
+                          required
+                        />
+                      </div>
+
+                      <!-- رقم البطاقة الوطنية -->
+                      <div class="input-box">
+                        <i class="bx bxs-id-card"></i>
+                        <input
+                          type="text"
+                          name="id_card"
+                          id="idCardRegister"
+                          required
+                          placeholder="أدخل رقم البطاقة الوطنية"
+                        />
+                      </div>
+
+                      <!-- كلمة المرور الجديدة -->
+                      <div class="input-box">
+                        <i class="fas fa-lock"></i>
+                        <input
+                          type="password"
+                          name="new_password"
+                          id="new_password_reset"
+                          placeholder="كلمة المرور الجديدة"
+                          required
+                          autocomplete="new-password"
+                        />
+                        <span
+                          class="eye-icon"
+                          onclick="togglePassword('new_password_reset')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+
+                      <!-- تأكيد كلمة المرور -->
+                      <div class="input-box">
+                        <i class="fas fa-lock"></i>
+                        <input
+                          type="password"
+                          name="confirm_password"
+                          id="confirm_password_reset"
+                          placeholder="تأكيد كلمة المرور"
+                          required
+                          autocomplete="new-password"
+                        />
+                        <span
+                          class="eye-icon"
+                          onclick="togglePassword('confirm_password_reset')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </span>
+                      </div>
+
+                      <!-- زر الإرسال -->
+                      <div class="button input-box">
+                        <input type="submit" value="تأكيد" />
+                      </div>
+
+                      <div class="text sign-up-text">
+                        <label for="flip">العودة؟</label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ سكريبتات إضافية -->
+
+    <script>
+      // ربط الأزرار بالأقسام
+      const buttons = document.querySelectorAll(".selectors");
+      const sections = {
+        dashboardButton: "dashboardSection",
+        teacherButton: "teacherSection",
+        resultsButton: "resultsSection",
+        announcementsButton: "announcements-section",
+        studentButton: "timetableSection",
+      };
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          // إزالة التفعيل من جميع الأقسام
+          document.querySelectorAll(".section").forEach((sec) => {
+            sec.classList.remove("active");
+          });
+
+          // إزالة التفعيل من كل الأزرار
+          buttons.forEach((b) => b.classList.remove("activeBar"));
+          btn.classList.add("activeBar");
+
+          // تفعيل القسم المطلوب
+          const targetId = sections[btn.id];
+          document.getElementById(targetId)?.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>
+
+
+
+site_college21
+              static
+                        css
+                        js
+                        images
+                        pdfs
+                        uploads
+              templates
+              accont.csv
+              app.py
+

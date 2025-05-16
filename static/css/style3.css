@@ -1,0 +1,179 @@
+@import url("https://fonts.googleapis.com/css2?family=Bonbon&family=Poppins:wght@300;400;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #e4e9f7, #f1f3fa);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  background: linear-gradient(135deg, #0f0f1a, #1e1c2f);
+  z-index: 100;
+  transition: all 0.5s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.close {
+  width: 78px;
+}
+
+.sidebar .logo-details {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.sidebar .logo-details i {
+  font-size: 30px;
+  color: #fff;
+  line-height: 60px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.sidebar .logo-details i:hover {
+  transform: rotate(15deg);
+}
+
+.sidebar .logo_name {
+  font-size: 22px;
+  color: #fff;
+  font-weight: 600;
+  margin-left: 10px;
+  opacity: 1;
+  transition: 0.4s ease;
+}
+
+.sidebar.close .logo_name {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar .nav-links {
+  padding: 25px 0;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar .nav-links::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar .nav-links li {
+  list-style: none;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.sidebar .nav-links li:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar .nav-links li .icon-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
+
+.sidebar .nav-links li a {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+.sidebar .nav-links li a i {
+  font-size: 20px;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar .nav-links li:hover a i {
+  transform: scale(1.2);
+}
+
+.sidebar .nav-links .link_name {
+  font-size: 17px;
+  transition: 0.3s ease;
+}
+
+.sidebar .nav-links li .sub-menu {
+  background: #292846;
+  padding-left: 25px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.sidebar .nav-links li.showMenu .sub-menu {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.sidebar .nav-links li .sub-menu a {
+  font-size: 15px;
+  color: #ddd;
+  padding: 8px 0;
+  display: block;
+  transition: padding-left 0.3s ease;
+}
+
+.sidebar .nav-links li .sub-menu a:hover {
+  padding-left: 10px;
+  color: #fff;
+}
+
+.home-section {
+  position: relative;
+  background: #e4e9f7;
+  min-height: 100vh;
+  left: 260px;
+  width: calc(100% - 260px);
+  transition: all 0.5s ease;
+  padding: 20px;
+}
+
+.sidebar.close ~ .home-section {
+  left: 78px;
+  width: calc(100% - 78px);
+}
+
+.home-content {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.home-content #toggle-btn {
+  font-size: 26px;
+  margin-right: 15px;
+  cursor: pointer;
+  color: #11101d;
+  transition: transform 0.3s ease;
+}
+
+.home-content #toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.home-content .text {
+  font-size: 26px;
+  font-weight: 600;
+  color: #11101d;
+}

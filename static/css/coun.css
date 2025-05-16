@@ -1,0 +1,488 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom right, #f9f9ff, #e8f0ff);
+  color: #333;
+  overflow-y: auto; /* السماح بالتمرير في المحتوى */
+}
+
+p {
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+  overflow: hidden; /* منع التمرير في الحاوية الرئيسية */
+}
+
+.sidebar {
+  position: fixed; /* تثبيت القائمة الجانبية */
+  top: 0;
+  left: 0;
+  background: linear-gradient(to bottom, #ffffff, #f4f4ff);
+  width: 250px;
+  height: 100vh;
+  overflow-y: hidden; /* لا نريد تمرير منفصل هنا */
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.08);
+  border-right: 1px solid #e0e0e0;
+  z-index: 10; /* التأكد من أن القائمة الجانبية فوق المحتوى */
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body {
+  overflow-y: auto;
+  width: calc(100% - 250px); /* أخذ المساحة المتبقية بعد عرض .sidebar */
+  flex: 1;
+  padding: 30px 60px;
+  scrollbar-width: thin;
+  scrollbar-color: #b256df33 transparent;
+  margin-left: 250px; /* التأكد من أن المحتوى يبدأ بعد القائمة الجانبية */
+}
+
+.body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: linear-gradient(95deg, #3f5efb, #b256df);
+  border-radius: 10px;
+}
+
+/* باقي العناصر يمكن أن تظل كما هي */
+
+.logo {
+  margin-left: 25px;
+  padding-top: 20px;
+}
+
+.selectors {
+  color: #333;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 220px;
+  margin: 20px auto 10px auto;
+  padding-left: 30px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.selectors i {
+  width: 20px;
+}
+
+.selectors:not(.activeBar):hover {
+  background: linear-gradient(120deg, #a8c0ff33, #fbc2eb33);
+  cursor: pointer;
+  color: #222;
+  transform: scale(1.02);
+}
+
+.activeBar {
+  background: linear-gradient(95deg, #3f5efb, #b256df);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(63, 94, 251, 0.2);
+  transform: scale(1.03);
+}
+
+.selectors div {
+  font-size: 15px;
+  padding-left: 8px;
+}
+
+.body {
+  overflow-y: auto;
+  width: 100%;
+  flex: 1;
+  padding: 30px 60px;
+  scrollbar-width: thin;
+  scrollbar-color: #b256df33 transparent;
+}
+
+.body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: linear-gradient(95deg, #3f5efb, #b256df);
+  border-radius: 10px;
+}
+
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.right-section {
+  display: flex;
+  gap: 10px;
+}
+
+.searchBar {
+  border: none;
+  border-radius: 30px;
+  height: 38px;
+  width: 200px;
+  padding: 0 15px;
+  margin-top: 10px;
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.searchBar::placeholder {
+  font-family: "Poppins", sans-serif;
+  color: #999;
+}
+
+.searchButton {
+  border: none;
+  background: linear-gradient(95deg, #3f5efb, #b256df);
+  height: 42px;
+  width: 50px;
+  border-radius: 50%;
+  margin-top: 8px;
+  color: white;
+  box-shadow: 0 3px 8px rgba(178, 86, 223, 0.3);
+  transition: transform 0.2s;
+}
+
+.searchButton:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+main {
+  position: relative;
+  margin-top: 1.4rem;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+main .subjects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* ثلاث أعمدة */
+  grid-auto-rows: 1fr; /* تحديد ارتفاع متساوٍ لجميع الصفوف */
+  gap: 2rem;
+  padding-bottom: 2rem;
+  justify-items: center;
+  padding-left: 30px;
+}
+
+main .subjects > div {
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* لضبط المحتوى داخل البطاقة */
+  justify-content: space-between; /* توزيع العناصر داخل البطاقة */
+  height: 90%; /* استخدام هذا لضبط الطول */
+  width: 150px;
+}
+
+main .subjects > div:hover {
+  box-shadow: 0 12px 30px rgba(63, 94, 251, 0.2);
+  transform: translateY(-7px);
+}
+
+main .subjects > div span {
+  background-color: #7380ec;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.6rem;
+}
+
+main .subjects > div.mth span {
+  background: #ff6b6b;
+}
+main .subjects > div.cg span {
+  background: #f39c12;
+}
+main .subjects > div.cs span {
+  background: #4caf50;
+}
+
+main .subjects h3 {
+  margin: 1rem 0 0.6rem;
+  font-size: 1.1rem;
+}
+
+main .subjects .progress {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+}
+
+main .subjects .progress svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+main .subjects .progress svg circle {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+main .subjects .progress svg circle:first-child {
+  stroke: #e0e0e0;
+}
+
+main .subjects .progress svg circle:last-child {
+  stroke: url(#gradient);
+}
+
+main .subjects .progress .number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+main .subjects small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #888;
+}
+
+.info-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.info-icon button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  color: #555;
+}
+
+.info-icon button:hover {
+  color: #000;
+}
+
+.info-icon .material-icons-sharp {
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+main .timetable {
+  width: 100%;
+  padding: 2rem;
+  margin-bottom: 30px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+/* الإعلانات القسم */
+
+#announcements-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.section-title h2 {
+  font-size: 28px;
+  color: #007bff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* تنسيق النموذج */
+#announcement-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#announcement-form .form-group label {
+  font-size: 16px;
+  color: #333;
+}
+
+#announcement-form .form-group select,
+#announcement-form .form-group textarea {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 14px;
+  width: 100%;
+}
+
+#announcement-form .form-group textarea {
+  resize: vertical;
+}
+
+#announcement-form button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#announcement-form button:hover {
+  background-color: #0056b3;
+}
+
+/* زر عرض الإعلانات */
+#show-announcements-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+#show-announcements-btn:hover {
+  background-color: #218838;
+}
+
+#show-announcements-btn i {
+  margin-right: 8px;
+}
+
+/* قائمة الإعلانات */
+#announcement-list {
+  display: none;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#announcement-list h3 {
+  font-size: 24px;
+  color: #17a2b8;
+}
+
+#announcement-list .row {
+  margin-bottom: 20px;
+}
+
+#announcement-list select {
+  font-size: 14px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* تنسيق قائمة الإعلانات */
+#announcements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.announcement-card {
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-card h4 {
+  font-size: 20px;
+  color: #333;
+}
+
+.announcement-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.announcement-card .badge {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* وسائل التصفية والفرز */
+#announcement-list .row label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#announcement-list .row select {
+  font-size: 14px;
+  padding: 8px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+/* إخفاء جميع الأقسام بشكل افتراضي */
+.section {
+  display: none;
+}
+
+/* إظهار القسم النشط فقط */
+.section.active {
+  display: block;
+}
+
+/* تأثيرات الأنيميشن */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --bg: #f3f4f6;
+        --white: #ffffff;
+        --gray: #6b7280;
+        --radius: 16px;
+        --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        padding: 40px;
+        color: #111827;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 30px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .header h2 {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .search-input {
+        padding: 10px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        font-size: 14px;
+        width: 280px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 12px 16px;
+      }
+
+      th {
+        background-color: #f9fafb;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: var(--gray);
+      }
+
+      tbody tr:hover {
+        background-color: #f3f4f6;
+      }
+
+      .name-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border: 2px solid var(--primary);
+      }
+
+      .badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        background-color: #e0e7ff;
+        color: #4338ca;
+        font-weight: 600;
+      }
+
+      .status {
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+
+      .status.active {
+        color: green;
+      }
+
+      .status.inactive {
+        color: red;
+      }
+
+      .status.onleave {
+        color: orange;
+      }
+
+      .pagination {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .pagination button {
+        padding: 6px 12px;
+        background-color: var(--white);
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .pagination button.active,
+      .pagination button:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>Employee Directory <span id="total-count"></span></h2>
+        <input
+          type="text"
+          class="search-input"
+          id="search-box"
+          placeholder="Search employees..."
+        />
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Job Title</th>
+            <th>Status</th>
+            <th>Date Of Hire</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody id="employee-body"></tbody>
+      </table>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+      const employees = [
+        {
+          name: "John Doe",
+          email: "john.doe@example.com",
+
+          avatar: "https://i.pravatar.cc/150?profile-3.jpg",
+          department: "Engineering",
+          title: "Software Engineer",
+          status: "active",
+          hireDate: "Jun 15, 2020",
+          location: "New York",
+        },
+        {
+          name: "Jane Smith",
+          email: "jane.smith@example.com",
+          avatar: "static/images/profile-3.jpg",
+          avatar: "https://i.pravatar.cc/150?img=3",
+          department: "Marketing",
+          title: "Marketing Manager",
+          status: "onleave",
+          hireDate: "Sep 23, 2018",
+          location: "San Francisco",
+        },
+        {
+          name: "Carl Newton",
+          email: "carl.newton@example.com",
+          avatar: "https://i.pravatar.cc/150?img=3",
+          department: "Human Resources",
+          title: "HR Specialist",
+          status: "active",
+          hireDate: "Mar 10, 2021",
+          location: "Austin",
+        },
+        {
+          name: "Emily Davis",
+          email: "emily.davis@example.com",
+          avatar: "https://i.pravatar.cc/150?img=4",
+          department: "Finance",
+          title: "Financial Analyst",
+          status: "inactive",
+          hireDate: "Nov 6, 2019",
+          location: "Chicago",
+        },
+        {
+          name: "Michael Brown",
+          email: "michael.brown@example.com",
+          avatar: "https://i.pravatar.cc/150?img=5",
+          department: "Engineering",
+          title: "DevOps Engineer",
+          status: "active",
+          hireDate: "Jan 12, 2022",
+          location: "Seattle",
+        },
+        {
+          name: "Nora Thomas",
+          email: "nora.thomas@example.com",
+          avatar: "https://i.pravatar.cc/150?img=6",
+          department: "Marketing",
+          title: "Content Strategist",
+          status: "active",
+          hireDate: "May 19, 2023",
+          location: "Denver",
+        },
+      ];
+
+      let filteredEmployees = [...employees];
+      const rowsPerPage = 3;
+      let currentPage = 1;
+
+      document
+        .getElementById("search-box")
+        .addEventListener("input", function () {
+          const query = this.value.toLowerCase();
+          filteredEmployees = employees.filter(
+            (emp) =>
+              emp.name.toLowerCase().includes(query) ||
+              emp.email.toLowerCase().includes(query)
+          );
+          currentPage = 1;
+          renderTable();
+        });
+
+      function renderTable() {
+        const tbody = document.getElementById("employee-body");
+        tbody.innerHTML = "";
+        const start = (currentPage - 1) * rowsPerPage;
+        const paginatedItems = filteredEmployees.slice(
+          start,
+          start + rowsPerPage
+        );
+        for (const emp of paginatedItems) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="name-cell">
+              <img class="avatar" src="${emp.avatar}" alt="">
+              <div>
+                <strong>${emp.name}</strong><br>
+                <small style="color: gray; font-size: 12px">${emp.email}</small>
+              </div>
+            </td>
+            <td><span class="badge">${emp.department}</span></td>
+            <td>${emp.title}</td>
+            <td class="status ${emp.status.toLowerCase()}">${emp.status}</td>
+            <td>${emp.hireDate}</td>
+            <td>${emp.location}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+        document.getElementById(
+          "total-count"
+        ).innerText = `(${filteredEmployees.length})`;
+        renderPagination();
+      }
+
+      function renderPagination() {
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+        const totalPages = Math.ceil(filteredEmployees.length / rowsPerPage);
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement("button");
+          btn.innerText = i;
+          if (i === currentPage) btn.classList.add("active");
+          btn.addEventListener("click", () => {
+            currentPage = i;
+            renderTable();
+          });
+          pagination.appendChild(btn);
+        }
+      }
+
+      renderTable();
+    </script>
+  </body>
+</html>

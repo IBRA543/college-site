@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فضاء الطالب</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: url("{{ url_for('static', filename='images/10.png') }}")
+          no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1600px;
+        margin: auto;
+        background: rgba(255, 255, 255, 0.9);
+        /* خلفية بيضاء شفافة قليلاً لتحسين القراءة */
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 20px;
+        background: white;
+        border-radius: 10px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 15px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #007bff;
+        color: white;
+        font-size: 22px;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(240, 240, 240, 0.8);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          width: 100%;
+          padding: 10px;
+        }
+
+        table {
+          font-size: 16px;
+        }
+
+        th,
+        td {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 style="color: #007bff">
+        مرحبًا بك {{ student_name or 'الطالب' }} 👋
+      </h1>
+      <h2 data-translate="Welcome">فضاء الطالب</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>رقم الطالب</th>
+            <th>المستوى</th>
+            <th>المادة</th>
+            <th>المعدل</th>
+            <th>الملاحظات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if students %} {% for student in students %}
+          <tr>
+            <td>{{ student.student_number }}</td>
+            <td>{{ student.level }}</td>
+            <td>{{ student.subject }}</td>
+            <td>{{ student.average }}</td>
+            <td>{{ student.notes | safe }}</td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="5">لم يتم العثور على بيانات الطالب</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dataForm = document.getElementById("dataForm");
+        const idCardInput = document.getElementById("id_card");
+        const majorInput = document.getElementById("major");
+        const errorMessage = document.getElementById("error-message");
+        const studentTable = document.getElementById("studentTable");
+        const tableBody = document.getElementById("tableBody");
+
+        dataForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const id_card = idCardInput.value.trim();
+          const major = majorInput.value.trim();
+
+          if (!id_card || !major) {
+            errorMessage.textContent = "❌ الرجاء ملء جميع الحقول.";
+            errorMessage.classList.remove("hidden");
+            studentTable.classList.add("hidden");
+            return;
+          }
+
+          try {
+            const response = await fetch("/Student_space", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json", // هذا مهم جدا جدا
+              },
+              body: JSON.stringify({ id_card, major }), // نرسل JSON
+            });
+
+            const data = await response.json(); // نقرأه كـ JSON
+
+            tableBody.innerHTML = "";
+
+            if (data.success && data.students.length > 0) {
+              errorMessage.classList.add("hidden");
+              studentTable.classList.remove("hidden");
+
+              data.students.forEach((student) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+            <td>${student.student_number}</td>
+            <td>${student.level}</td>
+            <td>${student.subject}</td>
+            <td>${student.average}</td>
+            <td>${student.notes}</td>
+          `;
+                tableBody.appendChild(row);
+              });
+
+              studentTable.style.opacity = 0;
+              setTimeout(() => {
+                studentTable.style.transition = "opacity 0.5s ease";
+                studentTable.style.opacity = 1;
+              }, 50);
+            } else {
+              studentTable.classList.add("hidden");
+              errorMessage.textContent = "❌ لا توجد نتائج مطابقة.";
+              errorMessage.classList.remove("hidden");
+            }
+          } catch (error) {
+            console.error("خطأ أثناء الاتصال:", error);
+            errorMessage.textContent = "❌ حدث خطأ أثناء الاتصال بالخادم.";
+            errorMessage.classList.remove("hidden");
+            studentTable.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

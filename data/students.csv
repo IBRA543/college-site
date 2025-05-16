@@ -1,0 +1,15 @@
+email,subject,role,name,password,class,year,id_card,code_massar,student_number,contact,dob,address,course,profile_image
+student4@usmba.ac.ma,NONE,student,Said,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,ZT1314,S425466589,106,0614352729,12-03-2004,Fes,S1,http://127.0.0.1:5000/static/images/3.png
+student2@usmba.ac.ma,NONE,student,Ahmed,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,ZT5314,S128454789,101,0763514338,08-09-2005,Taounate,S1,http://127.0.0.1:5000/static/images/2.png
+student1@usmba.ac.ma,NONE,student,Fatima,054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a,S1,2023/2024,ZT7264,S127480789,105,0654235387,23-01-2003,Taza,S1,
+student3@usmba.ac.ma,NONE,student,Said,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,ZT0134,S199456589,103,0672534633,07-012-2002,Fes,S1,http://127.0.0.1:5000/static/images/3.png
+bansalem.rj@usmba.ac.ma,topographiques,teacher,ذ.بنسالم,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+bansalem.rj@usmba.ac.ma,géographie_maroc,teacher,ذ.بنسالم,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+bansalem.rj@usmba.ac.ma,topographiques,teacher,ذ.بنسالم,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+bansalem.rj@usmba.ac.ma,topographiques,teacher,ذ.بنسالم,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+idris.zh@usmba.ac.ma,topographiques,teacher,ذ.إدريس,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+magda.sb@usmba.ac.ma,topographiques,teacher,ذ.ماجدة,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,http://127.0.0.1:5000/static/images/1.png
+souad.bn@usmba.ac.ma,topographiques,teacher,ذ.سعاد,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+raja.bh@usmba.ac.ma,topographiques,teacher,ذ.رجاء,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+bouzkraoui.dr@usmba.ac.ma,topographiques,teacher,ذ.بوزكراوي,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,
+ali@usmba.ac.ma,topographiques,teacher,ذ.بوزكراوي,ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f,S1,2023/2024,NONE,NONE,,,,,,

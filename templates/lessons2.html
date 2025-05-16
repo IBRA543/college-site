@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الملفات</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: #f4f4f9;
+            font-family: 'Cairo', sans-serif;
+            color: #333;
+            padding: 20px;
+        }
+
+        .file-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .file-card:hover {
+            transform: scale(1.05);
+        }
+
+        .file-card .options-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .file-card .options-btn:hover {
+            color: #333;
+        }
+
+        .file-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            background-color: #f8f8f8;
+            padding: 10px;
+        }
+
+        .file-card .card-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .file-card .card-body a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            color: white;
+            background: #007bff;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .file-card .card-body a:hover {
+            background: #0056b3;
+        }
+
+        .dropdown-menu {
+            text-align: right;
+        }
+
+        .dropdown-item {
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mb-5">الملفات المرفوعة</h1>
+        <div class="row g-4">
+            {% for file in pdf_files %}
+            <div class="col-md-4">
+                <div class="file-card">
+                    <button class="options-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        &#8942;
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">مشاركة</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('static', filename='pdfs/' ~ file | urlencode) }}"
+                                download>تنزيل</a></li>
+                        {% if role == 'teacher' %}
+                        <li><button class="dropdown-item text-danger delete-btn" data-file="{{ file }}">حذف</button>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <img src="{{ url_for('static', filename='images/pdf.png') }}" alt="PDF Icon">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ file.split('_', 2)[2] }}</h5>
+                        <a href="{{ url_for('pdf_viewer', file=quote(file)) }}">عرض</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const fileName = this.getAttribute('data-file');
+                    const confirmed = confirm(`هل أنت متأكد أنك تريد حذف الملف: ${fileName}؟`);
+
+                    if (confirmed) {
+                        // إرسال البيانات باستخدام FormData وليس JSON
+                        const formData = new FormData();
+                        formData.append('file_name', fileName);
+
+                        fetch('/delete_file', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert(data.message);
+                                    // إعادة تحميل الصفحة لتحديث القائمة
+                                    location.reload();
+                                } else {
+                                    alert(data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('حدث خطأ أثناء محاولة حذف الملف.');
+                            });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

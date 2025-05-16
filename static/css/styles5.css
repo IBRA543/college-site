@@ -1,0 +1,71 @@
+/* تنسيق القائمة الجانبية */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #2c3e50;
+  color: white;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  padding-top: 30px;
+}
+
+.sidebar .toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+.sidebar .menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar .menu li {
+  padding: 15px 25px;
+  margin: 10px 0;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar .menu li:hover {
+  background-color: #34495e;
+}
+
+.sidebar .menu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.sidebar .menu li a:hover {
+  color: #e74c3c;
+}
+
+/* تأثير إظهار القائمة الجانبية */
+.sidebar.show {
+  left: 0;
+}
+
+/* تنسيق محتوى الصفحة */
+.content {
+  margin-left: 0;
+  padding: 20px;
+}
+
+.content h1 {
+  color: #333;
+}

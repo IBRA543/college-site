@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>إحصائيات الطالب</title>
+    <link rel="stylesheet" href="static/css/style_chart.css" />
+  </head>
+  <body>
+    <h1>📊 إحصائيات الطالب</h1>
+
+    <div class="summary">
+      <div class="card">
+        <h2>{{ total_subjects }}</h2>
+        <p>عدد المواد</p>
+      </div>
+
+      <div class="card">
+        <h2>{{ average_score }}</h2>
+        <p>المعدل العام</p>
+      </div>
+      <div class="card">
+        <h2>{{ top_score }}</h2>
+        <p>أعلى نقطة</p>
+      </div>
+      <div class="card">
+        <h2>{{ lowest_score }}</h2>
+        <p>أقل نقطة</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">📘 تفاصيل النقاط حسب المادة</h2>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الفصل</th>
+        <th>الملاحظة</th>
+      </tr>
+      {% for item in data %}
+      <tr>
+        <td>{{ item.subject }}</td>
+        <td>{{ item.points }}</td>
+        <td>{{ item.semester }}</td>
+        <td>{{ item.note }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <!-- مكتبة Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <h2 class="section-title">📈 تطور النقاط و الإحصائيات التفاعلية</h2>
+
+    <div class="charts-container">
+      <div class="chart-card">
+        <canvas id="barChart"></canvas>
+        <p class="note" id="noteBarChart">
+          📌 ملاحظة: هذا الرسم يوضح توزيع النقاط حسب المواد.
+        </p>
+        <p class="tip" id="tipBarChart">
+          💡 نصيحة: ركز على المواد التي حصلت فيها على أقل النقاط لتحسين مستواك.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="lineChart"></canvas>
+        <p class="note" id="noteLineChart">
+          📌 ملاحظة: هذا المخطط يُظهر تطور النقاط عبر المواد.
+        </p>
+        <p class="tip" id="tipLineChart">
+          💡 نصيحة: تتبع تقدمك لتحافظ على مستواك أو تحسّنه.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="pieChart"></canvas>
+        <p class="note" id="notePieChart">
+          📌 ملاحظة: النسبة المئوية لكل مادة من مجموع النقاط.
+        </p>
+        <p class="tip" id="tipPieChart">
+          💡 نصيحة: حافظ على توازن أدائك في جميع المواد.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="doughnutChart"></canvas>
+        <p class="note" id="noteDoughnutChart">
+          📌 ملاحظة: تمثيل دائري مشابه للمخطط الدائري مع فراغ مركزي.
+        </p>
+        <p class="tip" id="tipDoughnutChart">
+          💡 نصيحة: ركّز على المواد ذات التمثيل الصغير لتحسينها.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="polarChart"></canvas>
+        <p class="note" id="notePolarChart">
+          📌 ملاحظة: هذا الرسم يوضح مدى قوة أدائك في المواد.
+        </p>
+        <p class="tip" id="tipPolarChart">
+          💡 نصيحة: حاول رفع النقاط في المواد ذات القيم الصغيرة.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="compareChart"></canvas>
+        <p class="note" id="noteCompareChart">
+          📌 ملاحظة: مقارنة النقاط بين الفصل الأول والثاني.
+        </p>
+        <p class="tip" id="tipCompareChart">
+          💡 نصيحة: حدد الفصل الأضعف واعمل على تحسينه.
+        </p>
+      </div>
+      <button onclick="filterBySemester('الفصل الأول')">الفصل الأول</button>
+      <button onclick="filterBySemester('الفصل الثاني')">الفصل الثاني</button>
+      <button onclick="filterBySemester('الفصل الثالث')">الفصل الثالث</button>
+      <button onclick="filterBySemester('الفصل الرابع')">الفصل الرابع</button>
+      <button onclick="filterBySemester('الفصل الخامس')">الفصل الخامس</button>
+      <button onclick="filterBySemester('الفصل السادس')">الفصل السادس</button>
+    </div>
+
+    <script>
+
+      function filterBySemester(semester) {
+          const filteredData = {{ data | tojson }};  // البيانات الأصلية من بايثون
+          const filteredLabels = [];
+          const filteredPoints = [];
+
+          filteredData.forEach(item => {
+          if (item.semester === semester) {
+              filteredLabels.push(item.subject);
+              filteredPoints.push(item.points);
+          }
+          });
+
+          // تحديث الجدول والمخططات بناءً على الفصل
+          updateTable(filteredData.filter(item => item.semester === semester));
+          updateCharts(filteredLabels, filteredPoints);
+      }
+
+      // دالة لتحديث الجدول
+      function updateTable(data) {
+          const table = document.getElementById('studentTable');
+          const rows = table.rows.length;
+          for (let i = rows - 1; i > 0; i--) {
+          table.deleteRow(i);
+          }
+          data.forEach(item => {
+          const row = table.insertRow();
+          row.insertCell(0).textContent = item.subject;
+          row.insertCell(1).textContent = item.points;
+          row.insertCell(2).textContent = item.semester;
+          row.insertCell(3).textContent = item.note;
+          });
+      }
+
+      // دالة لتحديث المخططات
+      function updateCharts(labels, points) {
+          // تحديث مخطط شريطي
+          updateChart('barChart', labels, points, 'النقطة حسب المادة', 'bar');
+
+          // تحديث مخطط خطي
+          updateChart('lineChart', labels, points, 'تطور النقطة', 'line');
+
+          // تحديث مخطط دائري
+          updateChart('pieChart', labels, points, 'نسبة توزيع النقاط حسب المادة', 'pie');
+
+          // تحديث مخطط دونات
+          updateChart('doughnutChart', labels, points, 'مخطط الدونات للنقاط', 'doughnut');
+
+          // تحديث مخطط قطبي
+          updateChart('polarChart', labels, points, 'مخطط قطبي متقدم', 'polarArea');
+
+          // مقارنة بين الفصلين الأول والثاني
+      }
+
+      // دالة لتحديث المخطط العام
+      function updateChart(chartId, labels, points, labelText, chartType) {
+          const chartElement = document.getElementById(chartId);
+          const existingChart = Chart.getChart(chartElement);
+          if (existingChart) {
+          existingChart.destroy();
+          }
+
+          new Chart(chartElement, {
+          type: chartType,
+          data: {
+              labels: labels,
+              datasets: [{
+              label: labelText,
+              data: points,
+              backgroundColor: chartType === 'pie' || chartType === 'doughnut'
+                  ? labels.map(() => '#' + Math.floor(Math.random() * 16777215).toString(16))
+                  : '#3498db'
+              }]
+          },
+          options: {
+              responsive: true,
+              plugins: {
+              title: {
+                  display: true,
+                  text: labelText
+              }
+              }
+          }
+          });
+      }
+
+      // دالة لتحديث مخطط مقارنة النقاط بين الفصلين
+      function updateCompareChart(labels, semester1Points, semester2Points) {
+          const compareChart = document.getElementById('compareChart');
+          const existingChart = Chart.getChart(compareChart);
+          if (existingChart) {
+          existingChart.destroy();
+          }
+
+          new Chart(compareChart, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [
+              {
+                  label: 'الفصل الأول',
+                  data: semester1Points,
+                  backgroundColor: 'rgba(52, 152, 219, 0.7)'
+              },
+              {
+                  label: 'الفصل الثاني',
+                  data: semester2Points,
+                  backgroundColor: 'rgba(231, 76, 60, 0.7)'
+              }
+              ]
+          },
+          options: {
+              responsive: true,
+              plugins: {
+              title: {
+                  display: true,
+                  text: '📚 مقارنة النقاط بين الفصلين'
+              }
+              }
+          }
+          });
+      }
+    </script>
+
+    <script>
+      // البيانات من بايثون
+      const labels = {{ data|map(attribute='subject')|list|tojson }};
+      const pointsData = {{ data|map(attribute='points')|list|tojson }};
+
+      const filteredLabels = [];
+      const filteredPoints = [];
+
+      // تصفية البيانات للتأكد من أن النقاط ليست NaN
+      for (let i = 0; i < pointsData.length; i++) {
+        const val = parseFloat(pointsData[i]);
+        if (!isNaN(val)) {
+          filteredLabels.push(labels[i]);
+          filteredPoints.push(val);
+        }
+      }
+
+      // رسم مخطط شريطي
+      new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels: filteredLabels,
+          datasets: [{
+            label: 'النقطة حسب المادة',
+            data: filteredPoints,
+            backgroundColor: '#3498db',
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'مخطط شريطي للنقاط'
+            }
+          }
+        }
+      });
+
+      // رسم مخطط خطي
+      new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+          labels: filteredLabels,
+          datasets: [{
+            label: 'تطور النقطة',
+            data: filteredPoints,
+            borderColor: '#2ecc71',
+            fill: false,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'منحنى تطور النقاط'
+            }
+          }
+        }
+      });
+
+      // رسم مخطط دائري
+      new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+          labels: filteredLabels,
+          datasets: [{
+            label: 'نسب النقاط',
+            data: filteredPoints,
+            backgroundColor: filteredLabels.map(() => '#' + Math.floor(Math.random()*16777215).toString(16))
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'نسبة توزيع النقاط حسب المادة'
+            }
+          }
+        }
+      });
+
+      // ألوان عشوائية محسنة
+      const generateColors = (count) => {
+        return Array.from({ length: count }, () =>
+          `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
+        );
+      };
+
+      const colors = generateColors(filteredLabels.length);
+
+      // رسم مخطط الدونات
+      new Chart(document.getElementById('doughnutChart'), {
+        type: 'doughnut',
+        data: {
+          labels: filteredLabels,
+          datasets: [{
+            label: 'نقاط',
+            data: filteredPoints,
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'مخطط الدونات للنقاط'
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `المادة: ${ctx.label} - ${ctx.parsed}`
+              }
+            }
+          },
+          animation: {
+            animateScale: true
+          }
+        }
+      });
+
+      // رسم مخطط قطبي
+      new Chart(document.getElementById('polarChart'), {
+        type: 'polarArea',
+        data: {
+          labels: filteredLabels,
+          datasets: [{
+            label: 'نقاط',
+            data: filteredPoints,
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'مخطط قطبي متقدم'
+            }
+          },
+          animation: {
+            animateRotate: true,
+            animateScale: true
+          }
+        }
+      });
+
+      // بيانات الفصل الأول والثاني للمقارنة
+      const semester1Points = {{ data|selectattr("semester", "equalto", "الفصل الأول")|map(attribute="points")|list|tojson }};
+      const semester2Points = {{ data|selectattr("semester", "equalto", "الفصل الثاني")|map(attribute="points")|list|tojson }};
+      const semesterLabels = {{ data|selectattr("semester", "equalto", "الفصل الأول")|map(attribute="subject")|list|tojson }};
+
+      // رسم مخطط مقارنة النقاط بين الفصلين
+      new Chart(document.getElementById('compareChart'), {
+        type: 'bar',
+        data: {
+          labels: semesterLabels,
+          datasets: [
+            {
+              label: 'الفصل الأول',
+              data: semester1Points,
+              backgroundColor: 'rgba(52, 152, 219, 0.7)'
+            },
+            {
+              label: 'الفصل الثاني',
+              data: semester2Points,
+              backgroundColor: 'rgba(231, 76, 60, 0.7)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: '📚 مقارنة النقاط بين الفصلين'
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

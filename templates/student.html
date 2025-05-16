@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الملاحظات</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+            color: #fff;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #25252b;
+        }
+
+        .container {
+            position: relative;
+            width: 780px;
+            height: 460px;
+            border: 2px solid #ff2770;
+            box-shadow: 0 0 25px #ff2770;
+            overflow: hidden;
+            background: #25252b;
+        }
+
+        .container .content-box {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .content-box h2 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .notes p {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .notes p:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            position: relative;
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(45deg, #ff2770, #ff5e8a);
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            outline: none;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(255, 39, 112, 0.5);
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #ff5e8a, #ff2770);
+            box-shadow: 0 0 20px rgba(255, 39, 112, 0.8);
+            transform: scale(1.05);
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        .regi-link {
+            font-size: 14px;
+            text-align: center;
+            margin: 20px 0 10px;
+        }
+
+        .regi-link a {
+            text-decoration: none;
+            color: #ff2770;
+            font-weight: 600;
+            pointer-events: auto;
+        }
+
+        .regi-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body data-page-group="group1">
+    <div class="container">
+        <div class="content-box">
+            <h2 data-translate="Welcome">📌 ملاحظات هامة لإدخال البيانات</h2>
+            <div class="notes">
+                <p>✅ يُرجى إدخال <b>رقم الطالب</b> فقط مع النقطة التي حصل عليها</p>
+                <p>⚠️ في مكان النقطة <b>absent</b> إذا كان الطالب غائبًا، يُرجى إدخال كلمة </p>
+                <p> سيتم تمكين أزرار الفصول المغلقة بمجرد إنطلاق الدورة الثانية</p>
+                <p>📚 (S1, S2, S3, S4, S5, S6) سيتم جلب بيانات الطلاب تلقائيًا بناءً على الفصول التي يتم تحديدها
+                </p>
+                <p>🔍 تأكد من <b>مراجعة</b> البيانات قبل الحفظ لتجنب أي أخطاء</p>
+            </div>
+            <button class="btn" onclick="window.location.href='/buttons'" data-translate="Welcome">بدء الإدخال
+                📥</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
+            let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
+
+            // ضبط اللغة عند تحميل الصفحة
+            fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() => loadTranslations(savedLang));
+
+            function loadTranslations(lang) {
+                fetch(`/get_translations/${lang}`)
+                    .then(response => response.json())
+                    .then(data => updateTranslations(data.translations));
+            }
+
+            window.changeLanguage = function (lang) {
+                localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
+
+                fetch(`/change_language/${lang}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateTranslations(data.translations);
+                        }
+                    });
+
+                // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
+                fetch(`/set_language/${lang}`, { method: "POST" });
+
+                // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
+                localStorage.setItem("language_update", JSON.stringify({ group: pageGroup, lang: lang }));
+            };
+
+            function updateTranslations(translations) {
+                document.querySelectorAll("[data-translate]").forEach(element => {
+                    let key = element.getAttribute("data-translate");
+                    if (translations[key]) {
+                        element.textContent = translations[key];
+                    }
+                });
+            }
+
+            // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
+            window.addEventListener("storage", function (event) {
+                if (event.key === "language_update") {
+                    let data = JSON.parse(event.newValue);
+                    if (data.group === pageGroup) {
+                        loadTranslations(data.lang);
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

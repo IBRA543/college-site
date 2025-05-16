@@ -1,0 +1,588 @@
+/* استيراد خط Google */
+@import url("https://fonts.googleapis.com/css2?family=Bonbon&display=swap");
+
+/* إعادة تعيين القيم الافتراضية للعناصر */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* إعداد ارتفاع الجسم ليملأ الشاشة بالكامل */
+body {
+  height: 100vh;
+}
+
+/* إعداد التنسيق الرئيسي للمحتوى */
+main {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-family: Poppins;
+}
+
+/* -------------------- الشريط الجانبي -------------------- */
+aside {
+  -webkit-backdrop-filter: blur(20px); /* دعم Safari لتأثير الضبابية */
+  backdrop-filter: blur(20px); /* تأثير ضبابي للخلفية */
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 1.1rem;
+  background-color: #212529;
+}
+
+/* قائمة الروابط داخل الشريط الجانبي */
+.Links {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+/* تصميم عناصر القائمة في الشريط الجانبي */
+aside li {
+  list-style-type: none;
+  display: flex;
+  padding: 20px;
+  gap: 10px;
+  color: white;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition-duration: 0.2s;
+}
+
+/* تأثير التحويم على العنصر */
+aside li:hover {
+  color: #80ed99;
+}
+
+/* خط فاصل أسفل كل عنصر */
+aside li::after {
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  height: 1px;
+  background: linear-gradient(to left, transparent, #ffffff24, transparent);
+  content: "";
+  bottom: 0px;
+}
+
+/* أيقونات داخل عناصر الشريط الجانبي */
+aside li i {
+  font-size: 1.3rem;
+}
+
+/* تمييز الرابط النشط */
+.activeLink {
+  color: #80ed99;
+}
+
+/* -------------------- السلايدر -------------------- */
+.mySwiper {
+  flex: 1;
+  height: 100%;
+}
+
+/* شريحة القسم الرئيسي */
+.home-slide {
+  color: white;
+  display: flex;
+  background-color: #343a40;
+}
+
+/* -------------------- محتوى الصفحة الرئيسية -------------------- */
+.HomeContent {
+  -webkit-user-select: none; /* منع التحديد - دعم Safari */
+  user-select: none; /* منع تحديد النص */
+  margin: auto 0px;
+  flex: 1;
+  height: auto;
+  padding: 100px;
+}
+
+/* -------------------- الصورة الجانبية -------------------- */
+.SideImg {
+  width: 30%;
+  margin: auto 10px;
+  margin-right: 100px;
+  position: relative;
+}
+
+/* تنسيق الصورة نفسها */
+.SideImg img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* عناصر الزخرفة حول الصورة */
+.SideImg .top-right-corner,
+.bottom-left-corner {
+  position: absolute;
+}
+
+.bottom-left-corner {
+  left: -50px;
+  bottom: -50px;
+  rotate: -50deg;
+}
+
+.top-right-corner {
+  right: -50px;
+  top: -50px;
+  rotate: 90deg;
+}
+
+/* -------------------- النصوص والعناوين الرئيسية -------------------- */
+.HomeContent h1 {
+  font-size: 3em;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.HomeContent h2 {
+  font-size: 2.3em;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: white;
+}
+
+/* تنسيق الاسم داخل العنوان */
+.HomeContent h1 .stylized-name {
+  font-weight: 700;
+  color: #80ed99;
+}
+
+/* المهنة */
+.professions {
+  color: #80ed99;
+}
+
+/* سطر الوصف */
+.HomeContent .heroline {
+  font-size: 1.5rem;
+  font-weight: 300;
+  padding-right: 50px;
+  color: white;
+}
+
+/* -------------------- أزرار التحكم -------------------- */
+.buttonGroup {
+  display: flex;
+  padding: 10px 0px;
+  margin-top: 10px;
+}
+
+/* زر رئيسي */
+.buttonGroup button.primary {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #80ed99;
+  color: white;
+  border-radius: 5px;
+}
+
+/* -------------------- المساعدة / التلميح أسفل الشريحة -------------------- */
+.slide-help {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  z-index: 100;
+  left: 0%;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+}
+
+/* إعادة تعريف خصائص الـ Swiper */
+.mySwiper {
+  width: 80vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #343a40;
+}
+
+/* تصميم شريحة الـ Swiper */
+.swiper-slide {
+  width: 100%;
+  background-color: #343a40;
+  height: 100%;
+}
+
+/* -------------------- قسم من نحن -------------------- */
+.about-us {
+  width: 100%;
+  height: 100%;
+  padding: 100px;
+  color: white;
+}
+
+/* -------------------- العناوين العامة -------------------- */
+.heading {
+  padding: 20px 10px;
+  font-size: 2.5rem;
+  color: #80ed99;
+}
+
+/* عنوان قسم "من نحن" */
+.about-us h3 {
+  padding: 10px;
+}
+
+/* -------------------- وصف عني -------------------- */
+.aboutme-deatils {
+  padding: 20px;
+  font-weight: 200;
+}
+
+/* تقسيم عام للقسم */
+.about-me-divison {
+  display: flex;
+}
+
+/* جدول المعلومات الشخصية */
+.about-me-table {
+  width: 60%;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+}
+
+/* كل عنصر داخل الجدول */
+.about-me-table li {
+  padding: 20px;
+  position: relative;
+}
+
+/* خط أسفل كل عنصر */
+.about-me-table li::after {
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  height: 1px;
+  background: linear-gradient(to left, transparent, #ffffff77, transparent);
+  content: "";
+  bottom: 0px;
+}
+
+/* النصوص المميزة داخل الجدول */
+.about-me-table span {
+  color: #80ed99;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* تنسيق زر في جدول المعلومات */
+.about-me-table .buttonGroup {
+  grid-column: 1 / span 2;
+  justify-content: center;
+  padding: 50px;
+  flex: 1;
+  color: #80ed99;
+}
+
+/* -------------------- شريط المهارات -------------------- */
+.skill-bar {
+  width: calc(40% - 20px);
+}
+
+.skill-bar li {
+  width: 100%;
+  padding: 10px;
+}
+
+/* اسم المهارة */
+.skill-bar p {
+  color: #80ed99;
+  font-weight: bold;
+  margin: 10px;
+}
+
+/* الخلفية الأساسية لشريط المهارة */
+.skill-bar .bar {
+  width: 100%;
+  height: 15px;
+  background-color: #272c30;
+  border-radius: 20px;
+}
+
+/* الجزء المعبأ من الشريط */
+.active-bar {
+  background-color: #80ed99;
+  height: 100%;
+  width: auto;
+  border-radius: 20px;
+}
+
+/* -------------------- قسم الخدمات -------------------- */
+.services {
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    calc(34% - 10px)
+  ); /* ملاحظة: الأفضل إزالة علامات الاقتباس */
+  grid-template-rows: 100px calc(50% - 50px) calc(50% - 50px);
+  padding: 100px;
+  box-sizing: border-box;
+}
+
+/* عنوان قسم الخدمات */
+.services .heading {
+  grid-column: 1 / span 3;
+}
+
+/* كل خدمة داخل القسم */
+.services .service {
+  -webkit-backdrop-filter: blur(10px); /* دعم Safari */
+  backdrop-filter: blur(10px);
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.437);
+  border-radius: 5px; /* زيادة الانحناء لجعل الشكل أكثر نعومة */
+  margin: 20px;
+  flex-direction: column;
+  transition-duration: 0.25s;
+  width: 250px; /* تحديد عرض ثابت */
+  height: 250px; /* تحديد ارتفاع ثابت لجعل العنصر مربع */
+  box-sizing: border-box; /* لضمان أن الحشوة والحدود لا تتجاوز الأبعاد */
+}
+
+/* أيقونة الخدمة */
+.services .service i {
+  font-size: 3rem;
+  color: #80ed99;
+}
+
+/* إطار الأيقونة */
+.services .service .service-icon {
+  padding: 0px 50px;
+  border-radius: 5px;
+  margin: 20px auto;
+}
+
+/* عنوان الخدمة */
+.service h2 {
+  color: #80ed99;
+}
+/* التأثير عند التحويم فوق الخدمة */
+.service:hover {
+  background-color: #80ed99;
+  color: #176d2d;
+}
+
+/* تغيير اللون داخل العنصر عند التحويم */
+.service:hover h2,
+.service:hover i {
+  color: #176d2d;
+}
+
+/* -------------------- قسم المشاريع / المعرض -------------------- */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  padding: 100px;
+  grid-template-rows: 100px calc(50% - 50px) calc(50% - 50px);
+}
+
+/* العناوين في قسم المعرض */
+.gallery h1,
+.gallery h2 {
+  grid-column: 1 / span 3;
+}
+
+.gallery h2 {
+  color: white;
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 20px 10px;
+}
+
+/* تصميم بطاقة المشروع */
+.gallery .project {
+  margin: 25px 20px;
+  margin-top: 0px;
+  background: #212529;
+  padding: 5px;
+  border-radius: 20px;
+}
+
+/* صورة المشروع */
+.gallery .project img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  border: none;
+}
+
+/* -------------------- قسم التواصل -------------------- */
+.contactMe {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-template-rows:
+    80px
+    calc(25% - 20px)
+    calc(25% - 20px)
+    calc(25% - 20px)
+    calc(25% - 20);
+  position: relative;
+  padding: 100px;
+}
+/* -------------------- عنوان قسم التواصل -------------------- */
+.contactMe h1 {
+  grid-column: 1 / span 3;
+  font-size: 2.5rem;
+  padding: 30px;
+}
+
+/* مكان وضع النموذج داخل الشبكة */
+.contactMe form {
+  grid-area: 2/2 / span 5 / span 2;
+}
+
+/* -------------------- معلومات التواصل (أيقونات/نص) -------------------- */
+.contactinfo {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: white;
+  justify-content: center;
+  text-align: center;
+}
+
+/* أيقونات معلومات التواصل */
+.contactinfo i {
+  padding: 10px;
+  font-size: 2.5rem;
+  color: #80ed99;
+  margin: 20px auto;
+}
+
+/* -------------------- تصميم نموذج التواصل -------------------- */
+.contactMe form {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 100%;
+  padding: 20px;
+  height: fit-content;
+  color: white;
+}
+
+/* عنوان داخلي للنموذج */
+.contactMe form h2 {
+  grid-column: 1 / span 2;
+  padding: 20px;
+  display: flex;
+}
+
+/* أيقونة SVG بجانب النص */
+.icon-svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* مدخلات النموذج */
+.contactMe form input {
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px;
+  font-size: 1.1rem;
+  border: none;
+  color: white;
+  background-color: #212529;
+}
+
+/* إخفاء شريط التمرير في السلايدر */
+.swiper-css-mode > .swiper-wrapper {
+  scrollbar-width: none; /* لا تدعمها Safari */
+}
+
+.swiper-css-mode > .swiper-wrapper::-webkit-scrollbar {
+  display: none; /* دعم Safari */
+}
+
+/* تأثير التركيز على مدخلات النموذج */
+.contactMe form input:focus {
+  border: 1px solid #80ed99;
+  outline: none;
+}
+
+/* حقل النص في النموذج */
+.contactMe form textarea {
+  width: calc(100% - 40px);
+  grid-column: 1 / span 2;
+  margin: 20px;
+  padding: 20px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  resize: none;
+  border: none;
+  color: white;
+  background-color: #212529;
+}
+
+/* تأثير التركيز على حقل النص */
+.contactMe form textarea:focus {
+  border: 1px solid #80ed99;
+}
+
+/* زر الإرسال في النموذج */
+.contactMe button {
+  grid-column: 1 / span 2;
+  margin: 20px auto;
+}
+
+/* -------------------- الفوتر -------------------- */
+footer {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  text-align: center;
+  color: white;
+  width: 100%;
+  font-weight: 200;
+  font-size: 0.8rem;
+}
+
+footer li {
+  padding: 10px;
+}
+
+/* -------------------- روابط التواصل الإجتماعي -------------------- */
+form h2 .SocialLinks {
+  padding: 5px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 10px;
+  background-color: #212529;
+  border-radius: 30px;
+}
+
+/* تصميم أيقونات الروابط */
+form h2 .SocialLinks i {
+  padding: 10px;
+  border-radius: 50%;
+  transition-duration: 0.25s;
+}
+
+/* تأثير التحويم على أيقونات التواصل */
+form h2 .SocialLinks i:hover {
+  background-color: #176d2d;
+}
+
+/* -------------------- التمرير داخل قسم "عنّا" -------------------- */
+.about-us {
+  overflow: auto;
+}

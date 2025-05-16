@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال درجات الطلاب يدويًا</title>
+    <style>
+        /* تنسيق عام للجسم */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+
+        /* تنسيق الحاوية الرئيسية */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* تنسيق العنوان */
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        /* تنسيق الحقول النصية والقوائم المنسدلة */
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        /* تنسيق الزر */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        /* تأثير الزر عند التمرير عليه */
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* تنسيق الرسالة النجاح */
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>إدخال اسم الطالب والنقاط</h1>
+
+        {% if success_message %}
+        <div class="success-message">
+            {{ success_message }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            <input type="hidden" name="student_number" value="{{ student_number or '' }}">
+
+            <div class="form-group">
+                <label for="student_name">اسم بالفرنسية:</label>
+                <input type="text" id="student_name" name="student_name" placeholder="أدخل اسم الطالب"
+                    value="{{ student_name or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="student_name_ar">اسم بالعربية:</label>
+                <input type="text" id="student_name_ar" name="student_name_ar" placeholder="أدخل اسم الطالب"
+                    value="{{ student_name_ar or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_card">C.N.E:</label>
+                <input type="text" id="id_card" name="id_card" placeholder="أدخل رقم C.N.E" value="{{ id_card or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="points">النقاط (من 0 إلى 20):</label>
+                <input type="text" id="points" name="points" placeholder="أدخل النقاط أو absent"
+                    value="{{ points or '' }}">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" name="add_student">إضافة الطالب</button>
+            </div>
+        </form>
+
+
+        <!-- رابط لعرض الجدول -->
+        <div class="form-group">
+            <a href="/students_table">
+                <button type="button">عرض قائمة الطلاب</button>
+            </a>
+        </div>
+
+        <div class="form-group">
+            <a href="/Quick_entry_points">
+                <button type="button">إدخال سريع</button>
+            </a>
+        </div>
+
+
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const pointsInput = document.getElementById("points");
+                const arabicNameInput = document.getElementById("student_name_ar");
+                const frenchNameInput = document.getElementById("student_name");
+
+                // التحقق من أن المدخل يحتوي على أحرف عربية فقط
+                arabicNameInput.addEventListener("input", function () {
+                    const arabicRegex = /^[\u0621-\u064A\s]+$/; // يسمح فقط بالحروف العربية والمسافات
+                    if (!arabicRegex.test(arabicNameInput.value)) {
+                        alert("يرجى إدخال أحرف عربية فقط في خانة 'اسم بالعربية'.");
+                        arabicNameInput.value = arabicNameInput.value.replace(/[^أ-ي\s]/g, ''); // إزالة أي حرف غير عربي
+                    }
+                });
+
+                // التحقق من أن المدخل يحتوي على أحرف فرنسية فقط
+                frenchNameInput.addEventListener("input", function () {
+                    const frenchRegex = /^[A-Za-zéèêàâùûîïôç\s]+$/; // يسمح فقط بالحروف الفرنسية
+                    if (!frenchRegex.test(frenchNameInput.value)) {
+                        alert("يرجى إدخال أحرف فرنسية فقط في خانة 'اسم بالفرنسية'.");
+                        frenchNameInput.value = frenchNameInput.value.replace(/[^A-Za-zéèêàâùûîïôç\s]/g, ''); // إزالة أي حرف غير فرنسي
+                    }
+                });
+
+                // التحقق من النقاط
+                pointsInput.addEventListener("input", function () {
+                    const value = pointsInput.value.trim();
+
+                    if (value !== "" && value.toLowerCase() !== "absent" && isNaN(value)) {
+                        alert("إذا كنت تريد كتابة غائب فقط اتركها فارغة واضغط على زر التالي");
+                        pointsInput.value = ""; // مسح الحقل تلقائيًا
+                    }
+                });
+            });
+        </script>
+
+</body>
+
+</html>

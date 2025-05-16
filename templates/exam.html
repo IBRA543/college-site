@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="./images/logo.png" />
+    <link rel="stylesheet" href="static/css/stylesindex.css" />
+
+    <style>
+      body {
+        overflow-y: auto;
+      }
+      header {
+        position: relative;
+      }
+      .exam {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 80vh;
+        width: 80%;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <a href="{{ url_for('index1') }}">
+          <span class="material-icons-sharp">home</span>
+          <h3>Home</h3>
+        </a>
+        <a href="{{ url_for('timetable') }}" onclick="timeTableAll()">
+          <span class="material-icons-sharp">today</span>
+          <h3>إستعمال الزمن</h3>
+        </a>
+        <a href="{{ url_for('exam') }}" class="active">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>الإمتحانات</h3>
+        </a>
+        <a href="{{ url_for('announcement_list') }}">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>الإعلانات</h3>
+        </a>
+
+        <a href="{{ url_for('password') }}">
+          <span class="material-icons-sharp">password</span>
+          <h3>تغيير كلمة المرور</h3>
+        </a>
+      </div>
+      <div id="profile-btn" style="display: none">
+        <span class="material-icons-sharp">person</span>
+      </div>
+      <div class="theme-toggler">
+        <span class="material-icons-sharp active">light_mode</span>
+        <span class="material-icons-sharp">dark_mode</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="exam timetable">
+        <h2>الفصل الثاني</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>التوقيت</th>
+              <th>المادة</th>
+              <th>رقم القاعة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>13 May 2022</td>
+              <td>09-12 AM</td>
+              <td>المناخ</td>
+              <td>38-718</td>
+              <td>muhammed.hn</td>
+            </tr>
+            <tr>
+              <td>16 May 2022</td>
+              <td>09-12 AM</td>
+              <td>الإتجاهات الكلاسيكية الحديثة في علم الإجتماع</td>
+              <td>38-718</td>
+              <td>wasila.bn</td>
+            </tr>
+            <tr>
+              <td>18 May 2022</td>
+              <td>09-12 AM</td>
+              <td>جغرافية المغرب العامة</td>
+              <td>38-718</td>
+              <td>bansalem.rj</td>
+            </tr>
+            <tr>
+              <td>20 May 2022</td>
+              <td>09-12 AM</td>
+              <td>جغرافية الأرياف"</td>
+              <td>38-718</td>
+              <td>muhammad.zr</td>
+            </tr>
+            <tr>
+              <td>23 May 2022</td>
+              <td>09-12 AM</td>
+              <td>مدخل لدراسة تاريخ المغرب المعاصر والراهن"</td>
+              <td>38-718</td>
+              <td>hisham.mr</td>
+            </tr>
+            <tr>
+              <td>23 May 2022</td>
+              <td>09-12 AM</td>
+              <td>المهارات الحياتية والذاتية"</td>
+              <td>38-718</td>
+              <td>muhammed.fs</td>
+            </tr>
+            <tr>
+              <td>23 May 2022</td>
+              <td>09-12 AM</td>
+              <td>اللغات الأجنبية</td>
+              <td>38-718</td>
+              <td>
+                ali.ch <br />
+                zainab.fr
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- فصل ثالث -->
+      <div class="exam timetable">
+        <h2>فصل الرابع</h2>
+        <table id="second-table">
+          <!-- إضافة id هنا -->
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>التوقيت</th>
+              <th>المادة</th>
+              <th>رقم القاعة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10 June 2022</td>
+              <td>10-01 PM</td>
+              <td>الخرائط والسيميولوجيا</td>
+              <td>38-719</td>
+              <td>muhammed.hm</td>
+            </tr>
+            <tr>
+              <td>12 June 2022</td>
+              <td>10-01 PM</td>
+              <td>النظم البيئية والتربة والنبات</td>
+              <td>38-719</td>
+              <td>abdulsalam.sa</td>
+            </tr>
+            <tr>
+              <td>15 June 2022</td>
+              <td>10-01 PM</td>
+              <td>جغرافية البحر المتوسط وإفريقيا جنوب الصحراء</td>
+              <td>38-719</td>
+              <td>abdulsalam.sa</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>جغرافية الطاقة</td>
+              <td>38-719</td>
+              <td>muhammed.hn</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>دينامية المجال الحضري</td>
+              <td>38-719</td>
+              <td>bushra.sb</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>المهارات الهياتية والذاتية</td>
+              <td>38-719</td>
+              <td>muhammed.by</td>
+            </tr>
+            <tr>
+              <td>23 May 2022</td>
+              <td>09-12 AM</td>
+              <td>اللغات الأجنبية</td>
+              <td>38-718</td>
+              <td>
+                ali.ch <br />
+                nawar.af
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exam timetable">
+        <h2>فصل السادس - مسار البيئة</h2>
+        <table id="third-table">
+          <!-- إضافة id هنا -->
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>التوقيت</th>
+              <th>المادة</th>
+              <th>رقم القاعة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10 June 2022</td>
+              <td>10-01 PM</td>
+              <td>تهيئة الجبل</td>
+              <td>38-719</td>
+              <td>muhammed.hn</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>التربة</td>
+              <td>38-719</td>
+              <td>najm.al</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>المخاطر البيئية</td>
+              <td>38-719</td>
+              <td>muhammed.ht</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>الهيدرولوجيا</td>
+              <td>38-719</td>
+              <td>souad.bn</td>
+            </tr>
+            <tr>
+              <td>12 June 2022</td>
+              <td>10-01 PM</td>
+              <td>DBMS140</td>
+              <td>38-719</td>
+              <td>38-718</td>
+            </tr>
+            <tr>
+              <td>15 June 2022</td>
+              <td>10-01 PM</td>
+              <td>MTH200</td>
+              <td>38-719</td>
+              <td>38-718</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>NS250</td>
+              <td>38-719</td>
+              <td>38-718</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exam timetable">
+        <h2>فصل السادس - مسار التهيئة</h2>
+        <table id="fourth-table">
+          <!-- إضافة id هنا -->
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>التوقيت</th>
+              <th>المادة</th>
+              <th>رقم القاعة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10 June 2022</td>
+              <td>10-01 PM</td>
+              <td>البيئة الحضرية</td>
+              <td>38-719</td>
+              <td>magda.sb</td>
+            </tr>
+            <tr>
+              <td>12 June 2022</td>
+              <td>10-01 PM</td>
+              <td>الجهة والجهوية</td>
+              <td>38-719</td>
+              <td>muhammad.zr</td>
+            </tr>
+            <tr>
+              <td>15 June 2022</td>
+              <td>10-01 PM</td>
+              <td>اقتصاد محلي</td>
+              <td>38-719</td>
+              <td>idris.zh</td>
+            </tr>
+            <tr>
+              <td>18 June 2022</td>
+              <td>10-01 PM</td>
+              <td>مقاربة مقولاتية</td>
+              <td>38-719</td>
+              <td>bushti.kh</td>
+            </tr>
+            <tr>
+              <td>10 June 2022</td>
+              <td>10-01 PM</td>
+              <td>CS300</td>
+              <td>38-719</td>
+              <td>38-718</td>
+            </tr>
+            <tr>
+              <td>12 June 2022</td>
+              <td>10-01 PM</td>
+              <td>DBMS140</td>
+              <td>38-719</td>
+              <td>38-718</td>
+            </tr>
+            <tr>
+              <td>15 June 2022</td>
+              <td>10-01 PM</td>
+              <td>MTH200</td>
+              <td>38-719</td>
+              <td>38-718</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</html>

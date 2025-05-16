@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الأزرار</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "poppins";
+            color: #fff;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1e1e2e;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            position: relative;
+            width: 600px;
+            padding: 60px;
+            border: 2px solid #ff2770;
+            box-shadow: 0 0 25px #ff2770;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+        }
+
+        button {
+            background: #ff2770;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: white;
+            color: #ff2770;
+        }
+
+        .container h2 {
+            font-size: 28px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>اختر أحد الفصول</h2>
+        <div class="buttons">
+            <button onclick="openManualInput('S1')">S1</button>
+            <button onclick="openManualInput('S2')">S2</button>
+            <button onclick="openManualInput('S3')">S3</button>
+            <button onclick="openManualInput('S4')">S4</button>
+            <button onclick="openManualInput('S5')">S5</button>
+            <button onclick="openManualInput('S6')">S6</button>
+        </div>
+
+        <script>
+            function openManualInput(fileName) {
+                sessionStorage.setItem('selected_file', fileName); // حفظ الملف المختار في sessionStorage
+                // إرسال القيمة إلى الخادم ليتم حفظها في جلسة Flask
+                fetch('/set_selected_file', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ file_name: fileName })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message); // عرض رسالة نجاح في الكونسول
+                        window.location.href = `/manual_input?file=${fileName}`; // الانتقال إلى صفحة الإدخال مع الملف
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            }
+        </script>
+    </div>
+</body>
+
+
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات الخلفية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- رابط FontAwesome لأيقونات وسائل التواصل الاجتماعي -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            background-color: #25252b;
+        }
+
+        .menu-btn {
+            font-size: 24px;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            width: 200px;
+            height: 97%;
+            position: fixed;
+            top: 0;
+            right: -250px;
+            background-color: #333;
+            padding-top: 20px;
+            transition: 0.5s;
+            border-radius: 20px;
+            box-shadow: 0.4px, 15px rgba(0, 0, 0, 0.3);
+
+        }
+
+        .close-btn {
+            font-size: 30px;
+            background: none;
+            border: none;
+            color: white;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            color: white;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 21px;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-left: 10px;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sub-menu {
+            width: 200px;
+            height: 97%;
+            position: fixed;
+            top: 0;
+            right: -250px;
+            background-color: #444;
+            padding-top: 20px;
+            transition: 0.5s;
+            border-radius: 15px;
+        }
+
+        .sub-menu.active {
+            right: 0;
+        }
+
+        .background-settings,
+        .language-settings {
+            width: 250px;
+            height: auto;
+            position: fixed;
+            top: 50%;
+            right: -300px;
+            transform: translateY(-50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+
+        .background-settings.active,
+        .language-settings.active {
+            right: 20px;
+        }
+
+        .background-settings h3,
+        .language-settings h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .color-btn,
+        .lang-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .color-btn.white {
+            background-color: white;
+            color: black;
+        }
+
+        .color-btn.black {
+            background-color: black;
+            color: white;
+        }
+
+        .color-btn.pink {
+            background-color: rgb(255, 39, 112);
+            color: black;
+        }
+
+        .color-btn.blue {
+            background-color: lightblue;
+            color: black;
+        }
+
+        .color-btn.green {
+            background-color: lightgreen;
+            color: black;
+        }
+
+        .secondary {
+            padding: 10px;
+            text-align: center;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: rgb(255, 39, 112);
+        }
+
+        .secondary1 {
+            padding: 10px;
+            text-align: center;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: rgb(255, 111, 135);
+            box-shadow: 0 0 25px rgba(255, 39, 112, 0.8);
+        }
+
+        .lang-btn {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* إضافة التنسيق الخاص بالقوائم الجديدة */
+        #font-size-settings,
+        #font-style-settings {
+            width: 250px;
+            height: auto;
+            position: fixed;
+            top: 50%;
+            right: -300px;
+            transform: translateY(-50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+
+        #font-size-settings.active,
+        #font-style-settings.active {
+            right: 20px;
+        }
+
+        #font-size-settings h3,
+        #font-style-settings h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .font-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* تصميم النافذة المنبثقة */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* خلفية مظللة قليلاً */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            /* يبدأ بالشفافية */
+            transition: opacity 0.3s ease;
+            /* تأثير انتقال الشفافية */
+        }
+
+        .popup.active {
+            display: flex;
+            opacity: 1;
+            /* يظهر النافذة بشكل تدريجي */
+        }
+
+        /* تصميم محتوى النافذة */
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            /* زاوية مدورة */
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* تأثير الظل الناعم */
+        }
+
+        /* تصميم زر الإغلاق */
+        .close-popup {
+            background-color: transparent;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .close-popup:hover {
+            color: #e74c3c;
+            /* تغيير اللون عند التمرير */
+        }
+
+        /* تصميم عنوان النافذة */
+        .popup h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* تصميم مربع النص */
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Arial', sans-serif;
+            resize: none;
+            transition: border 0.3s ease;
+        }
+
+        /* تأثير عند التمرير داخل مربع النص */
+        textarea:focus {
+            border: 1px solid #3498db;
+        }
+
+        /* تصميم زر الإرسال */
+        .popup button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .popup button:hover {
+            background-color: #2980b9;
+        }
+
+        .popup button:active {
+            background-color: #21618c;
+        }
+
+        /* نافذة منبثقة لوسائل التواصل الاجتماعي */
+        .contact-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-popup.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .contact-popup .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-popup .popup-content h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* تصميم روابط وسائل التواصل الاجتماعي */
+        .contact-popup .contact-item {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-popup .contact-item:hover {
+            color: #3498db;
+            /* تغيير اللون عند التمرير */
+        }
+
+        .contact-popup .contact-item i {
+            margin-right: 10px;
+            font-size: 22px;
+        }
+
+        /* تصميم زر الإغلاق */
+        .contact-popup .close-popup {
+            background-color: transparent;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .contact-popup .close-popup:hover {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="menu-btn" class="menu-btn">☰</button>
+
+    <div id="sidebar" class="sidebar">
+        <button id="close-btn" class="close-btn">&times;</button>
+        <a href="#" id="settings-btn" class="menu-item"><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="#" id="about-btn" class="menu-item"><i class="fas fa-info-circle"></i> حول</a>
+        <a href="#" id="report-issue-btn" class="menu-item"><i class="fas fa-exclamation-circle"></i> الإبلاغ عن
+            مشكلة</a>
+
+    </div>
+
+    <div id="settings-menu" class="sub-menu">
+        <button id="back-btn" class="close-btn">&larr;</button>
+        <a href="#" id="background-btn" class="menu-item"><i class="fas fa-image"></i> الخلفية</a>
+        <a href="#" id="language-btn" class="menu-item"><i class="fas fa-language"></i> اللغة</a>
+        <a href="#" id="font-size-btn" class="menu-item"><i class="fas fa-text-height"></i> حجم الخط</a>
+        <a href="#" id="font-style-btn" class="menu-item"><i class="fas fa-font"></i> تنسيق الخط</a>
+        <a href="#" id="font-style-btn" class="menu-item"><i class="fas fa-font"></i> إعادة التعيين </a>
+    </div>
+
+    <div id="background-settings" class="background-settings">
+        <button class="close-popup" id="close-background-popup">&times;</button>
+        <h3>الخلفيات الرئيسية</h3>
+        <button class="color-btn white" onclick="changeMainBackground('white')">أبيض</button>
+        <button class="color-btn black" onclick="changeMainBackground('black')">أسود</button>
+
+        <h3>الخلفيات الثانوية</h3>
+        <button class="color-btn blue" onclick="changeSecondaryBackground('lightblue')">أزرق مفتوح</button>
+        <button class="color-btn green" onclick="changeSecondaryBackground('lightgreen')">أخضر مفتوح</button>
+        <button class="color-btn pink" onclick="changeSecondaryBackground('rgb(255, 39, 112)')">وردي</button>
+    </div>
+
+    <div id="language-settings" class="language-settings">
+        <h3 data-translate="Select language">اختر اللغة</h3>
+        <button class="close-popup" id="close-language-popup">&times;</button>
+        <button class="lang-btn" onclick="changeLanguage('ar')" data-translate="arabic">العربية</button>
+        <button class="lang-btn" onclick="changeLanguage('en')" data-translate="english">English</button>
+        <button class="lang-btn" onclick="changeLanguage('fr')" data-translate="french">Français</button>
+
+    </div>
+
+    <!-- قائمة الإعدادات الخاصة بحجم الخط -->
+    <div id="font-size-settings" class="background-settings">
+        <h3>حجم الخط</h3>
+        <button class="close-popup" id="close-size-popup">&times;</button>
+        <button class="color-btn" onclick="changeFontSize('small')">صغير</button>
+        <button class="color-btn" onclick="changeFontSize('medium')">متوسط</button>
+        <button class="color-btn" onclick="changeFontSize('large')">كبير</button>
+    </div>
+
+    <!-- قائمة الإعدادات الخاصة بتنسيق الخط -->
+    <div id="font-style-settings" class="background-settings">
+        <h3>تنسيق الخط</h3>
+        <button class="close-popup" id="close-style-popup">&times;</button>
+        <button class="color-btn" onclick="changeFontStyle('serif')">خط سيريف</button>
+        <button class="color-btn" onclick="changeFontStyle('sans-serif')">خط سانس سيريف</button>
+        <button class="color-btn" onclick="changeFontStyle('monospace')">خط مونو</button>
+    </div>
+
+    <!-- نافذة "حول" -->
+    <div id="about-popup" class="popup">
+        <div class="popup-content">
+            <button class="close-popup" id="close-about-popup">&times;</button>
+            <h3>حول الموقع</h3>
+            <p>موقع إلكتروني يقدم خدمات تعليمية وأكاديمية لطلاب الكلية.</p>
+        </div>
+    </div>
+
+    <!-- نافذة "الإبلاغ عن مشكلة" -->
+    <div id="report-popup" class="popup">
+        <div class="popup-content">
+            <button class="close-popup" id="close-report-popup">&times;</button>
+            <h3>الإبلاغ عن مشكلة</h3>
+            <textarea placeholder="اكتب مشكلتك هنا..."></textarea>
+            <button id="send-issue-btn">إرسال</button>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة لوسائل التواصل الاجتماعي -->
+    <div id="contact-popup" class="contact-popup">
+        <div class="popup-content">
+            <button class="close-popup" id="close-contact-popup">&times;</button>
+            <h3>للتواصل معنا</h3>
+            <a href="https://wa.me/1234567890" class="contact-item" target="_blank"><i class="fab fa-whatsapp"></i>
+                WhatsApp</a>
+            <a href="mailto:email@example.com" class="contact-item" target="_blank"><i class="fas fa-envelope"></i>
+                البريد الإلكتروني</a>
+            <a href="https://t.me/username" class="contact-item" target="_blank"><i class="fab fa-telegram-plane"></i>
+                Telegram</a>
+            <a href="https://www.instagram.com/username" class="contact-item" target="_blank"><i
+                    class="fab fa-instagram"></i> Instagram</a>
+            <a href="fax:+123456789" class="contact-item" target="_blank"><i class="fas fa-fax"></i> Fax</a>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="secondary">عنصر ثانوي وردي</div>
+    <div class="secondary">عنصر ثانوي وردي آخر</div>
+    <div class="secondary1">عنصر ثانوي وردي آخر</div>
+
+    <script>
+        document.getElementById("menu-btn").addEventListener("click", function () {
+            document.getElementById("sidebar").classList.add("active");
+        });
+
+        document.getElementById("close-btn").addEventListener("click", function () {
+            document.getElementById("sidebar").classList.remove("active");
+        });
+
+        document.getElementById("settings-btn").addEventListener("click", function () {
+            document.getElementById("sidebar").classList.remove("active");
+            document.getElementById("settings-menu").classList.add("active");
+        });
+
+        document.getElementById("back-btn").addEventListener("click", function () {
+            document.getElementById("settings-menu").classList.remove("active");
+            document.getElementById("sidebar").classList.add("active");
+        });
+
+        document.getElementById("background-btn").addEventListener("click", function () {
+            document.getElementById("background-settings").classList.add("active");
+            document.getElementById("settings-menu").classList.remove("active");
+        });
+        document.getElementById("close-background-popup").addEventListener("click", function () {
+            document.getElementById("background-settings").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+        document.getElementById("language-btn").addEventListener("click", function () {
+            document.getElementById("language-settings").classList.add("active");
+            document.getElementById("settings-menu").classList.remove("active");
+        });
+        document.getElementById("close-language-popup").addEventListener("click", function () {
+            document.getElementById("language-settings").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+        function changeMainBackground(color) {
+            document.body.style.backgroundColor = color;
+        }
+
+        function changeSecondaryBackground(newColor) {
+            let secondaryElements = document.querySelectorAll('.secondary');
+            secondaryElements.forEach(element => {
+                let currentColor = window.getComputedStyle(element).backgroundColor;
+
+                // قائمة الألوان التي سيتم استبدالها باللون الجديد
+                let colorsToReplace = ['rgb(255, 39, 112)',  // وردي ()
+                    'rgb(173, 216, 230)',  // أزرق مفتوح (lightblue)
+                    'rgb(144, 238, 144)']; // أخضر مفتوح (lightgreen)
+
+                if (colorsToReplace.includes(currentColor)) {
+                    element.style.backgroundColor = newColor;
+                }
+            });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/get_translations')
+                .then(response => response.json())
+                .then(data => {
+                    updateTranslations(data.translations);
+                });
+        });
+
+
+        function changeLanguage(lang) {
+            fetch(`/change_language/${lang}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();  // إعادة تحميل الصفحة بعد تغيير اللغة
+                    }
+                });
+        }
+
+
+        function updateTranslations(translations) {
+            document.querySelectorAll("[data-translate]").forEach(element => {
+                let key = element.getAttribute("data-translate");
+                if (translations[key]) {
+                    element.textContent = translations[key];
+                }
+            });
+        }
+
+        document.getElementById("font-size-btn").addEventListener("click", function () {
+            document.getElementById("font-size-settings").classList.add("active");
+            document.getElementById("settings-menu").classList.remove("active");
+
+        });
+        document.getElementById("close-size-popup").addEventListener("click", function () {
+            document.getElementById("font-size-settings").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+        document.getElementById("font-style-btn").addEventListener("click", function () {
+            document.getElementById("font-style-settings").classList.add("active");
+            document.getElementById("settings-menu").classList.remove("active");
+        });
+        document.getElementById("close-style-popup").addEventListener("click", function () {
+            document.getElementById("font-style-settings").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+        // تغيير حجم الخط
+        function changeFontSize(size) {
+            if (size === 'small') {
+                document.body.style.fontSize = '12px';
+            } else if (size === 'medium') {
+                document.body.style.fontSize = '16px';
+            } else if (size === 'large') {
+                document.body.style.fontSize = '20px';
+            }
+        }
+
+        // تغيير تنسيق الخط
+        function changeFontStyle(style) {
+            document.body.style.fontFamily = style;
+        }
+
+
+
+        document.getElementById("about-btn").addEventListener("click", function () {
+            document.getElementById("about-popup").classList.add("active"); // إضافة الفئة النشطة لعرض النافذة
+        });
+
+        document.getElementById("close-about-popup").addEventListener("click", function () {
+            document.getElementById("about-popup").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+        document.getElementById("report-issue-btn").addEventListener("click", function () {
+            document.getElementById("report-popup").style.display = "flex";
+        });
+
+        document.getElementById("close-about-popup").addEventListener("click", function () {
+            document.getElementById("about-popup").style.display = "none";
+        });
+
+        document.getElementById("close-report-popup").addEventListener("click", function () {
+            document.getElementById("report-popup").style.display = "none";
+        });
+
+        document.getElementById("report-issue-btn").addEventListener("click", function () {
+            document.getElementById("report-popup").classList.add("active"); // إضافة الفئة النشطة لعرض النافذة
+        });
+
+        document.getElementById("close-report-popup").addEventListener("click", function () {
+            document.getElementById("report-popup").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+        document.querySelector("#report-popup button").addEventListener("click", function () {
+            let issueText = document.querySelector("#report-popup textarea").value;
+            if (issueText.trim() !== "") {
+                // إرسال البيانات عبر API أو حفظها حسب الحاجة
+                console.log("تم الإبلاغ عن مشكلة: " + issueText);
+                document.getElementById("report-popup").classList.remove("active");
+            } else {
+                alert("يرجى كتابة المشكلة قبل الإرسال.");
+            }
+        });
+
+        // عند الضغط على زر "إرسال" في نافذة الإبلاغ عن مشكلة
+        document.getElementById("send-issue-btn").addEventListener("click", function () {
+            let issueText = document.querySelector("#report-popup textarea").value;
+            if (issueText.trim() !== "") {
+                // يمكنك إضافة كود لإرسال البيانات عبر API هنا (إن لزم الأمر)
+                console.log("تم الإبلاغ عن مشكلة: " + issueText);
+                // إغلاق نافذة "الإبلاغ عن مشكلة"
+                document.getElementById("report-popup").classList.remove("active");
+                // عرض نافذة التواصل
+                document.getElementById("contact-popup").classList.add("active");
+            } else {
+                alert("يرجى كتابة المشكلة قبل الإرسال.");
+            }
+        });
+
+        // عند الضغط على زر الإغلاق في نافذة التواصل
+        document.getElementById("close-contact-popup").addEventListener("click", function () {
+            document.getElementById("contact-popup").classList.remove("active");
+        });
+
+
+    </script>
+
+</body>
+
+</html>

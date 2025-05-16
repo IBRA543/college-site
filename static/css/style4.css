@@ -1,0 +1,110 @@
+:root {
+  --bg: #f3f4f6;
+  --border: #d7dadf;
+  --border-highlight: #dee1e5;
+  --highlight-bg: #f3f5f6;
+  --text: #040b1b;
+  --table-background: #ffffff;
+  --table-head: #f3f5f6;
+  --table-head-text: #7c838e;
+  --primary: #101824;
+  --gray: #a0a7b1;
+  --gray-background: #edeef1;
+  --gray-mid: #f1f2f6;
+  --hover-row: D#B5EDD630;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: sans- serif;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  padding: Irem;
+  background: var(--bg);
+}
+.table-widget {
+  border-radius: 1rem;
+  background: var(--table-background);
+  padding: 1.5rem;
+  color: var(--text);
+  border: 2px solid var(--gray-background);
+  text-align: left;
+  width: 100%;
+  overflow-x: auto;
+  max-width: fit-content;
+}
+
+.table-widget table {
+  display: block;
+  white-space: nowrap;
+  border-collapse: collapse;
+  min-height: 30rem;
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 0.5rem;
+}
+.table-widget table::-webkit-scrollbar {
+  height: 0.5rem;
+}
+.table-widget table::-webkit-scrollbar-thumb {
+  background: var(--gray);
+  border-radius: 0.5rem;
+}
+
+.table-widget table::-webkit-scrollbar-track {
+  background: var(-- table-bg);
+}
+.table-widget caption {
+  font-size: 1.12rem;
+  font-weight: 700;
+  text-align: left;
+  margin: 0.5rem 0;
+}
+.table-widget th {
+  padding: 1.25rem irem;
+  font-size: 1.02rem;
+  white-space: nowrap;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.employee {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  min-width: 12rem;
+}
+.location {
+  min-width: 10rem;
+}
+.job-title {
+  min-width: 12rem;
+}
+.date-of-hire {
+  min-width: 8rem;
+}
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 9.25rem;
+}
+.profile-info__name {
+  font-weight: 700;
+  white-space: nowrap;
+}
+.employee img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}

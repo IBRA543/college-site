@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض الملفات</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            background: #1e1e2e;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            border: 2px solid #ff2770;
+            box-shadow: inset 0 0 30px #ff2770;
+            overflow: hidden;
+        }
+
+        .file-card {
+            background-color: #007bff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .file-card:hover {
+            transform: scale(1.05);
+        }
+
+        .file-card .options-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .file-card .options-btn:hover {
+            color: #333;
+        }
+
+        .file-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .file-card .card-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .file-card .card-body a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            color: black;
+            background: white;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .file-card .card-body a:hover {
+            background: #0056b3;
+        }
+
+        .dropdown-menu {
+            text-align: right;
+        }
+
+        .dropdown-item {
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .favorite-heart {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .favorite-heart.liked {
+            color: red;
+        }
+
+        .container h1 {
+            color: #85c0ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mb-5">الملفات المرفوعة</h1>
+        <div class="row g-4">
+            {% if pdf_files %}
+            {% for file in pdf_files %}
+            <div class="col-md-4">
+                <div class="file-card">
+                    <i class="fas fa-heart favorite-heart" id="favorite{{ loop.index }}"></i>
+
+                    <button class="options-btn" data-bs-toggle="dropdown" aria-expanded="false"
+                        id="dropdown{{ loop.index }}">&#8942;</button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown{{ loop.index }}">
+                        <li><button class="dropdown-item favorite-btn" id="favorite{{ loop.index }}"> المفضلة</button>
+                        </li>
+
+                        {% if role == 'teacher' %}
+                        <li><button class="dropdown-item text-danger delete-btn"
+                                data-file="{{ file | urlencode }}">حذف</button></li>
+                        {% endif %}
+                    </ul>
+
+                    {% if file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png') or
+                    file.endswith('.gif') %}
+                    <img src="{{ url_for('uploaded_file', filename=file) }}" alt="Uploaded Image">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/pdf.png') }}" alt="PDF Icon">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ file.split('_', 2)[2] }}</h5>
+                        <a href="{{ url_for('static', filename='pdfs/' + teacher_email + '/' + subject + '/' + file) }}"
+                            target="_blank">
+                            عرض
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center">.لا توجد ملفات متاحة لهذه المادة</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const fileName = decodeURIComponent(this.getAttribute('data-file'));
+                    const teacherEmail = '{{ teacher_email }}';  // استخدم البريد الإلكتروني للأستاذ الفعلي من المتغير المرسل للخادم
+
+                    const confirmed = confirm(`هل أنت متأكد أنك تريد حذف الملف: ${fileName}؟`);
+
+                    if (confirmed) {
+                        fetch('/delete_file', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                file_name: fileName,
+                                teacher_email: teacherEmail  // إرسال البريد الإلكتروني مع الطلب
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                alert(data.message);
+                                if (data.success) {
+                                    location.reload();
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('!حدث خطأ أثناء محاولة حذف الملف');  
+                            });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+
+</html>

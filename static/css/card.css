@@ -1,0 +1,339 @@
+body {
+  font-family: "Cairo", sans-serif;
+  background: linear-gradient(135deg, #f1f8ff, #cfdef3);
+  margin: 0;
+  padding: 0;
+  transition: 0.4s all ease;
+  color: #333;
+}
+
+.dark body {
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+  color: #f0f0f0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #3a89fc, #4a90e2);
+  color: white;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.primary-btn,
+.icon-btn {
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+}
+.primary-btn:hover {
+  background: linear-gradient(135deg, #219653, #16a085);
+}
+
+.icon-btn {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: white;
+}
+.icon-btn:hover {
+  background: linear-gradient(135deg, #e74c3c, #f39c12);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.announcement {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  position: relative;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.announcement:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.dark .announcement {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+
+.announcement h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.actions {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  background: #e74c3c;
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.actions .edit {
+  background: #f39c12;
+}
+
+.actions button:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Modal Styling */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease;
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+}
+
+.futuristic {
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.dark .modal-content {
+  background: #333;
+}
+
+.add-btn,
+.cancel-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.add-btn {
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+.add-btn:hover,
+.cancel-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  animation: slideUp 1s ease-out;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-toast {
+  backdrop-filter: blur(8px);
+}
+
+/* تحسين تصميم حقل الوقت */
+label {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #333;
+}
+
+input[type="text"],
+textarea,
+input[type="datetime-local"],
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+input[type="text"]:focus,
+textarea:focus,
+input[type="datetime-local"]:focus,
+select:focus {
+  outline: none;
+  border-color: #27ae60;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* تحسين عرض الوقت و الأولوية داخل الإعلان */
+.announcement .details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.announcement .details .start-time {
+  font-size: 14px;
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.announcement .details .priority {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #e74c3c, #f39c12);
+  color: white;
+}
+
+.announcement .details .priority.high {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.announcement .details .priority.medium {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.announcement .details .priority.low {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+/* إضافة فاصل بين الوقت و الأولوية */
+.announcement .details span {
+  margin-right: 10px;
+}
+
+.announcement .actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.announcement .actions .edit,
+.announcement .actions .delete {
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.announcement .actions .edit {
+  background: #f39c12;
+}
+
+.announcement .actions .delete {
+  background: #e74c3c;
+}
+
+.announcement .actions button:hover {
+  transform: scale(1.05);
+}

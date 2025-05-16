@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>فضاء الطالب</title>
+    <style>
+      body {
+        font-family: "Cairo", sans-serif;
+        padding: 20px;
+        background: linear-gradient(to right, #f0f4f7, #d9e2ec);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      h2 {
+        text-align: center;
+        color: #1e3a5f;
+        font-size: 32px;
+        margin-bottom: 30px;
+      }
+
+      h3 {
+        margin-top: 50px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        font-size: 24px;
+        border-bottom: 2px solid #1e3a5f;
+        padding-bottom: 5px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 40px;
+        transition: transform 0.3s ease;
+      }
+
+      table:hover {
+        transform: scale(1.01);
+      }
+
+      th,
+      td {
+        border: 1px solid #e0e0e0;
+        padding: 14px 12px;
+        height: 60px;
+      }
+
+      th {
+        background-color: #ecf0f1;
+        color: #34495e;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      td {
+        font-size: 15px;
+        color: #555;
+      }
+
+      tr:hover {
+        background-color: #f1f8fc;
+      }
+
+      td[style*="color: green"] {
+        font-weight: bold;
+        color: #27ae60 !important;
+      }
+
+      td[style*="color: red"] {
+        font-weight: bold;
+        color: #e74c3c !important;
+      }
+
+      td[style*="color: black"] {
+        color: #999 !important;
+        font-style: italic;
+      }
+      .stats-button {
+        display: inline-block;
+        padding: 14px 30px;
+        background-color: #1e3a5f;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .stats-button:hover {
+        background-color: #2b4d76;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h2>فضاء الطالب</h2>
+
+    {% if main_data %}
+    <h3>الفصل الاول</h3>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الملاحظة</th>
+        <th>الفصل</th>
+        <th>الرقم</th>
+      </tr>
+      {% for subject in main_data %}
+      <tr>
+        <td>{{ subject.subject }}</td>
+        <td>{{ subject.points }}</td>
+        <td style="color: {{ subject.note_color }}">{{ subject.note }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>{{ subject.student_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %} {% if extra_data %}
+    <h3>الفصل الثاني</h3>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الملاحظة</th>
+        <th>الفصل</th>
+        <th>الرقم</th>
+      </tr>
+      {% for subject in extra_data %}
+      <tr>
+        <td>{{ subject.subject }}</td>
+        <td>{{ subject.points }}</td>
+        <td style="color: {{ subject.note_color }}">{{ subject.note }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>{{ subject.student_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %} {% if third_data %}
+    <h3>الفصل الثالث</h3>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الملاحظة</th>
+        <th>الفصل</th>
+        <th>الرقم</th>
+      </tr>
+      {% for subject in third_data %}
+      <tr>
+        <td>{{ subject.subject }}</td>
+        <td>{{ subject.points }}</td>
+        <td style="color: {{ subject.note_color }}">{{ subject.note }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>{{ subject.student_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %} {% if fourth_data %}
+    <h3>الفصل الرابع</h3>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الملاحظة</th>
+        <th>الفصل</th>
+        <th>الرقم</th>
+      </tr>
+      {% for subject in fourth_data %}
+      <tr>
+        <td>{{ subject.subject }}</td>
+        <td>{{ subject.points }}</td>
+        <td style="color: {{ subject.note_color }}">{{ subject.note }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>{{ subject.student_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %} {% if fifth_data %}
+    <h3>الفصل الخامس</h3>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الملاحظة</th>
+        <th>الفصل</th>
+        <th>الرقم</th>
+      </tr>
+      {% for subject in fifth_data %}
+      <tr>
+        <td>{{ subject.subject }}</td>
+        <td>{{ subject.points }}</td>
+        <td style="color: {{ subject.note_color }}">{{ subject.note }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>{{ subject.student_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %} {% if sixth_data %}
+    <h3>الفصل السادس</h3>
+    <table>
+      <tr>
+        <th>المادة</th>
+        <th>النقطة</th>
+        <th>الملاحظة</th>
+        <th>الفصل</th>
+        <th>الرقم</th>
+      </tr>
+      {% for subject in sixth_data %}
+      <tr>
+        <td>{{ subject.subject }}</td>
+        <td>{{ subject.points }}</td>
+        <td style="color: {{ subject.note_color }}">{{ subject.note }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>{{ subject.student_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+    <div style="text-align: center; margin-top: 50px">
+      <a href="/stats" class="stats-button">إحصائيات الطالب</a>
+    </div>
+  </body>
+</html>

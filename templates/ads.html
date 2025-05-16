@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📢 إعلانات الأستاذ</title>
+    <link rel="stylesheet" href="static/css/card.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container glass">
+      <!-- Header with toggle button for dark mode -->
+      <header class="animated-header">
+        <h1><i class="fas fa-bullhorn"></i> إعلانات الأستاذ</h1>
+        <div class="actions">
+          <button
+            id="toggleDarkMode"
+            class="icon-btn"
+            title="تبديل الوضع الليلي"
+          >
+            <i class="fas fa-adjust"></i>
+          </button>
+          <button
+            id="addAnnouncementBtn"
+            class="primary-btn"
+            title="إضافة إعلان جديد"
+          >
+            <i class="fas fa-plus"></i> إعلان جديد
+          </button>
+        </div>
+      </header>
+
+      <!-- Modal for adding or editing an announcement -->
+      <div class="modal hidden" id="announcementModal">
+        <div class="modal-content futuristic">
+          <h2><i class="fas fa-edit"></i> إعلان جديد</h2>
+          <form id="announcementForm" method="POST" action="/ads">
+            <label>العنوان:</label>
+            <input
+              type="text"
+              name="title"
+              id="announcementTitle"
+              placeholder="أدخل العنوان هنا"
+              required
+            />
+
+            <label>المحتوى:</label>
+            <textarea
+              name="content"
+              id="announcementContent"
+              placeholder="اكتب تفاصيل الإعلان..."
+              required
+            ></textarea>
+
+            
+            <label>الأولوية:</label>
+            <select name="priority" id="priority" required>
+              <option value="عالي">عالية</option>
+              <option value="متوسط">متوسطة</option>
+              <option value="منخفض">منخفضة</option>
+            </select>
+
+            <div class="modal-actions">
+              <button type="submit" class="add-btn">
+                <i class="fas fa-check"></i> إضافة
+              </button>
+              <button type="button" id="cancelBtn" class="cancel-btn">
+                <i class="fas fa-times"></i> إلغاء
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Section to display announcements -->
+      <section id="announcementsList">
+        <h2><i class="fas fa-bell"></i> الإعلانات الحالية</h2>
+        <ul id="announcementsContainer" class="announcement-cards"></ul>
+      </section>
+
+      <!-- Toast notification for feedback -->
+      <div id="toast" class="toast hidden glass-toast"></div>
+    </div>
+
+    <script src="static/js/card.js"></script>
+  </body>
+</html>

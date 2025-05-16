@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="./images/logo.png" />
+    <link rel="stylesheet" href="static/css/stylesindex.css" />
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <a href="{{ url_for('index1') }}">
+          <span class="material-icons-sharp">home</span>
+          <h3>Home</h3>
+        </a>
+        <a
+          href="{{ url_for('timetable') }}"
+          class="active"
+          onclick="timeTableAll()"
+        >
+          <span class="material-icons-sharp">today</span>
+          <h3>إستعمال الزمن</h3>
+        </a>
+        <a href="{{ url_for('exam') }}">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>الإمتحانات</h3>
+        </a>
+        <a href="{{ url_for('announcement_list') }}">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>الإعلانات</h3>
+        </a>
+
+        <a href="{{ url_for('password') }}">
+          <span class="material-icons-sharp">password</span>
+          <h3>تغيير كلمة المرور</h3>
+        </a>
+      </div>
+      <div id="profile-btn" style="display: none">
+        <span class="material-icons-sharp">person</span>
+      </div>
+      <div class="theme-toggler">
+        <span class="material-icons-sharp active">light_mode</span>
+        <span class="material-icons-sharp">dark_mode</span>
+      </div>
+    </header>
+
+    <main style="margin: 0">
+      <!-- بحث الجدول -->
+      <div class="search-container">
+        <input type="text" id="search" placeholder="Search timetable" />
+      </div>
+
+      <!-- الجدول الأول: الجدول اليومي -->
+      <div class="timetable active" id="timetable">
+        <h3 class="semester-title">الفصل الثاني</h3>
+        <div class="time-navigation">
+          <span id="prevDay">&lt;</span>
+          <h2 id="todayDate">Monday, April 14, 2025</h2>
+          <!-- تم تغيير النص هنا -->
+          <span id="nextDay">&gt;</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>الوقت</th>
+              <th>رقم القاعة</th>
+              <th>المادة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="timetable active" id="timetable1">
+        <h3 class="semester-title">الفصل الرابع</h3>
+        <div class="time-navigation">
+          <span id="prevDay1">&lt;</span>
+          <h2 id="todayDate1"></h2>
+          <span id="nextDay1">&gt;</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>الوقت</th>
+              <th>رقم القاعة</th>
+              <th>المادة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="timetable active" id="timetable2">
+        <h3 class="semester-title">الفصل السادس - مسار البيئة</h3>
+        <div class="time-navigation">
+          <span id="prevDay2">&lt;</span>
+          <h2 id="todayDate2"></h2>
+          <span id="nextDay2">&gt;</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>الوقت</th>
+              <th>رقم القاعة</th>
+              <th>المادة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="timetable active" id="timetable3">
+        <h3 class="semester-title">الفصل السادس - مسار التهيئة</h3>
+        <div class="time-navigation">
+          <span id="prevDay3">&lt;</span>
+          <h2 id="todayDate3"></h2>
+          <span id="nextDay3">&gt;</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>الوقت</th>
+              <th>رقم القاعة</th>
+              <th>المادة</th>
+              <th>الاستاذ</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/timeTable.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>

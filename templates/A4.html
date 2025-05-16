@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تغيير صورة الحساب</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(135deg, #c3ecff, #e6faff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        direction: rtl;
+      }
+
+      .profile-container {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 20px;
+        padding: 30px;
+        width: 350px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        animation: fadeInUp 1s ease;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .profile-image-wrapper {
+        position: relative;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 160px;
+        height: 160px;
+        border: 4px solid #ffffffcc;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .profile-image-wrapper:hover {
+        transform: scale(1.05);
+      }
+
+      .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .camera-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border-radius: 50%;
+        padding: 10px;
+        font-size: 18px;
+        transition: background 0.3s ease;
+      }
+
+      .profile-image-wrapper:hover .camera-icon {
+        background: rgba(0, 0, 0, 0.8);
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .suggested-images {
+        margin-top: 25px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .suggested-images img {
+        width: 55px;
+        height: 55px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, opacity 0.3s;
+        cursor: pointer;
+      }
+
+      .suggested-images img:hover {
+        transform: scale(1.15);
+        opacity: 0.8;
+      }
+
+      .loading {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: bold;
+        color: #007bff;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+      }
+
+      .loading.active {
+        display: block;
+      }
+
+      .more-button {
+        font-size: 22px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: #444;
+        transition: color 0.3s ease;
+      }
+
+      .more-button:hover {
+        color: #000;
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .modal-content {
+        background: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        max-width: 90%;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        animation: zoomIn 0.5s ease;
+      }
+
+      @keyframes zoomIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .modal-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        gap: 15px;
+      }
+
+      .modal-images img {
+        width: 100%;
+        border-radius: 12px;
+        transition: transform 0.3s;
+        cursor: pointer;
+      }
+
+      .modal-images img:hover {
+        transform: scale(1.15);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 20px;
+        left: 30px;
+        font-size: 24px;
+        color: #fff;
+        cursor: pointer;
+      }
+      .info-button {
+        font-size: 18px;
+        color: #fff;
+        background-color: #007bff;
+        padding: 12px 25px;
+        border-radius: 25px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 30px; /* إضافة مسافة بين الزر والمحتوى */
+        width: 100%; /* جعل الزر يمتد بعرض الصفحة */
+      }
+
+      .info-button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05); /* تكبير الزر عند التمرير */
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); /* إضافة تأثير الظل */
+      }
+
+      .info-button i {
+        margin-right: 10px; /* المسافة بين الأيقونة والنص */
+      }
+
+      @keyframes glowing {
+        0% {
+          background-color: #007bff;
+          box-shadow: 0 0 5px #007bff;
+        }
+        50% {
+          background-color: #00b0ff;
+          box-shadow: 0 0 20px #00b0ff;
+        }
+        100% {
+          background-color: #007bff;
+          box-shadow: 0 0 5px #007bff;
+        }
+      }
+
+      .info-button:hover {
+        animation: glowing 1.5s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-container">
+      <div class="loading" id="loading">جاري التحميل...</div>
+
+      <div class="profile-image-wrapper" onclick="openFileInput()">
+        <img
+          id="profile-image"
+          class="profile-image"
+          src="{{ profile_image }}"
+          alt="Profile Image"
+        />
+        <div class="camera-icon"><i class=""></i></div>
+      </div>
+
+      <!-- نموذج رفع الصورة -->
+      <form
+        id="upload-form"
+        action="/upload"
+        method="POST"
+        enctype="multipart/form-data"
+        style="display: none"
+      >
+        <input
+          type="file"
+          id="file-input"
+          name="image"
+          accept="image/*"
+          onchange="submitForm()"
+        />
+      </form>
+
+      <div class="suggested-images">
+        <img
+          src="/static/images/1.png"
+          alt="صورة مقترحة 1"
+          onclick="selectSuggestedImage(this.src)"
+        />
+        <img
+          src="/static/images/2.png"
+          alt="صورة مقترحة 2"
+          onclick="selectSuggestedImage(this.src)"
+        />
+        <img
+          src="/static/images/3.png"
+          alt="صورة مقترحة 3"
+          onclick="selectSuggestedImage(this.src)"
+        />
+      </div>
+      <button class="more-button" onclick="openModal()">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+      <button class="info-button" onclick="goToAccount()">
+        <i class="fas fa-user"></i> المعلومات الشخصية
+      </button>
+
+      <div class="modal" id="suggestedModal">
+        <div class="modal-close" onclick="closeModal()">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="modal-content">
+          <div class="modal-images">
+            <img
+              src="/static/images/4.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/5.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/1.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/1.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/2.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openFileInput() {
+        document.getElementById("file-input").click();
+      }
+
+      function submitForm() {
+        document.getElementById("loading").classList.add("active");
+        document.getElementById("upload-form").submit();
+      }
+
+      function selectSuggestedImage(src) {
+        document.getElementById("loading").classList.add("active");
+
+        // حفظ الصورة المختارة في الجلسة
+        fetch("/save-suggested-image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image_url: src }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              // تغيير صورة الملف الشخصي على الصفحة
+              document.getElementById("profile-image").src = src;
+
+              // إخفاء النافذة المنبثقة
+              document.getElementById("suggestedModal").style.display = "none";
+
+              // إخفاء رسالة "جاري التحميل"
+              document.getElementById("loading").classList.remove("active");
+            }
+          })
+          .catch(() => {
+            // في حال حدوث خطأ، إخفاء رسالة "جاري التحميل"
+            document.getElementById("loading").classList.remove("active");
+          });
+      }
+
+      function openModal() {
+        document.getElementById("suggestedModal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("suggestedModal").style.display = "none";
+      }
+      function goToAccount() {
+        // توجيه المستخدم إلى صفحة الحساب
+        window.location.href = "/account"; // قم بتغيير الرابط إلى صفحة الحساب الخاصة بك
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Website</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #0f172a;
+        --accent: #38bdf8;
+        --bg-dark: #0f172a;
+        --bg-gradient: linear-gradient(to right, #1e3a8a, #1e40af);
+        --text-light: #f8fafc;
+        --glass: rgba(255, 255, 255, 0.05);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        overflow-x: hidden;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 50px;
+        background: rgba(13, 17, 23, 0.9);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: background 0.3s ease;
+      }
+
+      header:hover {
+        background: rgba(13, 17, 23, 1);
+      }
+
+      header h1 {
+        font-weight: 600;
+        font-size: 24px;
+        margin: 0;
+      }
+
+      header nav a {
+        text-decoration: none;
+        color: #58a6ff;
+        margin: 0 15px;
+        transition: color 0.3s, transform 0.3s;
+      }
+
+      header nav a:hover {
+        color: #1f6feb;
+        transform: scale(1.1);
+      }
+
+      section {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      #hero {
+        background: linear-gradient(135deg, #1f2937, #0d1117);
+        position: relative;
+      }
+
+      .hero-text {
+        font-size: 48px;
+        font-weight: 100;
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+
+      .hero-subtext {
+        font-size: 20px;
+        font-weight: 300;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      #projects {
+        padding: 50px 20px;
+        background-color: #1f2937;
+        color: #c9d1d9;
+        text-align: center;
+      }
+
+      #projects h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .project-card {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: left;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .project-card img {
+        max-width: 100%;
+        border-radius: 10px;
+      }
+
+      .project-card h3 {
+        font-size: 24px;
+        margin: 15px 0 10px;
+      }
+
+      .project-card p {
+        font-size: 16px;
+        color: #8b949e;
+      }
+
+      .project-card a {
+        display: inline-block;
+        margin-top: 10px;
+        color: #58a6ff;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .project-card a:hover {
+        color: #1f6feb;
+      }
+
+      #about {
+        padding: 50px 20px;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        text-align: center;
+      }
+
+      #about h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      #about p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin: 10px 0;
+      }
+
+      #contact {
+        padding: 50px 20px;
+        background-color: #1f2937;
+        color: #c9d1d9;
+        text-align: center;
+      }
+
+      #contact h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      #contact form {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      #contact input,
+      #contact textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #30363d;
+        border-radius: 5px;
+        background: #0d1117;
+        color: #c9d1d9;
+      }
+
+      #contact input:focus,
+      #contact textarea:focus {
+        outline: none;
+        border-color: #58a6ff;
+      }
+
+      #contact button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background: #58a6ff;
+        color: #0d1117;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      #contact button:hover {
+        background: #1f6feb;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 60px 40px;
+        background-color: #1e293b;
+      }
+
+      .gallery img {
+        width: 100%;
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+      }
+
+      .gallery img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        opacity: 0.85;
+      }
+      .signUp {
+        padding: 60px 40px;
+        background: var(--primary);
+        color: #c9d1d9;
+        text-align: center;
+        border-radius: 16px;
+        margin: 60px;
+        animation: fadeInUp 2s ease;
+      }
+
+      .signUp h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-decoration: none;
+      }
+
+      .signUp button {
+        background: #c9d1d9;
+        color: var(--primary);
+        padding: 14px 28px;
+        border: none;
+        font-weight: 700;
+        font-size: 16px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      .signUp button:hover {
+        transform: scale(1.1);
+        background-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>My Portfolio</h1>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#signUp">Sign Up</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section id="hero">
+      <div class="hero-text">Welcome to My Portfolio</div>
+      <div class="hero-subtext">Showcasing creativity and skills</div>
+      <canvas id="bgCanvas"></canvas>
+    </section>
+
+    <section class="gallery">
+      <img
+        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
+        alt="Technology"
+      />
+      <img
+        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
+        alt="Technology"
+      />
+      <img
+        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
+        alt="Technology"
+      />
+      <img
+        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
+        alt="Technology"
+      />
+    </section>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        Hello! I'm P N Pavithra, a passionate Web developer. I specialize in
+        Python, HTML, CSS, SQL, and Excel.
+      </p>
+      <p>
+        I love creating innovative solutions and bringing ideas to life through
+        clean, functional, and visually appealing designs.
+      </p>
+      <p>
+        Outside of work, I enjoy exploring new technologies, solving puzzles,
+        and collaborating on creative projects.
+      </p>
+    </section>
+
+    <div id="projects">
+      <h2>Projects</h2>
+      <div class="project-grid">
+        <div class="project-card">
+          <img
+            src="static/images/paragraph.svg"
+            alt="Project 1"
+            width="600"
+            height="300"
+          />
+          <h3>E-commerce Website</h3>
+          <p>
+            This e-commerce platform is a user-friendly web application built
+            using HTML, CSS, and JavaScript for the frontend, with Node.js and
+            Express.js handling the backend. It features dynamic product
+            browsing, search and filtering, a shopping cart system, and user
+            account management. A MySQL (or MongoDB) database stores user,
+            product, and order data, while authentication is secured with hashed
+            passwords. Designed to be responsive and scalable.
+          </p>
+          <a href="ec.html" target="_blank">View Project</a>
+        </div>
+        <div class="project-card">
+          <img
+            src="static/images/paragraph.svg"
+            alt="Project 2"
+            width="600"
+            height="300"
+          />
+          <h3>To-Do List Web Application</h3>
+          <p>
+            This code creates a simple To-Do List web application using HTML,
+            CSS, and JavaScript. The structure is defined in HTML, where a text
+            input field and a button are provided to add tasks. The tasks are
+            displayed as a list of items in an unordered list. Each task has a
+            "Delete" button that allows the user to remove tasks from the list.
+            The design is styled using CSS for a clean, modern look with a
+            centered container, rounded borders, and hover effects for buttons.
+            JavaScript is used to handle the functionality, adding tasks to the
+            list when the button is clicked and removing them when the "Delete"
+            button is pressed.
+          </p>
+          <a href="td.html" target="_blank">View Project</a>
+        </div>
+      </div>
+    </div>
+    <div class="signUp">
+      <h2>Sign Up</h2>
+      <button class="btn" onclick="window.location.href='/signup'">
+        Sign Up
+      </button>
+    </div>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <form
+        action="mailto:your-email@example.com"
+        method="post"
+        enctype="text/plain"
+      >
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea
+          name="message"
+          rows="5"
+          placeholder="Your Message"
+          required
+        ></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script>
+      // GSAP animation for text with enhanced effects
+      gsap
+        .timeline()
+        .to(".hero-text", {
+          opacity: 1,
+          y: 0,
+          duration: 1.5,
+          ease: "power4.out",
+        })
+        .to(".hero-subtext", {
+          opacity: 1,
+          y: 0,
+          duration: 1.5,
+          ease: "power4.out",
+          delay: -1,
+        });
+
+      gsap.from("#about", {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top 80%",
+        },
+      });
+
+      // Three.js animated background with upgraded visuals
+      const canvas = document.querySelector("#bgCanvas");
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      camera.position.z = 5;
+
+      const geometry = new THREE.TorusKnotGeometry(1, 0.4, 100, 16);
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x0077ff,
+        metalness: 0.7,
+        roughness: 0.3,
+      });
+      const torusKnot = new THREE.Mesh(geometry, material);
+      scene.add(torusKnot);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      const pointLight = new THREE.PointLight(0xffffff, 1);
+      pointLight.position.set(5, 5, 5);
+      scene.add(pointLight);
+
+      const pointLightHelper = new THREE.PointLightHelper(pointLight);
+      scene.add(pointLightHelper);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        torusKnot.rotation.x += 0.01;
+        torusKnot.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      window.addEventListener("resize", () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+      });
+    </script>
+  </body>
+</html>

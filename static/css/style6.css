@@ -1,0 +1,51 @@
+/* Styles for layout */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+#controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+#filter-sort {
+  display: flex;
+  gap: 10px;
+}
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+}
+.product-card img {
+  max-width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+#cart {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 300px;
+}
+/* Responsive Design */
+@media (max-width: 600px) {
+  .product-container {
+    flex-direction: column;
+  }
+  .product-card {
+    width: 100%;
+  }
+  #controls {
+    flex-direction: column;
+  }
+  #cart {
+    width: 100%;
+  }
+}

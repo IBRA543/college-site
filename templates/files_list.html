@@ -1,0 +1,26 @@
+<div class="row g-4">
+    {% for file in pdf_files %}
+    <div class="col-md-4">
+        <div class="file-card">
+            <button class="options-btn" data-bs-toggle="dropdown" aria-expanded="false">&#8942;</button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">مشاركة</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ url_for('static', filename='pdfs/' ~ file | urlencode) }}"
+                        download>تنزيل</a>
+                </li>
+                {% if role == 'teacher' %}
+                <li>
+                    <button class="dropdown-item text-danger delete-btn" data-file="{{ file }}">حذف</button>
+                </li>
+                {% endif %}
+            </ul>
+            <img src="{{ url_for('static', filename='images/pdf.png') }}" alt="PDF Icon">
+            <div class="card-body">
+                <h5 class="card-title">{{ file.split('_', 2)[2] }}</h5>
+                <a href="{{ url_for('pdf_viewer', file=quote(file)) }}">عرض</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

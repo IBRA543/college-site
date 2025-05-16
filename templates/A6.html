@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins";
+            background: #000000;
+        }
+
+        nav {
+            position: fixed;
+            z-index: 3;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: rgb(0, 0, 0 / 14%);
+            backdrop-filter: blur(10px);
+        }
+
+        .banner {
+            position: relative;
+        }
+
+        .image {
+            flex-shrink: 0;
+            width: 180vw;
+            height: 200vh;
+            object-fit: cover;
+        }
+
+        .banner>header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            padding: 0 10%;
+        }
+
+        .banner>header img {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .banner h2 {
+            font-size: 60px;
+            color: rgb(255, 255, 255 / 96%);
+        }
+
+        .banner p {
+            font-size: 26px;
+            color: rgb(255, 255, 255 / 60%);
+            padding-right: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+    </nav>
+    <section class="banner">
+        <header>
+            <div data-aos="fade-up">
+                <h2>Daved Schmit</h2>
+                <p>Aspiring senior dev...</p>
+            </div>
+            <img src="static/images/pdf.png" />
+        </header>
+        <img src="static/images/pdf.png" />
+    </section>
+    <script>
+        src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"
+    </script>
+    <script>
+        src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"
+    </script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        const showAnim = gsap
+            .from("nav", {
+                yPercent: -100,
+                paused: true,
+                duration: 0.2,
+            }).progress(1);
+        ScrollTrigger.create({
+            start: "top top",
+            end: "max",
+            onUpdate: (self) => {
+                self.direction === -1
+                    ? showAnim.play()
+                    : showAnim.reverse();
+            },
+        });
+        gsap.utils.toArray("section").forEach(
+            section => {
+                const w = section.querySelector(".image");
+                const [x, xEnd] = [w.scrollWidth * -1, 0];
+                gsap.fromTo(
+                    w,
+                    { x },
+                    {
+                        x: xEnd,
+                        ScrollTrigger: {
+                            trigger: section,
+                            scrub: 1,
+                        },
+                    }
+                );
+            }
+        )
+    </script>
+</body>
+
+</html>

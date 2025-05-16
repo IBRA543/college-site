@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة تحكم 2030</title>
+    <style>
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.1);
+        --glass-border: rgba(255, 255, 255, 0.2);
+        --neon-color: #00ffff;
+        --primary-dark: #0f111a;
+        --btn-hover-color: #00ff99;
+        --active-color: rgba(0, 255, 255, 0.1);
+        --transition-speed: 0.4s;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #0f111a, #1c1e2b);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        overflow-x: hidden;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        backdrop-filter: blur(15px);
+        background: var(--glass-bg);
+        border-left: 1px solid var(--glass-border);
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+        transition: left var(--transition-speed) ease;
+        padding-top: 60px;
+        z-index: 999;
+      }
+
+      .sidebar.show {
+        left: 0;
+      }
+
+      .toggle-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 28px;
+        cursor: pointer;
+        color: var(--neon-color);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px 15px;
+        border-radius: 12px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+      }
+
+      .toggle-btn:hover {
+        transform: rotate(90deg);
+      }
+
+      .menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .menu li {
+        padding: 15px 30px;
+        border-bottom: 1px solid var(--glass-border);
+        cursor: pointer;
+        transition: background var(--transition-speed);
+        position: relative;
+      }
+
+      .menu li:hover {
+        background: var(--active-color);
+      }
+
+      .menu li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .settings-panel {
+        display: none;
+        animation: fadeIn var(--transition-speed) ease forwards;
+        padding: 20px 30px;
+      }
+
+      .settings-panel.active {
+        display: block;
+      }
+
+      .setting-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        backdrop-filter: blur(5px);
+        border: 1px solid var(--glass-border);
+        transition: all var(--transition-speed) ease;
+        box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.2);
+      }
+
+      .setting-item:hover {
+        background: rgba(0, 255, 255, 0.05);
+        transform: scale(1.03);
+      }
+
+      .content {
+        padding: 40px;
+        margin-right: 280px;
+        transition: margin-right var(--transition-speed) ease;
+      }
+
+      .content h1 {
+        font-size: 2.5rem;
+        color: var(--neon-color);
+        margin-bottom: 10px;
+      }
+
+      .content p {
+        color: #ccc;
+        font-size: 1.1rem;
+      }
+
+      .dark-mode {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Dark mode toggle effect */
+      .dark-toggle {
+        display: inline-block;
+        margin-top: 10px;
+        background: #222;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 14px;
+        color: var(--neon-color);
+        cursor: pointer;
+        transition: background var(--transition-speed);
+      }
+
+      .dark-toggle:hover {
+        background: #333;
+      }
+
+      /* Interactive Elements */
+      .menu li::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(0, 255, 255, 0.5),
+          rgba(255, 0, 255, 0.5)
+        );
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease-in-out;
+        z-index: -1;
+      }
+
+      .menu li:hover::before {
+        opacity: 1;
+      }
+
+      /* Hover Effects */
+      .card {
+        position: relative;
+        background: var(--glass-bg);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 8px 20px rgba(0, 255, 255, 0.15);
+        transition: all var(--transition-speed) ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 16px 40px rgba(0, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        padding: 30px;
+        border-radius: 12px;
+        color: #fff;
+        z-index: 1000;
+      }
+
+      .popup.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toggle-btn" onclick="toggleSidebar()">☰</div>
+    <div class="sidebar" id="sidebar">
+      <ul class="menu">
+        <li><a href="#" onclick="showHome()">🏠 الرئيسية</a></li>
+        <li><a href="#" onclick="showProfile()">👤 الملف الشخصي</a></li>
+        <li onclick="toggleSettings()"><a href="#">⚙️ الإعدادات</a></li>
+        <li><a href="#" onclick="showReports()">📊 التقارير</a></li>
+        <li><a href="#" onclick="showHelp()">❓ مساعدة</a></li>
+      </ul>
+
+      <div id="settingsPanel" class="settings-panel">
+        <div class="setting-item">🌐 تغيير اللغة</div>
+        <div class="setting-item dark-toggle" onclick="toggleDark()">
+          🌓 الوضع الليلي
+        </div>
+        <div class="setting-item">📧 إشعارات البريد</div>
+        <div class="setting-item">🔒 حماية الحساب</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1>👋 مرحباً بك في المستقبل!</h1>
+      <p>
+        لوحة تحكم مصممة بأسلوب مستقبلي مستوحى من تصاميم سنة 2030. استمتع بتجربة
+        تفاعلية حديثة وفريدة من نوعها.
+      </p>
+
+      <div id="mainContent">
+        <!-- Placeholder for dynamic content -->
+      </div>
+    </div>
+
+    <div class="popup" id="popup">
+      <h3>📜 المساعدة</h3>
+      <p>هنا تجد تعليمات ودعماً خاصاً لمساعدتك في استخدام اللوحة.</p>
+      <button onclick="closePopup()">إغلاق</button>
+    </div>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("show");
+      }
+
+      function toggleSettings() {
+        const panel = document.getElementById("settingsPanel");
+        panel.classList.toggle("active");
+      }
+
+      function toggleDark() {
+        document.body.classList.toggle("dark-mode");
+        const root = document.documentElement;
+        if (document.body.classList.contains("dark-mode")) {
+          root.style.setProperty("--glass-bg", "rgba(0,0,0,0.2)");
+          root.style.setProperty("--glass-border", "rgba(255,255,255,0.1)");
+          root.style.setProperty("--neon-color", "#00ff99");
+          root.style.setProperty("--primary-dark", "#000000");
+          document.querySelector(".dark-toggle").textContent =
+            "☀️ الوضع الفاتح";
+        } else {
+          root.style.setProperty("--glass-bg", "rgba(255,255,255,0.1)");
+          root.style.setProperty("--glass-border", "rgba(255,255,255,0.2)");
+          root.style.setProperty("--neon-color", "#00ffff");
+          root.style.setProperty("--primary-dark", "#0f111a");
+          document.querySelector(".dark-toggle").textContent =
+            "🌓 الوضع الليلي";
+        }
+      }
+
+      function showHome() {
+        document.getElementById("mainContent").innerHTML =
+          "<h2>🏠 الرئيسية</h2><p>مرحباً بك في صفحة الرئيسية.</p>";
+      }
+
+      function showProfile() {
+        document.getElementById("mainContent").innerHTML =
+          "<h2>👤 الملف الشخصي</h2><p>هنا يمكنك تعديل معلوماتك الشخصية.</p>";
+      }
+
+      function showReports() {
+        document.getElementById("mainContent").innerHTML =
+          "<h2>📊 التقارير</h2><p>عرض التقارير والتحليلات الخاصة بك.</p>";
+      }
+
+      function showHelp() {
+        document.getElementById("popup").classList.add("active");
+      }
+
+      function closePopup() {
+        document.getElementById("popup").classList.remove("active");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>إدخال البيانات</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        direction: rtl;
+        padding: 20px;
+      }
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .input-group {
+        margin-bottom: 15px;
+      }
+      label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>أدخل رقم البطاقة الوطنية وكود مسار</h2>
+      <form id="studentForm">
+        <div class="input-group">
+          <label for="cardNumber">رقم البطاقة الوطنية:</label>
+          <input type="text" id="cardNumber" name="cardNumber" required />
+        </div>
+        <div class="input-group">
+          <label for="misterCode">كود مسار:</label>
+          <input type="text" id="misterCode" name="misterCode" required />
+        </div>
+        <button type="submit">التالي</button>
+      </form>
+      <div id="result" style="margin-top: 20px; font-weight: bold"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("studentForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+
+          fetch("/search", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const resultDiv = document.getElementById("result");
+              if (data.found) {
+                resultDiv.textContent = "اسم الطالب: " + data.name;
+                resultDiv.style.color = "green";
+                // بعد النجاح، يتم التوجيه إلى الصفحة الأخرى
+                setTimeout(function () {
+                  window.location.href = "/saved_students_table"; // توجيه للصفحة المطلوبة
+                }, 1500); // الانتظار لمدة ثانية قبل التوجيه
+              } else {
+                resultDiv.textContent = data.message;
+                resultDiv.style.color = "red";
+              }
+            })
+            .catch((error) => {
+              console.error("حدث خطأ:", error);
+            });
+        });
+    </script>
+  </body>
+</html>

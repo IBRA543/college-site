@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدخال تلقائي</title>
+    <style>
+      /* تنسيق عام للجسم */
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        direction: rtl;
+      }
+
+      /* تنسيق الحاوية الرئيسية */
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* تنسيق العنوان */
+      h1 {
+        text-align: center;
+        color: #4caf50;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+      }
+
+      /* تنسيق الزر */
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1em;
+        width: 100%;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      /* تأثير الزر عند التمرير عليه */
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>إدخال تلقائي</h1>
+
+      <form method="POST" enctype="multipart/form-data">
+        <!-- زر تحميل الأسماء -->
+        <div class="form-group">
+          <label for="pdf_file">تحميل PDF</label>
+          <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" />
+          <button type="submit" name="load_names">تحميل الأسماء</button>
+        </div>
+
+        <!-- زر تحميل الأسماء والنقاط -->
+        <div class="form-group">
+          <button type="submit" name="load_names_and_points">
+            تحميل الأسماء والنقاط
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>قائمة الإعلانات</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="./images/logo.png" />
+    <link rel="stylesheet" href="static/css/stylesindex.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar">
+        <a href="{{ url_for('index1') }}">
+          <span class="material-icons-sharp">home</span>
+          <h3>Home</h3>
+        </a>
+        <a href="{{ url_for('timetable') }}" onclick="timeTableAll()">
+          <span class="material-icons-sharp">today</span>
+          <h3>إستعمال الزمن</h3>
+        </a>
+        <a href="{{ url_for('exam') }}">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>الإمتحانات</h3>
+        </a>
+        <a href="{{ url_for('announcement_list') }}" class="active">
+          <span class="material-icons-sharp">grid_view</span>
+          <h3>الإعلانات</h3>
+        </a>
+        <a href="{{ url_for('password') }}">
+          <span class="material-icons-sharp">password</span>
+          <h3>تغيير كلمة المرور</h3>
+        </a>
+      </div>
+      <div id="profile-btn" style="display: none">
+        <span class="material-icons-sharp">person</span>
+      </div>
+      <div class="theme-toggler">
+        <span class="material-icons-sharp active">light_mode</span>
+        <span class="material-icons-sharp">dark_mode</span>
+      </div>
+    </header>
+    <div class="container">
+      <h2 class="section-title">قائمة الإعلانات</h2>
+
+      <!-- شريط التحميل -->
+      <div id="loading-bar" class="loading-bar" style="display: none"></div>
+
+      <div id="announcements-container">
+        {% if announcements %} {% for announcement in announcements %}
+        <div class="announcement">
+          <h4>{{ announcement["type"] }}</h4>
+          <p>{{ announcement["content"] }}</p>
+
+          <p class="teacher-info">
+            <strong>الأستاذ:</strong> {{ announcement.teacher_name if
+            announcement.teacher_name else 'غير متوفر' }}
+          </p>
+
+          <p class="text-muted">
+            نُشر في: {{ announcement.get("timestamp", "غير متوفر") }}
+          </p>
+        </div>
+        {% endfor %} {% else %}
+        <p class="text-muted">لا توجد إعلانات متاحة حاليًا.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- الزر سيظهر فقط إذا كان المستخدم أستاذ -->
+    {% if session['role'] == 'teacher' %}
+    <a href="{{ url_for('news') }}" class="btn btn-primary">
+      الرجوع إلى إنشاء إعلان
+    </a>
+    {% endif %}
+
+    <!-- تحديث الإعلانات تلقائيًا -->
+    <script>
+      const userRole = "{{ session['role'] }}"; // تحديد الدور في جافا سكربت
+
+      // دالة لجلب الإعلانات
+      function fetchAnnouncements() {
+        fetch("/get_announcements")
+          .then((response) => response.json())
+          .then((data) => {
+            const container = document.getElementById(
+              "announcements-container"
+            );
+            container.innerHTML = ""; // تفريغ الحاوية السابقة
+
+            if (data.length > 0) {
+              data.forEach((announcement) => {
+                const announcementDiv = document.createElement("div");
+                announcementDiv.classList.add("announcement");
+                announcementDiv.innerHTML = `
+                  <h4>${announcement.type}</h4>
+                  <p>${announcement.content}</p>
+                  <p><strong>الأستاذ:</strong> ${
+                    announcement.teacher_name
+                      ? announcement.teacher_name
+                      : "غير متوفر"
+                  }</p>
+                  <p class="text-muted">نُشر في: ${
+                    announcement.timestamp || "غير متوفر"
+                  }</p>
+                `;
+                container.appendChild(announcementDiv);
+              });
+            } else {
+              container.innerHTML =
+                "<p class='text-muted'>لا توجد إعلانات متاحة حاليًا.</p>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching announcements:", error);
+          });
+      }
+
+      // استدعاء الدالة عند تحميل الصفحة
+      window.onload = function () {
+        fetchAnnouncements(); // جلب الإعلانات عند تحميل الصفحة للطلاب فقط
+      };
+    </script>
+  </body>
+</html>

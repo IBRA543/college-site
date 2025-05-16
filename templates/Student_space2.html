@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف الطالب</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #3a6ed4;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3a6ed4;
+            color: white;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>ملف الطالب</h2>
+        <p><strong>الاسم:</strong> {{ student['name'] }}</p>
+        <p><strong>الاسم بالعربية:</strong> {{ student['name_ar'] }}</p>
+        <p><strong>رقم البطاقة الوطنية:</strong> {{ student['id_card'] }}</p>
+        <p><strong>كود المسار:</strong> {{ student['code_m'] }}</p>
+        <p><strong>{% if get_locale() == "ar" %}كود المسار:{% else %}Code Massar{% endif %}</strong> {{
+            student['code_m'] }}</p>
+
+
+        {% for file_name, subjects in student['subjects_by_file'].items() %}
+        {% if found_subjects.get(file_name) and subjects %}
+        <div class="table-container">
+            <h3>المواد من {{ file_name }}</h3>
+            <table>
+                <tr>
+                    <th>المادة</th>
+                    <th>النقطة</th>
+                </tr>
+                {% for subject, points in subjects.items() %}
+                <tr>
+                    <td>{{ subject }}</td>
+                    <td>{{ points if points else "غائب" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,930 @@
+body {
+  margin: 0px;
+  font-family: "Poppins", sans-serif;
+  background-color: rgba(128, 128, 128, 0.055);
+}
+
+p {
+  margin: 0;
+}
+
+.body {
+  overflow-y: auto;
+  width: 100%;
+  flex: 1;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  background-color: white;
+  width: 250px;
+  height: 100vh;
+  overflow: auto;
+  box-shadow: 3px 0px 4px rgba(0, 0, 0, 0.116);
+}
+
+.logo {
+  margin-left: 25px;
+}
+
+.selectors {
+  color: rgba(0, 0, 0, 0.699);
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 220px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+
+  transition: color 0.3s;
+}
+
+.selectors i {
+  width: 20px;
+}
+
+.selectors:not(.activeBar):hover {
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 0.123) 0%,
+    rgba(177, 86, 223, 0.144) 100%
+  );
+  cursor: pointer;
+  color: rgb(41, 41, 41);
+}
+.activeBar {
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(178, 86, 223, 1) 100%
+  );
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s;
+}
+
+.selectors div {
+  font-size: 15px;
+  padding-left: 8px;
+}
+
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 100%;
+}
+.right-section {
+  display: flex;
+  margin-left: 200px;
+}
+.searchBar {
+  font-family: "Poppins", sans-serif;
+  border: none;
+  padding-right: 30px;
+  border-radius: 30px;
+  height: 35px;
+  width: 190px;
+  padding-left: 15px;
+  margin-top: 20px;
+  outline: 0;
+}
+.searchBar::placeholder {
+  font-family: "Poppins", sans-serif;
+}
+
+.searchButton {
+  border: none;
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(178, 86, 223, 1) 100%
+  );
+  height: 43px;
+  width: 50px;
+  border-radius: 25px;
+  margin-top: 16px;
+  margin-left: -50px;
+  margin-right: 30px;
+}
+.searchButton:hover {
+  cursor: pointer;
+}
+
+.searchIcon {
+  height: 16px;
+  margin-top: 3px;
+}
+
+.h2 {
+  padding-left: 40px;
+}
+
+.cardsContainer {
+  display: flex;
+  gap: 20px;
+  width: calc(100% - 60px);
+  margin: 0px 30px;
+}
+
+.cards {
+  flex: 1;
+  align-items: center;
+  margin-top: 20px;
+  height: 170px;
+  min-width: 168px;
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.studentCard {
+  background-color: #9c87fa3b;
+}
+
+.teacherCard {
+  background-color: rgba(250, 135, 154, 0.123);
+}
+.courseCard {
+  background-color: rgba(43, 163, 243, 0.178);
+}
+.examCard {
+  background-color: rgba(236, 145, 41, 0.151);
+}
+
+.Icon {
+  margin-top: 10px;
+  font-size: 22px;
+  z-index: 100;
+}
+
+.textIcon {
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 30px;
+}
+
+.number {
+  margin-top: 7px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.secondRow {
+  display: flex;
+  gap: 20px;
+  margin: 0px 30px;
+}
+.statistics {
+  background-color: white;
+  margin-top: 30px;
+  border-radius: 12px;
+  width: 600px;
+  min-width: 600px;
+}
+
+#chartdiv1,
+#chartdiv2 {
+  height: 200px;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.statistics p {
+  font-size: 20px;
+  font-weight: 600;
+  padding-left: 25px;
+  padding-top: 20px;
+}
+.studentRatio {
+  flex: 1;
+  background-color: white;
+  height: 300px;
+  min-width: 200px;
+  margin-top: 30px;
+  border-radius: 12px;
+}
+.studentRatio p,
+.databaseHeader p,
+.rightBar p {
+  font-size: 18px;
+  font-weight: 600;
+  padding-left: 25px;
+  padding-top: 20px;
+}
+.database {
+  background-color: white;
+  height: 360px;
+  border-radius: 12px;
+  margin-left: 30px;
+  width: calc(100% - 60px);
+  margin-top: 30px;
+  min-width: 500px;
+}
+
+.databaseHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 20px;
+  position: relative;
+}
+
+.databaseHeader button {
+  border: none;
+  background-color: white;
+  color: red;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.line {
+  height: 3px;
+  border-radius: 7px;
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(178, 86, 223, 1) 100%
+  );
+  position: absolute;
+  bottom: 0; /* اجعله في أسفل التبويبات */
+  left: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.table {
+  width: calc(100% - 40px);
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 20%;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  width: 10%;
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  width: 20%;
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+  width: 14%;
+}
+.table th:nth-child(5),
+.table td:nth-child(5) {
+  width: 8%;
+}
+
+.teacherTable th:nth-child(1),
+.teacherTable td:nth-child(1) {
+  width: 10%;
+}
+
+.teacherTable th:nth-child(2),
+.teacherTable td:nth-child(2) {
+  width: 8%;
+}
+
+.teacherTable th:nth-child(3),
+.teacherTable td:nth-child(3) {
+  width: 10%;
+}
+
+.teacherTable th:nth-child(4),
+.teacherTable td:nth-child(4) {
+  width: 10%;
+}
+.teacherTable th:nth-child(5),
+.teacherTable td:nth-child(5) {
+  width: 25%;
+}
+
+.table tr td {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.685);
+  border-bottom: 1px solid #00000015;
+  padding: 13px 0px;
+}
+
+.table th {
+  font-size: 13px;
+  text-align: left;
+  border-bottom: 1px solid #00000015;
+  padding-bottom: 10px;
+}
+
+.table tr {
+  border-bottom: 1px solid #000000;
+}
+
+.rightBar {
+  background-color: white;
+  width: 350px;
+  height: 100vh;
+  overflow: auto;
+  box-shadow: -3px 0px 4px rgba(0, 0, 0, 0.116);
+  transition: all 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  right: -350px;
+  z-index: 9999; /* أعلى طبقة */
+}
+
+.rightBar.visible {
+  right: 0; /* إظهار الإطار عند إضافة الكلاس 'visible' */
+}
+
+.notifications {
+  background: rgba(0, 0, 0, 0.178);
+  border: none;
+  height: 30px;
+  width: 30px;
+  margin-top: 18px;
+  margin-right: 25px;
+  border-radius: 15px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.notifications:hover {
+  background: linear-gradient(
+    95deg,
+    rgb(63, 94, 251) 0%,
+    rgb(177, 86, 223) 100%
+  );
+  cursor: pointer;
+  color: white;
+}
+
+.notifications:not(:hover) {
+  opacity: 0.7;
+  transition: opacity 0.4s ease-in-out;
+}
+
+/* زر الجرس ثابت في الأعلى */
+.notifications {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.178);
+  border: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  z-index: 9999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.notifications:hover {
+  background: linear-gradient(95deg, rgb(63, 94, 251), rgb(177, 86, 223));
+  color: white;
+}
+
+/* قسم نظرة عامة */
+.overview-section {
+  margin: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  animation: fadeIn 0.8s ease;
+}
+
+/* بطاقة نظرة عامة مع مظهر راقي */
+.overview-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+  border-radius: 20px;
+  padding: 35px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 10px 30px rgba(63, 94, 251, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* عنوان جذاب */
+.overview-title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1),
+    rgba(178, 86, 223, 1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* إخفاء القسم */
+.hidden {
+  display: none;
+}
+
+/* إحصائيات بتنسيق راقي */
+.overview-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.stat-item {
+  background: rgba(128, 128, 128, 0.05);
+  border-radius: 12px;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.stat-item:hover {
+  background: rgba(178, 86, 223, 0.12);
+  transform: translateY(-4px);
+}
+
+.stat-label {
+  font-size: 18px;
+  color: #555;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1),
+    rgba(178, 86, 223, 1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* قسم الرسم البياني المصغر */
+.small-chart {
+  margin-top: 40px;
+  width: 100%;
+  height: 180px;
+  opacity: 0;
+  animation: appear 1s forwards;
+}
+
+.search-input {
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 280px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 16px;
+}
+
+th {
+  background-color: #f9fafb;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  background-color: #e0e7ff;
+  color: #4338ca;
+  font-weight: 600;
+}
+
+.status {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.active {
+  color: green;
+}
+
+.status.inactive {
+  color: red;
+}
+
+.status.onleave {
+  color: orange;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  background-color: var(--white);
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background-color: var(--primary);
+  color: white;
+}
+.status {
+  background: none !important;
+}
+.status.active {
+  color: green !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+}
+.status.inactive {
+  color: red !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.status.onleave {
+  color: orange !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.container h2 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1),
+    rgba(178, 86, 223, 1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.input-box {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.input-box input {
+  width: 90%;
+  height: 45px;
+  background: rgba(128, 128, 128, 0.05);
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  padding: 0 15px;
+  transition: border 0.3s;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-box input:focus {
+  border: 1px solid rgba(63, 94, 251, 1);
+}
+
+.btn {
+  width: 80%;
+  height: 45px;
+  background: linear-gradient(
+    95deg,
+    rgba(63, 94, 251, 1),
+    rgba(178, 86, 223, 1)
+  );
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  outline: none;
+  margin: 20px auto 0 auto; /* توسيط بالهوامش */
+  display: block;
+  margin-top: 20px;
+  transition: 0.3s ease-in-out;
+  font-family: "Poppins", sans-serif;
+}
+
+.btn:hover {
+  background: linear-gradient(
+    95deg,
+    rgba(178, 86, 223, 1),
+    rgba(63, 94, 251, 1)
+  );
+  box-shadow: 0 4px 15px rgba(63, 94, 251, 0.3);
+  transform: scale(1.05);
+}
+
+.error-message {
+  display: none;
+  color: red;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  font-family: "Poppins", sans-serif;
+}
+
+#studentTable {
+  background-color: #f8f9fa; /* لون خلفية خفيف */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1200px; /* عرض أقصى للطاولة */
+}
+
+#studentTable h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+#studentInfo {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #e9ecef; /* خلفية فاتحة لعرض معلومات الطالب */
+  border-radius: 8px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* تخصيص تنسيق الجدول داخل #studentTable */
+#studentTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#studentTable th,
+#studentTable td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+#studentTable th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+#studentTable td {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+#studentTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* خلفية خفيفة للصفوف الزوجية */
+}
+
+#studentTable tbody tr:hover {
+  background-color: #e2e6ea; /* تأثير عند التمرير على الصفوف */
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+/* تنسيق القسم */
+#announcements-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.section-title h2 {
+  font-size: 28px;
+  color: #007bff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* تنسيق النموذج */
+#announcement-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#announcement-form .form-group label {
+  font-size: 16px;
+  color: #333;
+}
+
+#announcement-form .form-group select,
+#announcement-form .form-group textarea {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 14px;
+  width: 100%;
+}
+
+#announcement-form .form-group textarea {
+  resize: vertical;
+}
+
+#announcement-form button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#announcement-form button:hover {
+  background-color: #0056b3;
+}
+
+/* زر عرض الإعلانات */
+#show-announcements-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+#show-announcements-btn:hover {
+  background-color: #218838;
+}
+
+#show-announcements-btn i {
+  margin-right: 8px;
+}
+
+/* قائمة الإعلانات */
+#announcement-list {
+  display: none;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#announcement-list h3 {
+  font-size: 24px;
+  color: #17a2b8;
+}
+
+#announcement-list .row {
+  margin-bottom: 20px;
+}
+
+#announcement-list select {
+  font-size: 14px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* تنسيق قائمة الإعلانات */
+#announcements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.announcement-card {
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-card h4 {
+  font-size: 20px;
+  color: #333;
+}
+
+.announcement-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.announcement-card .badge {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* وسائل التصفية والفرز */
+#announcement-list .row label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#announcement-list .row select {
+  font-size: 14px;
+  padding: 8px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* تأثيرات الأنيميشن */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}

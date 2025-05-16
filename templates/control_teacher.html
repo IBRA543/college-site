@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edu Dashboard</title>
+    <link rel="stylesheet" href="static/css/con_teacher.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+
+    <div class="container">
+      <div class="sidebar">
+        <div class="logo">
+          <img src="images/logo.png" alt="" />
+        </div>
+        <div class="selectorsCombined">
+          <div class="selectors default activeBar" id="dashboardButton">
+            <i class="fa-solid fa-table-cells-large dashboardIcon"></i>
+            <div>لوحة التحكم</div>
+          </div>
+          <div class="selectors default" id="overviewButton">
+            <i class="fa-solid fa-gauge"></i>
+            <div>نظرة عامة</div>
+          </div>
+          <div class="selectors default" id="studentButton">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <div>الطلاب</div>
+          </div>
+          <div class="selectors default" id="teacherButton">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <div>الأساتذة</div>
+          </div>
+          <div class="selectors default">
+            <i class="fa-solid fa-note-sticky"></i>
+            <div>الامتحانات</div>
+          </div>
+          <div class="selectors default" id="resultsButton">
+            <i class="fa-solid fa-chart-column"></i>
+            <div>نتائج الطلاب</div>
+          </div>
+          <div class="selectors default" id="announcementsButton">
+            <i class="fa-solid fa-bullhorn"></i>
+            <div>الإعلانات</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="body">
+        <!-- 🟢 قسم لوحة التحكم -->
+        <div id="dashboardSection">
+          <div class="topBar">
+            <h2 class="h2">لوحة التحكم</h2>
+            <div class="right-section">
+              <input class="searchBar" type="text" placeholder="بحث" />
+              <button class="searchButton">
+                <img class="searchIcon" src="images/search.png" alt="" />
+              </button>
+            </div>
+          </div>
+
+          <div class="cardsContainer">
+            <div class="cards studentCard">
+              <div class="hexagon">
+                <div class="Icon">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+              </div>
+              <p class="textIcon">إجمالي الطلاب</p>
+              <p class="number">1220</p>
+            </div>
+            <div class="cards teacherCard">
+              <div class="Icon">
+                <i class="fa-solid fa-chalkboard-user"></i>
+              </div>
+              <p class="textIcon">إجمالي الأساتذة</p>
+              <p class="number">120</p>
+            </div>
+            <div class="cards courseCard">
+              <div class="Icon">
+                <i class="fa-solid fa-book-open"></i>
+              </div>
+              <p class="textIcon">إجمالي المقررات</p>
+              <p class="number">15</p>
+            </div>
+            <div class="cards examCard">
+              <div class="Icon">
+                <i class="fa-solid fa-note-sticky"></i>
+              </div>
+              <p class="textIcon">إجمالي الامتحانات</p>
+              <p class="number">6</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🟡 قسم الإعلانات (يبدأ مخفي) -->
+        <div
+          class="container py-5"
+          id="announcements-section"
+          style="display: none"
+        >
+          <div class="section-title text-center mb-5">
+            <h2 class="fw-bold text-primary" data-translate="important_notes">
+              إدخال إعلان جديد
+            </h2>
+          </div>
+
+          <form
+            action="/submit_announcement"
+            method="POST"
+            id="announcement-form"
+            class="border p-4 rounded shadow-sm bg-light mb-4"
+          >
+            <div class="form-group mb-3">
+              <label for="announcement-type" class="fw-bold mb-2"
+                >نوع الإعلان:</label
+              >
+              <select
+                id="announcement-type"
+                name="announcement-type"
+                class="form-control"
+                required
+              >
+                <option value="urgent">▼ إشعار عاجل</option>
+                <option value="important">إعلان هام من الأستاذ</option>
+                <option value="lecture">إعلان عن محاضرة جديدة</option>
+                <option value="other">إعلان من الأستاذ</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-4">
+              <label for="announcement-content" class="fw-bold mb-2"
+                >محتوى الإعلان:</label
+              >
+              <textarea
+                id="announcement-content"
+                name="announcement-content"
+                class="form-control"
+                rows="6"
+                required
+                placeholder="أدخل محتوى الإعلان هنا..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-bold">
+              التالي
+            </button>
+          </form>
+
+          <button
+            id="show-announcements-btn"
+            class="btn btn-success w-100 mb-4"
+          >
+            <i class="fas fa-eye"></i> عرض الإعلانات
+          </button>
+
+          <div
+            id="announcement-list"
+            class="announcement-list border p-4 rounded shadow-sm bg-white"
+            style="display: none"
+          >
+            <h3 class="mb-4 text-info text-center">الإعلانات السابقة:</h3>
+
+            <div class="row mb-4">
+              <div class="col-md-6 mb-2">
+                <label for="filter-type" class="fw-bold"
+                  >تصفية حسب نوع الإعلان:</label
+                >
+                <select id="filter-type" class="form-control">
+                  <option value="all">الكل</option>
+                  <option value="urgent">إشعار عاجل</option>
+                  <option value="important">إعلان هام من الأستاذ</option>
+                  <option value="lecture">محاضرة جديدة</option>
+                  <option value="other">إعلان من الأستاذ</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-2">
+                <label for="sort-order" class="fw-bold">ترتيب زمني:</label>
+                <select id="sort-order" class="form-control">
+                  <option value="newest">الأحدث أولاً</option>
+                  <option value="oldest">الأقدم أولاً</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="announcements-container" class="d-flex flex-column gap-3">
+              <!-- يتم إدراج الإعلانات هنا -->
+            </div>
+          </div>
+        </div>
+
+        <div id="overviewSection" class="overview-section hidden">
+          <div class="overview-card">
+            <h3 class="overview-title">📊 ملخص الأداء العام</h3>
+            <div class="overview-stats">
+              <div class="stat-item">
+                <span class="stat-label">نسبة النجاح</span>
+                <span class="stat-value">85%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">عدد الطلاب الناجحين</span>
+                <span class="stat-value">1037</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">عدد الطلاب الراسبين</span>
+                <span class="stat-value">183</span>
+              </div>
+            </div>
+            <div id="smallChart" class="small-chart"></div>
+          </div>
+        </div>
+        <div id="studentSection" class="section hidden">
+          <h2>Student Directory <span id="student-count"></span></h2>
+          <input
+            type="text"
+            class="search-input"
+            id="search-box-students"
+            placeholder="Search students..."
+          />
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Department</th>
+                  <th>Major</th>
+                  <th>Status</th>
+                  <th>Enrollment Date</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody id="studentTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="teacherSection" class="teacher-section hidden">
+          <!-- هذا هو الجزء الذي سيتم إظهاره عند الضغط على زر الأساتذة -->
+          <h2>Employee Directory <span id="total-count"></span></h2>
+          <input
+            type="text"
+            class="search-input"
+            id="search-box"
+            placeholder="Search employees..."
+          />
+          <table>
+            <thead>
+              <tr>
+                <th>اسم</th>
+                <th>التخصص</th>
+                <th>الفصول</th>
+                <th>Date Of Hire</th>
+                <th>Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="employee-body"></tbody>
+          </table>
+          <div class="pagination" id="pagination"></div>
+        </div>
+
+        <div id="resultsSection" class="results-section hidden">
+          <h2>إدخال بيانات الطالب</h2>
+          <form id="dataForm">
+            <div class="input-box">
+              <input
+                type="text"
+                name="id_card"
+                id="id_card"
+                placeholder="CNE (مثال: ZT2261)"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <input
+                type="text"
+                name="major"
+                id="major"
+                placeholder="مسار (مثال: A123456789)"
+                required
+              />
+            </div>
+            <button type="submit" class="btn">تأكيد</button>
+          </form>
+
+          <p class="error-message hidden" id="error-message">
+            ❌ المعلومات غير صحيحة
+          </p>
+
+          <div id="studentTable" class="hidden">
+            <h2>نتائج الطالب</h2>
+            <div id="studentInfo" class="student-info">
+              <!-- سيتم عرض اسم الطالب والبريد هنا -->
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>رقم الطالب</th>
+                  <th>المستوى</th>
+                  <th>المادة</th>
+                  <th>المعدل</th>
+                  <th>الملاحظات</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <!-- الصفوف ستضاف هنا -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="secondRow">
+          <div class="statistics">
+            <p>إحصائيات</p>
+            <div id="chartdiv1"></div>
+          </div>
+          <div class="studentRatio">
+            <p>نسبة الطلاب</p>
+            <div id="chartdiv2"></div>
+          </div>
+        </div>
+        <div class="database">
+          <div class="databaseHeader">
+            <p>أبرز من خلد بصمته</p>
+            <div class="tabs">
+              <button id="studentTab" class="default active">الدكتور</button>
+              <div class="line"></div>
+            </div>
+          </div>
+
+          <!-- جدول الطلاب -->
+          <table id="studentTable1" class="table">
+            <thead>
+              <tr>
+                <th>اسم الشخصي</th>
+                <th>النتيجة</th>
+                <th>الفترة</th>
+                <th>التقدير</th>
+                <th>أهم إنجازات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>الطالب 1</td>
+                <td>80/100</td>
+                <td>12/10/22 - 10:00 م</td>
+                <td>ممتاز</td>
+                <td class="passDesign">ناجح</td>
+              </tr>
+              <tr>
+                <td>الطالب 2</td>
+                <td>70/100</td>
+                <td>12/08/22 - 09:00 م</td>
+                <td>متوسط</td>
+                <td class="passDesign">ناجح</td>
+              </tr>
+              <tr>
+                <td>الطالب 3</td>
+                <td>30/100</td>
+                <td>12/10/22 - 12:45 م</td>
+                <td>ضعيف</td>
+                <td class="failDesign">راسب</td>
+              </tr>
+              <tr>
+                <td>الطالب 4</td>
+                <td>80/100</td>
+                <td>23/10/22 - 10:00 م</td>
+                <td>ممتاز</td>
+                <td class="passDesign">ناجح</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="rightBar">
+        <div class="rightBarHeader">
+          <p>لوحة الإعلانات</p>
+        </div>
+        <div id="notificationWindow" class="notificationWindow">
+          <!-- محتوى الإعلانات هنا -->
+        </div>
+      </div>
+
+      <button class="notifications" onclick="toggleRightBar()">
+        <div><i class="fa-solid fa-bell"></i></div>
+      </button>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dataForm = document.getElementById("dataForm");
+        const idCardInput = document.getElementById("id_card");
+        const majorInput = document.getElementById("major");
+        const errorMessage = document.getElementById("error-message");
+        const studentTable = document.getElementById("studentTable");
+        const tableBody = document.getElementById("tableBody");
+        const studentInfo = document.getElementById("studentInfo");
+
+        const submitButton = document.querySelector("#dataForm button");
+        submitButton.addEventListener("click", async function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const id_card = idCardInput.value.trim();
+          const major = majorInput.value.trim();
+
+          // سجل البيانات للتأكد من إرسالها بشكل صحيح
+          console.log("ID Card:", id_card);
+          console.log("Major:", major);
+
+          if (!id_card || !major) {
+            errorMessage.textContent = "❌ الرجاء ملء جميع الحقول.";
+            errorMessage.classList.remove("hidden");
+            studentTable.classList.add("hidden");
+            return;
+          }
+
+          try {
+            console.log("Sending request to server...");
+            const response = await fetch("/Student_space", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json", // تحديد نوع المحتوى كـ JSON
+              },
+              body: JSON.stringify({ id_card, major }), // إرسال البيانات بتنسيق JSON
+            });
+
+            const data = await response.json();
+            console.log("Response data:", data); // سجل الاستجابة لفحص النتيجة
+
+            tableBody.innerHTML = ""; // نبدأ بتفريغ الجدول
+            studentInfo.innerHTML = ""; // نبدأ بتفريغ معلومات الطالب
+
+            if (data.success && data.students.length > 0) {
+              errorMessage.classList.add("hidden");
+              studentTable.classList.remove("hidden");
+
+              // إضافة معلومات الطالب
+              const student = data.students[0]; // اعتبار أول طالب فقط
+              studentInfo.innerHTML = `
+                  <p><strong> Name:</strong> ${student.first_name} ${student.last_name}</p>
+                  <p><strong>CNE:</strong> ${student.id_card}</p>
+                `;
+
+              // إضافة بيانات الطلاب في الجدول
+              data.students.forEach((student) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                      <td>${student.student_number}</td>
+                      <td>${student.level}</td>
+                      <td>${student.subject}</td>
+                      <td>${student.average}</td>
+                      <td>${student.notes}</td>
+                    `;
+                tableBody.appendChild(row);
+              });
+
+              // تأثير بسيط
+              studentTable.style.opacity = 0;
+              setTimeout(() => {
+                studentTable.style.transition = "opacity 0.5s ease";
+                studentTable.style.opacity = 1;
+              }, 50);
+            } else {
+              studentTable.classList.add("hidden");
+              errorMessage.textContent = "❌ لا توجد نتائج مطابقة.";
+              errorMessage.classList.remove("hidden");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            errorMessage.textContent = "❌ حدث خطأ أثناء الاتصال بالخادم.";
+            errorMessage.classList.remove("hidden");
+            studentTable.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+  </body>
+
+  <script src="static/js/scr_teacher.js"></script>
+  <script src="static/js/con_teacher.js"></script>
+</html>

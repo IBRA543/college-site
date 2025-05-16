@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحة الأستاذ</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}"
+    />
+
+    <link rel="stylesheet" href="static/css/tea_dashboard.css" />
+  </head>
+
+  <body data-page-group="group1">
+    <div class="header dashboard-header">
+      <img
+        id="profile-image-header"
+        src="{{ profile_image }}"
+        alt="Profile Image"
+        style="width: 50px; height: 50px; border-radius: 50%; cursor: pointer"
+        onclick="toggleProfileMenu(event)"
+      />
+      <h1><i class="fas fa-chalkboard-teacher"></i> لوحة تحكم الأستاذ</h1>
+      <button id="menu-btn" class="btn">☰</button>
+    </div>
+
+    <section class="main-section" data-email="{{ email }}">
+      <div class="buttons-container">
+        <a href="#" id="uploadButton" class="btn"
+          ><i class="fas fa-upload"></i> مشاركة الدرس</a
+        >
+        <a href="{{ url_for('news') }}" class="btn"
+          ><i class="fas fa-bullhorn"></i> الإعلانات</a
+        >
+        <a href="{{ url_for('student') }}" class="btn"
+          ><i class="fas fa-chart-bar"></i>إدخال النقط</a
+        >
+        <a href="#" id="viewFilesButton" class="btn"
+          ><i class="fas fa-folder-open"></i>الملفات المرفوعة</a
+        >
+        <a href="{{ url_for('control_teacher') }}" class="btn"
+          ><i class="fas fa-user"></i>لوحة التحكم</a
+        >
+      </div>
+    </section>
+
+    <div class="profile-container" id="profile-container">
+      <div class="loading" id="loading">جاري التحميل...</div>
+
+      <div class="profile-image-wrapper" onclick="handleProfileImageClick(event)">
+        <img
+          id="profile-image"
+          class="profile-image"
+          src="{{ profile_image }}"
+          alt="Profile Image"
+        />
+        <div class="camera-icon"><i class=""></i></div>
+      </div>
+
+      <!-- نموذج رفع الصورة -->
+
+      <form
+        id="upload-form"
+        method="POST"
+        enctype="multipart/form-data"
+        style="display: none"
+        onsubmit="event.preventDefault();"
+      >
+        <input type="file" id="file-input" name="image" accept="image/*" />
+      </form>
+
+      <div class="suggested-images">
+        <img
+          src="/static/images/1.png"
+          alt="صورة مقترحة 1"
+          onclick="selectSuggestedImage(this.src)"
+        />
+        <img
+          src="/static/images/2.png"
+          alt="صورة مقترحة 2"
+          onclick="selectSuggestedImage(this.src)"
+        />
+        <img
+          src="/static/images/3.png"
+          alt="صورة مقترحة 3"
+          onclick="selectSuggestedImage(this.src)"
+        />
+      </div>
+      <button class="more-button" onclick="openModal()">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+      <button class="info-button" onclick="goToAccount()">
+        <i class="fas fa-user"></i> المعلومات الشخصية
+      </button>
+
+    <div id="fileUploadModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h3>تحميل الملفات</h3>
+        <div id="confirmationMessage" class="confirmation-message">
+          <p>لقد تم إضافة الملف إلى فضاء الطالب!</p>
+        </div>
+        <form id="uploadForm" enctype="multipart/form-data">
+          <label for="subject"> </label>
+          <select id="subjectSelect" class="form-control">
+            <option value="" disabled selected>
+              أنقر لاختيار المادة الخاصة بك
+            </option>
+            {% for subject in available_subjects %}
+            <option value="{{ subject }}">{{ subject }}</option>
+            {% endfor %}
+          </select>
+
+          <input
+            type="text"
+            name="subject"
+            id="subjectInput"
+            class="form-control mt-2"
+            placeholder="المادة المختارة ستظهر هنا"
+            required
+          />
+
+          <input
+            type="text"
+            name="filename"
+            id="filenameInput"
+            class="form-control"
+            placeholder="أدخل عنوان الملف"
+            required
+          />
+          <input
+            type="file"
+            name="file"
+            id="fileInput"
+            class="form-control"
+            required
+          />
+          <button type="submit" class="btn btn-success mt-3">
+            تحميل الملف
+          </button>
+        </form>
+        <button class="btn btn-secondary mt-3" id="closeModalButton">
+          إغلاق
+        </button>
+      </div>
+    </div>
+
+    <div id="fileModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h3 style="text-align: center; margin-bottom: 20px">📁 ملفات المادة</h3>
+        <div
+          id="fileList"
+          class="d-flex flex-wrap justify-content-center"
+        ></div>
+        <div style="text-align: center">
+          <button
+            class="btn"
+            onclick="document.getElementById('fileModal').style.display='none'"
+          >
+            إغلاق
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="subjectModal" class="modal">
+      <div class="modal-content">
+        <h3>📂 اختر المجلد</h3>
+        <div id="subjectList"></div>
+        <!-- تم إضافة هذا العنصر -->
+        <button
+          class="btn btn-secondary mt-3"
+          onclick="document.getElementById('subjectModal').style.display='none'"
+        >
+          إغلاق
+        </button>
+      </div>
+    </div>
+
+    <!-- التعديلات المضافة القائمة -->
+
+    <div id="sidebar" class="sidebar">
+      <button id="close-btn" class="close-btn">&times;</button>
+      <a href="#" id="settings-btn" class="menu-item"
+        ><i class="fas fa-cog"></i> الإعدادات</a
+      >
+      <a href="#" id="about-btn" class="menu-item"
+        ><i class="fas fa-info-circle"></i> حول</a
+      >
+      <a href="#" id="report-issue-btn" class="menu-item"
+        ><i class="fas fa-exclamation-circle"></i> الإبلاغ عن مشكلة</a
+      >
+    </div>
+
+    <div id="settings-menu" class="sub-menu">
+      <button id="back-btn" class="close-btn">&larr;</button>
+      <a href="#" id="background-btn" class="menu-item"
+        ><i class="fas fa-image"></i> الخلفية</a
+      >
+      <a href="#" id="language-btn" class="menu-item"
+        ><i class="fas fa-language"></i> اللغة</a
+      >
+      <a href="#" id="font-size-btn" class="menu-item"
+        ><i class="fas fa-text-height"></i> حجم الخط</a
+      >
+      <a href="#" id="font-style-btn" class="menu-item"
+        ><i class="fas fa-font"></i> تنسيق الخط</a
+      >
+      <a href="#" id="font-style-btns" class="menu-item"
+        ><i class="fas fa-font"></i> إعادة التعيين
+      </a>
+    </div>
+
+    <div id="background-settings" class="background-settings">
+      <button class="close-popup" id="close-background-popup">&times;</button>
+      <h3>الخلفيات الرئيسية</h3>
+      <button class="color-btn white" onclick="changeMainBackground('white')">
+        أبيض
+      </button>
+      <button class="color-btn black" onclick="changeMainBackground('black')">
+        أسود
+      </button>
+
+      <h3>الخلفيات الثانوية</h3>
+      <button
+        class="color-btn blue"
+        onclick="changeSecondaryBackground('lightblue')"
+      >
+        أزرق مفتوح
+      </button>
+      <button
+        class="color-btn green"
+        onclick="changeSecondaryBackground('lightgreen')"
+      >
+        أخضر مفتوح
+      </button>
+      <button
+        class="color-btn pink"
+        onclick="changeSecondaryBackground('rgb(255, 39, 112)')"
+      >
+        وردي
+      </button>
+    </div>
+
+    <div id="language-settings" class="language-settings">
+      <h3 data-translate="Select language">اختر اللغة</h3>
+      <button class="close-popup" id="close-language-popup">&times;</button>
+      <button
+        class="lang-btn"
+        onclick="changeLanguage('ar')"
+        data-translate="arabic"
+      >
+        العربية
+      </button>
+      <button
+        class="lang-btn"
+        onclick="changeLanguage('en')"
+        data-translate="english"
+      >
+        English
+      </button>
+      <button
+        class="lang-btn"
+        onclick="changeLanguage('fr')"
+        data-translate="french"
+      >
+        Français
+      </button>
+    </div>
+
+    <!-- قائمة الإعدادات الخاصة بحجم الخط -->
+    <div id="font-size-settings" class="background-settings">
+      <h3>حجم الخط</h3>
+      <button class="close-popup" id="close-size-popup">&times;</button>
+      <button class="color-btn" onclick="changeFontSize('small')">صغير</button>
+      <button class="color-btn" onclick="changeFontSize('medium')">
+        متوسط
+      </button>
+      <button class="color-btn" onclick="changeFontSize('large')">كبير</button>
+    </div>
+
+    <!-- قائمة الإعدادات الخاصة بتنسيق الخط -->
+    <div id="font-style-settings" class="background-settings">
+      <h3>تنسيق الخط</h3>
+      <button class="close-popup" id="close-style-popup">&times;</button>
+      <button class="color-btn" onclick="changeFontStyle('serif')">
+        خط سيريف
+      </button>
+      <button class="color-btn" onclick="changeFontStyle('sans-serif')">
+        خط سانس سيريف
+      </button>
+      <button class="color-btn" onclick="changeFontStyle('monospace')">
+        خط مونو
+      </button>
+    </div>
+
+    <!-- نافذة "حول" -->
+    <div id="about-popup" class="popup">
+      <div class="popup-content">
+        <button class="close-popup" id="close-about-popup">&times;</button>
+        <h3>حول الموقع</h3>
+        <p>موقع إلكتروني يقدم خدمات تعليمية وأكاديمية لطلاب الكلية.</p>
+      </div>
+    </div>
+
+    <!-- نافذة "الإبلاغ عن مشكلة" -->
+    <div id="report-popup" class="popup">
+      <div class="popup-content">
+        <button class="close-popup" id="close-report-popup">&times;</button>
+        <h3>الإبلاغ عن مشكلة</h3>
+        <textarea placeholder="اكتب مشكلتك هنا..."></textarea>
+        <button id="send-issue-btn">إرسال</button>
+      </div>
+    </div>
+
+    <!-- نافذة منبثقة لوسائل التواصل الاجتماعي -->
+    <div id="contact-popup" class="contact-popup">
+      <div class="popup-content">
+        <button class="close-popup" id="close-contact-popup">&times;</button>
+        <h3>للتواصل معنا</h3>
+        <a href="https://wa.me/1234567890" class="contact-item" target="_blank"
+          ><i class="fab fa-whatsapp"></i> WhatsApp</a
+        >
+        <a href="mailto:email@example.com" class="contact-item" target="_blank"
+          ><i class="fas fa-envelope"></i> البريد الإلكتروني</a
+        >
+        <a href="https://t.me/username" class="contact-item" target="_blank"
+          ><i class="fab fa-telegram-plane"></i> Telegram</a
+        >
+        <a
+          href="https://www.instagram.com/username"
+          class="contact-item"
+          target="_blank"
+          ><i class="fab fa-instagram"></i> Instagram</a
+        >
+        <a href="fax:+123456789" class="contact-item" target="_blank"
+          ><i class="fas fa-fax"></i> Fax</a
+        >
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        &copy; 2025 كلية الجغرافيا. جميع الحقوق محفوظة.
+        <a href="#">الشروط والأحكام</a>
+      </p>
+    </footer>
+
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("file-input");
+    const uploadForm = document.getElementById("upload-form");
+    const profileImage = document.getElementById("profile-image");
+    const profileImageHeader = document.getElementById("profile-image-header");
+    const loading = document.getElementById("loading");
+    const modal = document.getElementById("suggestedModal");
+
+    // إخفاء النافذة عند بدء الصفحة
+    if (modal) modal.style.display = "none";
+
+    function fadeInImage(imgElement, newSrc) {
+      imgElement.style.opacity = 0;
+      setTimeout(() => {
+        imgElement.src = newSrc;
+        imgElement.onload = () => {
+          imgElement.style.opacity = 1;
+        };
+      }, 100);
+    }
+
+    if (fileInput) {
+      fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+          loading.classList.add("active");
+          const formData = new FormData(uploadForm);
+
+          fetch("/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error("Upload failed");
+              return response.json();
+            })
+            .then((data) => {
+              const newSrc = data.image_url + "?t=" + new Date().getTime();
+              fadeInImage(profileImage, newSrc);
+              fadeInImage(profileImageHeader, newSrc);
+              loading.classList.remove("active");
+            })
+            .catch((error) => {
+              console.error("Upload Error:", error);
+              loading.classList.remove("active");
+            });
+        }
+      });
+    }
+
+    // ✅ النسخة الصحيحة لاختيار صورة مقترحة
+    window.selectSuggestedImage = function (src) {
+      loading.classList.add("active");
+
+      fetch("/save-suggested-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image_url: src }),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to save image.");
+          const newSrc = src + "?t=" + new Date().getTime();
+          fadeInImage(profileImage, newSrc);
+          fadeInImage(profileImageHeader, newSrc);
+          loading.classList.remove("active");
+          if (modal) modal.style.display = "none";
+        })
+        .catch((err) => {
+          console.error("Error:", err);
+          loading.classList.remove("active");
+        });
+    };
+
+    window.openFileInput = function () {
+      fileInput.click();
+    };
+
+    window.openModal = function () {
+      if (modal) modal.style.display = "flex";
+    };
+
+    window.closeModal = function () {
+      if (modal) modal.style.display = "none";
+    };
+
+    window.goToAccount = function () {
+      window.location.href = "/account";
+    };
+  });
+
+  function toggleProfileMenu() {
+    const menu = document.getElementById("profile-container");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  window.addEventListener("click", function (e) {
+    const menu = document.getElementById("profile-container");
+    const icon = document.getElementById("profile-image-header");
+
+    if (!menu.contains(e.target) && !icon.contains(e.target)) {
+      menu.style.display = "none";
+    }
+  });
+
+  function handleProfileImageClick(event) {
+    event.stopPropagation();
+    openFileInput();
+  }
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+      // تمرير قائمة المواد من جافا سكربت إلى HTML
+      const availableSubjects = {{ available_subjects | tojson }};
+    </script>
+
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              document
+                .getElementById("viewFilesButton")
+                .addEventListener("click", function () {
+                  console.log("✅ تم الضغط على زر عرض الملفات");
+                  const teacherEmail =
+                    document.querySelector(".main-section").dataset.email;
+                  fetchFolders(teacherEmail, true);
+                });
+
+              document
+                .getElementById("uploadButton")
+                .addEventListener("click", function (e) {
+                  e.preventDefault(); // لمنع الانتقال للرابط #
+                  document.getElementById("fileUploadModal").style.display = "block";
+                });
+
+              // لإغلاق نافذة مشاركة الدرس
+              document
+                .getElementById("closeModalButton")
+                .addEventListener("click", function () {
+                  document.getElementById("fileUploadModal").style.display = "none";
+                });
+            });
+
+            // جلب قائمة المواد المتاحة للأستاذ عند تحميل الصفحة
+            function fetchFolders(teacherEmail, showModal = true) {
+              fetch(
+                `/retrieve_files?teacher_email=${encodeURIComponent(teacherEmail)}`
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  if (data.success && data.type === "folders_and_files") {
+                    let subjectList =
+                      "<div class='d-flex flex-wrap justify-content-center'>";
+                    data.items.forEach((item) => {
+                      if (item.type === "folder") {
+                        subjectList += `
+                    <div class="folder-item" onclick="fetchFiles('${teacherEmail}', '${item.name}')">
+                      <div class="file-icon folder"><i class="fas fa-folder"></i></div>
+                      <div class="file-name">${item.name}</div>
+                    </div>
+                  `;
+                      }
+                    });
+                    subjectList += "</div>";
+                    document.getElementById("subjectList").innerHTML = subjectList;
+
+                    if (showModal) {
+                      document.getElementById("subjectModal").style.display = "block";
+                    }
+                  } else {
+                    alert(`❌ ${data.message}`);
+                  }
+                })
+                .catch((error) => console.error("❌ فشل في جلب البيانات:", error));
+            }
+
+            // جلب المواد الخاصة بالأستاذ
+            function fetchFiles(teacherEmail, folderName) {
+              // ✅ عند الضغط على مجلد نخفي نافذة المجلدات
+              document.getElementById("subjectModal").style.display = "none";
+
+              fetch(
+                `/retrieve_files?teacher_email=${encodeURIComponent(
+                  teacherEmail
+                )}&subject=${encodeURIComponent(folderName)}`
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log(data);
+                  if (data.success && data.type === "files") {
+                    let fileList =
+                      "<h3>📄 الملفات الموجودة داخل المجلد</h3><div class='d-flex flex-wrap justify-content-center'>";
+                    data.items.forEach((file) => {
+                      fileList += `
+                  <div class="file-item">
+                    <button class="options-button" onclick="toggleOptionsMenu(this)">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="options-menu">
+                      <button onclick="deleteFile('${teacherEmail}', '${folderName}', '${file}', this)">🗑️ حذف</button>
+                    </div>
+                    <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                    <div class="file-name">${file}</div>
+                    <div class="file-actions">
+                      <button onclick="viewFile('${teacherEmail}', '${folderName}', '${file}')"><i class="fas fa-eye"></i></button>
+                    </div>
+                  </div>
+                `;
+                    });
+                    fileList += "</div>";
+                    document.getElementById("fileList").innerHTML = fileList;
+                    document.getElementById("fileModal").style.display = "block";
+                  } else {
+                    alert(`❌ ${data.message}`);
+                  }
+                })
+                .catch((error) => console.error("❌ فشل في جلب الملفات:", error));
+            }
+
+            function deleteFile(teacherEmail, folderName, fileName, buttonElement) {
+              console.log(`إرسال طلب حذف الملف: ${fileName}`);
+              if (confirm(`❓ هل أنت متأكد أنك تريد حذف الملف "${fileName}"؟`)) {
+                fetch("/delete_files", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    teacher_email: teacherEmail,
+                    subject: folderName,
+                    file_name: fileName,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log(data); // طباعة الرد من السيرفر
+                    if (data.success) {
+                      alert(`✅ ${data.message}`);
+                      const fileItem = buttonElement.closest(".file-item");
+                      if (fileItem) fileItem.remove();
+                    } else {
+                      alert(`❌ ${data.message}`);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("❌ فشل في حذف الملف:", error);
+                    alert("❌ حدث خطأ أثناء حذف الملف.");
+                  });
+              }
+            }
+
+            document.getElementById("uploadForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const fileInput = document.getElementById("fileInput");
+        const subjectInput = document.getElementById("subjectInput");
+        const filenameInput = document.getElementById("filenameInput");
+
+        if (!fileInput.files.length) {
+          alert("❌ يرجى اختيار ملف للرفع.");
+          return;
+        }
+
+        const availableSubjects = {{ available_subjects | tojson }};
+
+        // وعند التحقق من المادة:
+        if (
+          !subjectInput.value.trim() ||
+          !availableSubjects.includes(subjectInput.value.trim())
+        ) {
+          alert(
+            "❌ يرجى إدخال مادة صحيحة من قائمة المواد المتاحة: " +
+              availableSubjects.join(", ")
+          );
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+        formData.append("subject", subjectInput.value.trim());
+        formData.append("filename", filenameInput.value.trim());
+
+        fetch("/upload_file", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              document.getElementById("confirmationMessage").style.display =
+                "block";
+
+              // تفريغ الحقول بعد الرفع الناجح
+              subjectInput.value = "";
+              filenameInput.value = "";
+              fileInput.value = "";
+
+              setTimeout(function () {
+                document.getElementById("confirmationMessage").style.display =
+                  "none";
+                document.getElementById("fileUploadModal").style.display =
+                  "none";
+              }, 3000);
+            } else {
+              alert(`❌ ${data.message}`);
+            }
+          })
+          .catch((error) => {
+            console.error("❌ خطأ أثناء رفع الملف:", error);
+            alert("❌ حدث خطأ أثناء رفع الملف.");
+          });
+      });
+
+      // عندما يتم فتح النافذة، نملأ حقل المادة تلقائيًا بأول مادة في القائمة
+    </script>
+
+    <script>
+      document
+        .getElementById("menu-btn")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.add("active");
+        });
+
+      document
+        .getElementById("close-btn")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.remove("active");
+        });
+
+      document
+        .getElementById("settings-btn")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.remove("active");
+          document.getElementById("settings-menu").classList.add("active");
+        });
+
+      document
+        .getElementById("back-btn")
+        .addEventListener("click", function () {
+          document.getElementById("settings-menu").classList.remove("active");
+          document.getElementById("sidebar").classList.add("active");
+        });
+
+      document
+        .getElementById("background-btn")
+        .addEventListener("click", function () {
+          document
+            .getElementById("background-settings")
+            .classList.add("active");
+          document.getElementById("settings-menu").classList.remove("active");
+        });
+      document
+        .getElementById("close-background-popup")
+        .addEventListener("click", function () {
+          document
+            .getElementById("background-settings")
+            .classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+      document
+        .getElementById("language-btn")
+        .addEventListener("click", function () {
+          document.getElementById("language-settings").classList.add("active");
+          document.getElementById("settings-menu").classList.remove("active");
+        });
+      document
+        .getElementById("close-language-popup")
+        .addEventListener("click", function () {
+          document
+            .getElementById("language-settings")
+            .classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+      function changeMainBackground(color) {
+        document.body.style.backgroundColor = color;
+      }
+
+      function changeSecondaryBackground(newColor) {
+        let secondaryElements = document.querySelectorAll(".secondary");
+        secondaryElements.forEach((element) => {
+          let currentColor = window.getComputedStyle(element).backgroundColor;
+
+          // قائمة الألوان التي سيتم استبدالها باللون الجديد
+          let colorsToReplace = [
+            "rgb(255, 39, 112)", // وردي ()
+            "rgb(173, 216, 230)", // أزرق مفتوح (lightblue)
+            "rgb(144, 238, 144)",
+          ]; // أخضر مفتوح (lightgreen)
+
+          if (colorsToReplace.includes(currentColor)) {
+            element.style.backgroundColor = newColor;
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
+        let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
+
+        // ضبط اللغة عند تحميل الصفحة
+        fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() =>
+          loadTranslations(savedLang)
+        );
+
+        function loadTranslations(lang) {
+          fetch(`/get_translations/${lang}`)
+            .then((response) => response.json())
+            .then((data) => updateTranslations(data.translations));
+        }
+
+        window.changeLanguage = function (lang) {
+          localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
+
+          fetch(`/change_language/${lang}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                updateTranslations(data.translations);
+              }
+            });
+
+          // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
+          fetch(`/set_language/${lang}`, { method: "POST" });
+
+          // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
+          localStorage.setItem(
+            "language_update",
+            JSON.stringify({ group: pageGroup, lang: lang })
+          );
+        };
+
+        function updateTranslations(translations) {
+          document.querySelectorAll("[data-translate]").forEach((element) => {
+            let key = element.getAttribute("data-translate");
+            if (translations[key]) {
+              element.textContent = translations[key];
+            }
+          });
+        }
+
+        // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
+        window.addEventListener("storage", function (event) {
+          if (event.key === "language_update") {
+            let data = JSON.parse(event.newValue);
+            if (data.group === pageGroup) {
+              loadTranslations(data.lang);
+            }
+          }
+        });
+      });
+
+      document
+        .getElementById("font-size-btn")
+        .addEventListener("click", function () {
+          document.getElementById("font-size-settings").classList.add("active");
+          document.getElementById("settings-menu").classList.remove("active");
+        });
+      document
+        .getElementById("close-size-popup")
+        .addEventListener("click", function () {
+          document
+            .getElementById("font-size-settings")
+            .classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+      document
+        .getElementById("font-style-btn")
+        .addEventListener("click", function () {
+          document
+            .getElementById("font-style-settings")
+            .classList.add("active");
+          document.getElementById("settings-menu").classList.remove("active");
+        });
+      document
+        .getElementById("close-style-popup")
+        .addEventListener("click", function () {
+          document
+            .getElementById("font-style-settings")
+            .classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+      // تغيير حجم الخط
+      function changeFontSize(size) {
+        if (size === "small") {
+          document.body.style.fontSize = "12px";
+        } else if (size === "medium") {
+          document.body.style.fontSize = "16px";
+        } else if (size === "large") {
+          document.body.style.fontSize = "20px";
+        }
+      }
+
+      // تغيير تنسيق الخط
+      function changeFontStyle(style) {
+        document.body.style.fontFamily = style;
+      }
+
+      document
+        .getElementById("about-btn")
+        .addEventListener("click", function () {
+          document.getElementById("about-popup").classList.add("active"); // إضافة الفئة النشطة لعرض النافذة
+        });
+
+      document
+        .getElementById("close-about-popup")
+        .addEventListener("click", function () {
+          document.getElementById("about-popup").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+      document
+        .getElementById("report-issue-btn")
+        .addEventListener("click", function () {
+          document.getElementById("report-popup").style.display = "flex";
+        });
+
+      document
+        .getElementById("close-about-popup")
+        .addEventListener("click", function () {
+          document.getElementById("about-popup").style.display = "none";
+        });
+
+      document
+        .getElementById("close-report-popup")
+        .addEventListener("click", function () {
+          document.getElementById("report-popup").style.display = "none";
+        });
+
+      document
+        .getElementById("report-issue-btn")
+        .addEventListener("click", function () {
+          document.getElementById("report-popup").classList.add("active"); // إضافة الفئة النشطة لعرض النافذة
+        });
+
+      document
+        .getElementById("close-report-popup")
+        .addEventListener("click", function () {
+          document.getElementById("report-popup").classList.remove("active"); // إزالة الفئة النشطة لإغلاق النافذة
+        });
+
+      document
+        .querySelector("#report-popup button")
+        .addEventListener("click", function () {
+          let issueText = document.querySelector(
+            "#report-popup textarea"
+          ).value;
+          if (issueText.trim() !== "") {
+            // إرسال البيانات عبر API أو حفظها حسب الحاجة
+            console.log("تم الإبلاغ عن مشكلة: " + issueText);
+            document.getElementById("report-popup").classList.remove("active");
+          } else {
+            alert("يرجى كتابة المشكلة قبل الإرسال.");
+          }
+        });
+
+      // عند الضغط على زر "إرسال" في نافذة الإبلاغ عن مشكلة
+      document
+        .getElementById("send-issue-btn")
+        .addEventListener("click", function () {
+          let issueText = document.querySelector(
+            "#report-popup textarea"
+          ).value;
+          if (issueText.trim() !== "") {
+            // يمكنك إضافة كود لإرسال البيانات عبر API هنا (إن لزم الأمر)
+            console.log("تم الإبلاغ عن مشكلة: " + issueText);
+            // إغلاق نافذة "الإبلاغ عن مشكلة"
+            document.getElementById("report-popup").classList.remove("active");
+            // عرض نافذة التواصل
+            document.getElementById("contact-popup").classList.add("active");
+          } else {
+            alert("يرجى كتابة المشكلة قبل الإرسال.");
+          }
+        });
+
+      // عند الضغط على زر الإغلاق في نافذة التواصل
+      document
+        .getElementById("close-contact-popup")
+        .addEventListener("click", function () {
+          document.getElementById("contact-popup").classList.remove("active");
+        });
+    </script>
+    <script>
+      function viewFile(teacherEmail, folderName, fileName) {
+        const fileUrl = `/static/pdfs/${teacherEmail.replace(
+          /[@.]/g,
+          "_"
+        )}/${folderName}/${fileName}`;
+        window.open(fileUrl, "_blank");
+      }
+
+      function showOptions(fileName) {
+        alert(`🚀 خيارات إضافية للملف: ${fileName}`);
+      }
+
+      // ✅ دالة إظهار أو إخفاء قائمة الخيارات عند الضغط على زر الثلاث نقاط
+      function toggleOptionsMenu(button) {
+        // إغلاق جميع القوائم أولاً
+        document
+          .querySelectorAll(".options-menu")
+          .forEach((menu) => (menu.style.display = "none"));
+        // ثم إظهار القائمة الخاصة بالعنصر المضغوط
+        const menu = button.nextElementSibling;
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+
+      // ✅ دالة الحذف (تظهر فقط تنبيه الآن، يمكن ربطها بحذف حقيقي)
+      function deleteFile(teacherEmail, folderName, fileName, btn) {
+        if (confirm(`هل تريد حذف الملف: ${fileName}؟`)) {
+          // هنا يمكنك إرسال طلب حذف حقيقي للخادم
+          console.log(`🚮 جاري حذف الملف: ${fileName}`);
+
+          // نحذف البطاقة من الواجهة مباشرة
+          const fileCard = btn.closest(".file-item");
+          fileCard.remove();
+        }
+      }
+    </script>
+    <script>
+      document
+        .getElementById("subjectSelect")
+        .addEventListener("change", function () {
+          const selected = this.value;
+          document.getElementById("subjectInput").value = selected;
+        });
+    </script>
+  </body>
+</html>
