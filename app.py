@@ -49,6 +49,8 @@ S5_FILE = os.path.join(DATA_DIR, 'S5.csv')
 S6_FILE = os.path.join(DATA_DIR, 'S6.csv')
 
 MESSAGE_FILE = os.path.join(DATA_DIR, 'message.csv')
+ADS_FILE = os.path.join(DATA_DIR, 'ads.csv')
+
 print("DATA_DIR:", DATA_DIR)
 print("STUDENTS01_FILE:", STUDENTS01_FILE)
 print("Does file exist?", os.path.exists(STUDENTS01_FILE))
@@ -1346,7 +1348,7 @@ def ads():
             "priority": request.form.get("priority")
         }
 
-        if not ad_already_exists(ad, "C:/Users/DATA/OneDrive/Desktop/Python/Calcolator/site_college21/ads.csv"):
+        if not ad_already_exists(ad, ADS_FILE):
             save_ad_to_csv(ad)
             flash("✅ تم إضافة الإعلان بنجاح!", "success")
         else:
@@ -1372,7 +1374,7 @@ def ad_already_exists(new_ad, file_path):
 
 
 
-def save_ad_to_csv(ad_data, file_path="C:/Users/DATA/OneDrive/Desktop/Python/Calcolator/site_college21/ads.csv"):
+def save_ad_to_csv(ad_data, file_path=ADS_FILE):
     # تحديد الحقول التي سيتم تخزينها في الإعلان
     fieldnames = ["title", "content", "start_time", "priority", "created_at"]
 
@@ -2315,4 +2317,5 @@ def get_users():
 if __name__ == '__main__':
     init_db()
     update_passwords_to_hashed()
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
