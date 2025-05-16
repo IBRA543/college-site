@@ -15,6 +15,7 @@ from flask import Response
 from flask_babel import Babel
 from werkzeug.utils import secure_filename
 import time
+from waitress import serve
 
 
 app = Flask(__name__)
@@ -2317,5 +2318,4 @@ def get_users():
 if __name__ == '__main__':
     init_db()
     update_passwords_to_hashed()
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    serve(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
