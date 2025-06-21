@@ -16,8 +16,14 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap");
+
       :root {
         --primary: #0f172a;
         --accent: #38bdf8;
@@ -40,27 +46,60 @@
       }
 
       header {
-        position: fixed;
-        top: 0;
-        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 50px;
-        background: rgba(13, 17, 23, 0.9);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        transition: background 0.3s ease;
+        background: #0d1117;
+        padding: 20px 40px;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        box-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
       }
 
-      header:hover {
-        background: rgba(13, 17, 23, 1);
+      .logo {
+        font-family: "Orbitron", sans-serif;
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        color: #58a6ff;
+        text-shadow: 0 0 10px #58a6ff, 0 0 20px #1f6feb, 0 0 30px #1f6feb;
+        background: linear-gradient(90deg, #58a6ff, #1f6feb, #58a6ff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: glowPulse 3s infinite ease-in-out;
+        transition: transform 0.4s ease;
+        cursor: pointer;
       }
 
-      header h1 {
-        font-weight: 600;
-        font-size: 24px;
-        margin: 0;
+      .logo:hover {
+        transform: scale(1.1) rotate(-2deg);
+        text-shadow: 0 0 20px #58a6ff, 0 0 40px #1f6feb;
+      }
+
+      @keyframes glowPulse {
+        0%,
+        100% {
+          text-shadow: 0 0 10px #58a6ff, 0 0 20px #1f6feb, 0 0 30px #1f6feb;
+        }
+        50% {
+          text-shadow: 0 0 20px #1f6feb, 0 0 40px #58a6ff, 0 0 60px #58a6ff;
+        }
+      }
+
+      /* nav update (optional for harmony) */
+      header nav a {
+        text-decoration: none;
+        color: #58a6ff;
+        margin: 0 15px;
+        font-weight: 500;
+        transition: color 0.3s, transform 0.3s;
+      }
+
+      header nav a:hover {
+        color: #1f6feb;
+        transform: scale(1.1);
       }
 
       header nav a {
@@ -84,22 +123,83 @@
       }
 
       #hero1 {
-        background: linear-gradient(135deg, #1f2937, #0d1117);
         position: relative;
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, #0d1117, #1f2937);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Cairo", sans-serif;
+      }
+
+      #bgCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .hero1-overlay {
+        z-index: 2;
+        text-align: center;
+        color: #ffffff;
+        padding: 20px;
+        animation: fadeInZoom 2s ease forwards;
       }
 
       .hero1-text {
-        font-size: 48px;
-        font-weight: 100;
+        font-size: 56px;
+        font-weight: 800;
+        color: #58a6ff;
+        text-shadow: 0 4px 20px rgba(88, 166, 255, 0.5);
+        margin-bottom: 20px;
         opacity: 0;
-        transform: translateY(-50px);
+        animation: slideDown 1.5s ease forwards 0.5s;
       }
 
       .hero1-subtext {
-        font-size: 20px;
-        font-weight: 300;
+        font-size: 24px;
+        font-weight: 400;
+        color: #c9d1d9;
         opacity: 0;
-        transform: translateY(50px);
+        animation: slideUp 1.5s ease forwards 1s;
+      }
+
+      /* Keyframes */
+      @keyframes fadeInZoom {
+        from {
+          transform: scale(0.95);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       #projects {
@@ -161,24 +261,6 @@
         color: #1f6feb;
       }
 
-      #about {
-        padding: 50px 20px;
-        background-color: #0d1117;
-        color: #c9d1d9;
-        text-align: center;
-      }
-
-      #about h2 {
-        font-size: 36px;
-        margin-bottom: 20px;
-      }
-
-      #about p {
-        font-size: 18px;
-        line-height: 1.6;
-        margin: 10px 0;
-      }
-
       #contact {
         padding: 50px 20px;
         background-color: #1f2937;
@@ -204,7 +286,7 @@
         border: 1px solid #30363d;
         border-radius: 5px;
         background: #0d1117;
-        color: #c9d1d9;
+        color: #d5e5f5;
       }
 
       #contact input:focus,
@@ -254,38 +336,7 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         opacity: 0.85;
       }
-      .signUp {
-        padding: 60px 40px;
-        background: var(--primary);
-        color: #c9d1d9;
-        text-align: center;
-        border-radius: 16px;
-        margin: 60px;
-        animation: fadeInUp 2s ease;
-      }
 
-      .signUp h2 {
-        font-size: 32px;
-        margin-bottom: 20px;
-        text-decoration: none;
-      }
-
-      .signUp button {
-        background: #c9d1d9;
-        color: var(--primary);
-        padding: 14px 28px;
-        border: none;
-        font-weight: 700;
-        font-size: 16px;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-      }
-
-      .signUp button:hover {
-        transform: scale(1.1);
-        background-color: var(--accent);
-      }
       #hero1 {
         position: relative;
         z-index: 2;
@@ -372,7 +423,7 @@
       }
 
       .section-subtitle {
-        color: #6246ea;
+        color: #ada3dc;
         font-weight: 700;
         font-size: 14px;
         text-transform: uppercase;
@@ -383,7 +434,7 @@
       .hero-title {
         font-size: 60px;
         font-weight: 800;
-        color: #0f172a;
+        color: #6680bc;
         margin: 20px 0;
         line-height: 1.2;
       }
@@ -391,7 +442,7 @@
       .hero-text {
         font-size: 17px;
         line-height: 1.8;
-        color: #475569;
+        color: #cccccc;
         margin-bottom: 30px;
       }
 
@@ -614,15 +665,129 @@
         text-decoration: underline;
         color: #ffa34d;
       }
+      #about {
+        padding: 60px 20px;
+        background: linear-gradient(to bottom, #0d1117, #161b22);
+        color: #c9d1d9;
+        text-align: center;
+        direction: rtl;
+        font-family: "Cairo", sans-serif;
+      }
+
+      .about-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: rgba(255, 255, 255, 0.02);
+        border-radius: 15px;
+        padding: 40px 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 1.5s ease-in-out;
+      }
+
+      #about h2 {
+        font-size: 42px;
+        margin-bottom: 30px;
+        color: #58a6ff;
+        position: relative;
+      }
+
+      #about h2::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background-color: #58a6ff;
+        margin: 10px auto 0;
+        border-radius: 3px;
+      }
+
+      #about p {
+        font-size: 20px;
+        line-height: 1.9;
+        margin: 20px 0;
+        color: #e6edf3;
+        text-align: justify;
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .signUp {
+        padding: 70px 50px;
+        background: radial-gradient(circle at top right, #1f2937, #0d1117);
+        color: #e6edf3;
+        text-align: center;
+        border-radius: 20px;
+        margin: 80px auto;
+        max-width: 700px;
+        box-shadow: 0 0 25px rgba(88, 166, 255, 0.15),
+          inset 0 0 10px rgba(255, 255, 255, 0.03);
+        animation: fadeInUp 1.5s ease-in-out;
+        border: 1px solid #2d3748;
+      }
+
+      .signUp h2 {
+        font-size: 40px;
+        margin-bottom: 15px;
+        color: #58a6ff;
+        font-weight: 700;
+        position: relative;
+      }
+
+      .signUp p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #c9d1d9;
+      }
+
+      .signUp button {
+        background: linear-gradient(135deg, #58a6ff, #1f6feb);
+        color: #fff;
+        padding: 16px 36px;
+        border: none;
+        font-weight: bold;
+        font-size: 18px;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(88, 166, 255, 0.3);
+        transition: all 0.3s ease-in-out;
+        position: relative;
+      }
+
+      .signUp button:hover {
+        transform: scale(1.08);
+        box-shadow: 0 10px 30px rgba(88, 166, 255, 0.5);
+        background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      }
+
+      /* Animation Keyframes */
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>My Portfolio</h1>
+      <h1 class="logo">BFG</h1>
       <nav>
         <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#signUp">Sign Up</a>
+        <a href="#projects">Software</a>
+        <a href="#signUp">Log In</a>
         <a href="#contact">Contact</a>
 
         <div class="dropdown">
@@ -637,9 +802,11 @@
     </header>
 
     <section id="hero1">
-      <div class="hero1-text">Welcome to My Portfolio</div>
-      <div class="hero1-subtext">Showcasing creativity and skills</div>
       <canvas id="bgCanvas"></canvas>
+      <div class="hero1-overlay">
+        <div class="hero1-text">مرحباً بكم في شعبة الجغرافيا</div>
+        <div class="hero1-subtext">نحو فهم أعمق للبيئة والمجتمع</div>
+      </div>
     </section>
 
     <section
@@ -650,23 +817,18 @@
     >
       <div class="container">
         <div class="hero-content">
-          <p class="section-subtitle">Better Learning Future With Us</p>
+          <p class="section-subtitle">التميز الأكاديمي والمعرفي</p>
 
-          <h2 class="h1 hero-title">Unlocking Edu, Shaping Futures.</h2>
+          <h2 class="h1 hero-title">شعبة الجغرافيا – رؤية معرفية متجددة</h2>
 
           <p class="hero-text">
-            Nouman English Grammar High School was estabilished by miss shammem
-            bano, famous known as (Rip: Chanda Baji) in 1985, and has teach an
-            over 10,000+ students from very starting to now own and managed by
-            Sir Kashif Mumtaz Khan(Msc. Mathematics).
+            تهدف شعبة الجغرافيا إلى تكوين كفاءات متميزة في مجالات الجغرافيا
+            البشرية والطبيعية، مع التركيز على التحليل المكاني، استخدام نظم
+            المعلومات الجغرافية، والبحث العلمي المرتبط بالتنمية المستدامة.
           </p>
 
-          <a
-            href="https://www.instagram.com/arshmantuitioncentre/"
-            class="btn btn-primary"
-            target="_blank"
-          >
-            <span class="span">Look School Activities</span>
+          <a href="/discover_program" class="btn btn-primary">
+            <span class="span">اكتشف برامجنا</span>
 
             <ion-icon
               name="arrow-forward-outline"
@@ -706,122 +868,177 @@
       </div>
     </section>
 
-    <section class="gallery">
-      <img
-        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
-        alt="Technology"
-      />
-      <img
-        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
-        alt="Technology"
-      />
-      <img
-        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
-        alt="Technology"
-      />
-      <img
-        src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=600&q=80"
-        alt="Technology"
-      />
-    </section>
-
     <section id="about">
-      <h2>About Me</h2>
-      <p>
-        Hello! I'm P N Pavithra, a passionate Web developer. I specialize in
-        Python, HTML, CSS, SQL, and Excel.
-      </p>
-      <p>
-        I love creating innovative solutions and bringing ideas to life through
-        clean, functional, and visually appealing designs.
-      </p>
-      <p>
-        Outside of work, I enjoy exploring new technologies, solving puzzles,
-        and collaborating on creative projects.
-      </p>
+      <div class="about-container">
+        <h2>🌍 حول الشعبة</h2>
+        <p>
+          شعبة الجغرافيا هي إحدى الشعب الأكاديمية المتميزة التي تركز على دراسة
+          العلاقة بين الإنسان والمكان. تهتم بتكوين الطلبة علميًا ومنهجيًا لفهم
+          الظواهر الطبيعية والبشرية، وتأهيلهم لسوق الشغل أو مواصلة الدراسات
+          العليا.
+        </p>
+        <p>
+          من خلال استخدام أدوات وتقنيات حديثة كأنظمة المعلومات الجغرافية (GIS)
+          والاستشعار عن بعد، تسعى الشعبة لتقديم تكوين شامل يربط النظرية
+          بالتطبيق.
+        </p>
+      </div>
     </section>
 
     <div id="projects">
-      <h2>Projects</h2>
+      <h2>البرامج الدراسية</h2>
       <div class="project-grid">
         <div class="project-card">
           <img
-            src="static/images/paragraph.svg"
+            src="static/images/pep.jpg"
             alt="Project 1"
             width="600"
             height="300"
           />
-          <h3>E-commerce Website</h3>
+          <h3>تحليل التوزيع السكاني</h3>
           <p>
-            This e-commerce platform is a user-friendly web application built
-            using HTML, CSS, and JavaScript for the frontend, with Node.js and
-            Express.js handling the backend. It features dynamic product
-            browsing, search and filtering, a shopping cart system, and user
-            account management. A MySQL (or MongoDB) database stores user,
-            product, and order data, while authentication is secured with hashed
-            passwords. Designed to be responsive and scalable.
+            يهدف هذا المشروع إلى دراسة وتحليل التوزيع الجغرافي للسكان باستخدام
+            أدوات نظم المعلومات الجغرافية (GIS). يشمل تحليل الكثافة السكانية،
+            النمو السكاني، والعوامل المؤثرة في التوزيع مثل الموارد الطبيعية
+            والمناخ. يعتمد المشروع على خرائط رقمية وبيانات إحصائية لتقديم
+            تمثيلات مرئية دقيقة.
           </p>
-          <a href="ec.html" target="_blank">View Project</a>
+          <a href="/population_distribution">معرفة المزيد</a>
         </div>
         <div class="project-card">
           <img
-            src="static/images/paragraph.svg"
+            src="static/images/energy.jpg"
             alt="Project 2"
             width="600"
             height="300"
           />
-          <h3>To-Do List Web Application</h3>
+          <h3>التحول إلى الطاقات المتجددة</h3>
           <p>
-            This code creates a simple To-Do List web application using HTML,
-            CSS, and JavaScript. The structure is defined in HTML, where a text
-            input field and a button are provided to add tasks. The tasks are
-            displayed as a list of items in an unordered list. Each task has a
-            "Delete" button that allows the user to remove tasks from the list.
-            The design is styled using CSS for a clean, modern look with a
-            centered container, rounded borders, and hover effects for buttons.
-            JavaScript is used to handle the functionality, adding tasks to the
-            list when the button is clicked and removing them when the "Delete"
-            button is pressed.
+            يركز هذا المشروع على أهمية الانتقال إلى مصادر الطاقة المتجددة كخطوة
+            أساسية لمواجهة التغيرات المناخية وتقليل الاعتماد على الوقود
+            الأحفوري. يتناول التحليل إمكانيات استخدام الطاقة الشمسية، وطاقة
+            الرياح، والطاقة الكهرومائية في مناطق مختلفة، مع توظيف بيانات جغرافية
+            وبيئية لتحديد المواقع الأنسب. كما يعتمد على نماذج تنبؤية لتقييم
+            الأثر البيئي والاقتصادي للطاقة النظيفة على المدى الطويل.
           </p>
-          <a href="td.html" target="_blank">View Project</a>
+
+          <a href="/energy_study">معرفة المزيد</a>
+        </div>
+        <div class="project-card">
+          <img
+            src="static/images/climat.jpeg"
+            alt="Project 2"
+            width="600"
+            height="300"
+          />
+          <h3>رصد التغيرات المناخية</h3>
+          <p>
+            يسلط هذا المشروع الضوء على التغيرات المناخية وتأثيراتها الجغرافية
+            باستخدام البيانات المناخية التاريخية ونماذج التنبؤ. يشمل التحليل
+            مقارنة درجات الحرارة، هطول الأمطار، وتغيرات الغطاء النباتي في مناطق
+            مختلفة. كما يعتمد على استخدام برمجيات التحليل المكاني لتفسير الأنماط
+            المناخية على مر الزمن.
+          </p>
+          <a href="/climat_change">معرفة المزيد</a>
+        </div>
+        <!-- البطاقة الرابعة -->
+        <div class="project-card">
+          <img
+            src="static/images/personal.jpeg"
+            alt="Project 4"
+            width="600"
+            height="300"
+          />
+          <h3>دراسة الجغرافيا الاقتصادية</h3>
+          <p>
+            يركز المشروع على تحليل الأنشطة الاقتصادية ومواقعها الجغرافية
+            وتأثيرها على التنمية الإقليمية. يتضمن دراسة الصناعة، الزراعة،
+            التجارة، وربطها بشبكات النقل والبنية التحتية.
+          </p>
+          <a href="/economic_geography">معرفة المزيد</a>
+        </div>
+
+        <!-- البطاقة الخامسة -->
+        <div class="project-card">
+          <img
+            src="static/images/geology.jpeg"
+            alt="Project 5"
+            width="600"
+            height="300"
+          />
+          <h3>دراسة الجيولوجية</h3>
+          <p>
+            يهدف هذا المشروع إلى تحليل توزيع واستخدام الموارد المائية في المناطق
+            الجافة وشبه الجافة، باستخدام تقنيات الاستشعار عن بعد ونماذج
+            هيدرولوجية لتقدير الكميات والتنبؤ بالجفاف.
+          </p>
+          <a href="/geology">معرفة المزيد</a>
+        </div>
+
+        <!-- البطاقة السادسة -->
+        <div class="project-card">
+          <img
+            src="static/images/maps.jpeg"
+            alt="Project 6"
+            width="600"
+            height="300"
+          />
+          <h3>تحليل النمو الحضري</h3>
+          <p>
+            يستعرض هذا المشروع التوسع العمراني وآثاره على البيئة والخدمات.
+            يستخدم صور الأقمار الصناعية وسلاسل زمنية لمتابعة تغيرات العمران ووضع
+            خرائط للتوسع الحضري المستقبلي.
+          </p>
+          <a href="/urban_growth">معرفة المزيد</a>
         </div>
       </div>
     </div>
     <div id="signUp" class="signUp">
-      <h2>Sign Up</h2>
+      <h2>🌍 كن جزءًا من رؤيتنا الجغرافية</h2>
+      <p>
+        سجّل الآن وابدأ رحلتك في استكشاف العالم من منظور علمي عميق، وتعرّف على
+        أدوات التحليل المكاني، نظم المعلومات الجغرافية، وقضايا التنمية
+        المستدامة.
+      </p>
       <button class="btn" onclick="window.location.href='/signup'">
-        Sign Up
+        ✨ انضم إلى الشعبة
       </button>
     </div>
 
     <section id="contact">
-      <h2>Contact Me</h2>
+      <h2>تواصل معنا</h2>
       <form
         action="mailto:your-email@example.com"
         method="post"
         enctype="text/plain"
       >
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Your Email" required />
+        <input type="text" name="name" placeholder="الاسم الكامل" required />
+        <input
+          type="email"
+          name="email"
+          placeholder="البريد الإلكتروني"
+          required
+        />
+
         <textarea
           name="message"
           rows="5"
-          placeholder="Your Message"
+          placeholder="رسالتك"
           required
         ></textarea>
-        <button type="submit">Send Message</button>
+        <button type="submit">إرسال الرسالة</button>
       </form>
     </section>
     <footer class="footer">
       <div class="container">
         <div class="footer-top">
           <div class="footer-brand">
-            <a href="#" class="logo">Nouman School</a>
+            <a href="#" class="logo">شعبة الجغرافيا</a>
 
             <p class="section-text">
-              The best school to teach students about their important education
-              and to empower their life, vision, and overall productivity with
-              great teachers.
+              شعبة الجغرافيا تسعى إلى تعزيز الفهم المكاني للعالم، من خلال تعليم
+              وتحليل الظواهر الطبيعية والبشرية، وتنمية مهارات الطلاب في البحث
+              والتحليل باستخدام أحدث التقنيات الجغرافية.
             </p>
 
             <ul class="social-list">
@@ -829,7 +1046,6 @@
                 <a
                   href="https://web.facebook.com/profile.php?id=100083138351633&_rdc=1&_rdr"
                   class="social-link"
-                  target="_blank"
                 >
                   <ion-icon name="logo-facebook"></ion-icon>
                 </a>
@@ -839,7 +1055,6 @@
                 <a
                   href="https://www.instagram.com/arshmantuitioncentre/"
                   class="social-link"
-                  target="_blank"
                 >
                   <ion-icon name="logo-instagram"></ion-icon>
                 </a>
@@ -849,97 +1064,98 @@
 
           <ul class="footer-list">
             <li>
-              <p class="footer-list-title">Explore</p>
+              <p class="footer-list-title">روابط مهمة</p>
             </li>
 
             <li>
-              <a href="#" class="footer-link">
+              <a href="/whow_are_we" class="footer-link">
                 <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
 
-                <span class="span">About Us</span>
+                <span class="span">من نحن</span>
               </a>
             </li>
 
             <li>
-              <a href="#" class="footer-link">
+              <a href="/upcoming_activities" class="footer-link">
                 <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
 
-                <span class="span">Upcoming Events</span>
+                <span class="span">الأنشطة القادمة</span>
               </a>
             </li>
 
             <li>
-              <a href="#" class="footer-link">
+              <a href="/news_developments" class="footer-link">
                 <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
 
-                <span class="span">Blog & News</span>
+                <span class="span">الأخبار والمستجدات</span>
               </a>
             </li>
 
             <li>
-              <a href="#" class="footer-link">
+              <a href="/frequentlt_question" class="footer-link">
                 <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
 
-                <span class="span">FAQ Question</span>
+                <span class="span">الأسئلة الشائعة</span>
               </a>
             </li>
 
             <li>
-              <a href="#" class="footer-link">
+              <a href="/students_opinions" class="footer-link">
                 <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
 
-                <span class="span">Testimonials</span>
-              </a>
-            </li>
-          </ul>
-
-          <ul class="footer-list">
-            <li>
-              <p class="footer-list-title">Useful Links</p>
-            </li>
-
-            <li>
-              <a href="#" class="footer-link">
-                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
-
-                <span class="span">Instructors Profile</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" class="footer-link">
-                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
-
-                <span class="span">Popular Courses</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" class="footer-link">
-                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
-
-                <span class="span">Terms & Conditions</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer-link">
-                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
-
-                <span class="span">Privacy Policy</span>
+                <span class="span">آراء الطلبة</span>
               </a>
             </li>
           </ul>
 
           <ul class="footer-list">
             <li>
-              <p class="footer-list-title">Contact Info</p>
+              <p class="footer-list-title">روابط مفيدة</p>
+            </li>
+
+            <li>
+              <a href="/professors_biographies" class="footer-link">
+                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
+
+                <span class="span">سير الأساتذة</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="/useful_links" class="footer-link">
+                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
+
+                <span class="span">رواابط مفيدة</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="/terms_conditions" class="footer-link">
+                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
+
+                <span class="span">الشروط والأحكام</span>
+              </a>
+            </li>
+            <li>
+              <a href="/policy_privacy" class="footer-link">
+                <ion-icon name="chevron-forward" aria-hidden="true"></ion-icon>
+
+                <span class="span">سياسة الخصوصية</span>
+              </a>
+            </li>
+          </ul>
+
+          <ul class="footer-list">
+            <li>
+              <p class="footer-list-title">معلومات الاتصال</p>
             </li>
 
             <li class="footer-item">
               <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
 
               <address class="footer-link">
-                Camp No.2 Near Sahafi Colony, Nawabshah
+                جامعة سيدي محمد بن عبدالله بفاس، كلية الآداب و العلوم العلوم
+                الإنسانية - ضهر المهراز
               </address>
             </li>
 
@@ -947,15 +1163,15 @@
               <ion-icon name="call" aria-hidden="true"></ion-icon>
 
               <a href="tel:+923023207807" class="footer-link"
-                >+92 302 3207807</a
+                >+212 6 12 34 56 78</a
               >
             </li>
 
             <li class="footer-item">
               <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
 
-              <a href="aisha111000khan@gmail.com" class="footer-link"
-                >aisha111000khan@gmail.com</a
+              <a href="brahim12@gmail.com" class="footer-link"
+                >geography@gmail.com</a
               >
             </li>
           </ul>
@@ -963,13 +1179,8 @@
 
         <div class="footer-bottom">
           <p class="copyright">
-            Copyright 2023 Nouman School. All Rights Reserved by
-            <a
-              href="https://www.asharib.xyz/"
-              target="_blank"
-              class="copyright-link"
-              >Asharib Ali</a
-            >
+            © 2025 شعبة الجغرافيا - جميع الحقوق محفوظة. تطوير بواسطة
+            <a href="https://www.asharib.xyz/" class="copyright-link">Brahim</a>
           </p>
         </div>
       </div>
@@ -978,21 +1189,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
     <script>
       // GSAP animation for text with enhanced effects
-      gsap
-        .timeline()
-        .to(".hero1-text", {
-          opacity: 1,
-          y: 0,
-          duration: 1.5,
-          ease: "power4.out",
-        })
-        .to(".hero1-subtext", {
-          opacity: 1,
-          y: 0,
-          duration: 1.5,
-          ease: "power4.out",
-          delay: -1,
-        });
 
       gsap.from("#about", {
         opacity: 0,
@@ -1052,6 +1248,48 @@
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
       });
+    </script>
+    <script>
+      const canvas = document.getElementById("bgCanvas");
+      const ctx = canvas.getContext("2d");
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      let particles = [];
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2 + 1,
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: (Math.random() - 0.5) * 0.5,
+        });
+      }
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(88, 166, 255, 0.3)";
+        particles.forEach((p) => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+
+          if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        });
+
+        requestAnimationFrame(drawParticles);
+      }
+
+      drawParticles();
     </script>
   </body>
 </html>

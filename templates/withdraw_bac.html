@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>طلب سحب شهادة البكالوريا</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(135deg, #6a89cc, #82ccdd);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #222;
+        padding: 20px;
+        overflow-y: auto; /* السماح بالتمرير */
+      }
+
+      .container {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 480px;
+        padding: 30px 35px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 700;
+        font-size: 28px;
+        color: #2d3436;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2d3436;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 18px;
+        border: 2px solid #dfe6e9;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+        font-family: "Cairo", sans-serif;
+        color: #2d3436;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #0984e3;
+        box-shadow: 0 0 8px rgba(9, 132, 227, 0.5);
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #b2bec3;
+        font-style: italic;
+      }
+
+      select {
+        cursor: pointer;
+        background: #f1f2f6;
+      }
+
+      button {
+        width: 100%;
+        background: #0984e3;
+        color: white;
+        border: none;
+        padding: 15px 0;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 14px;
+        cursor: pointer;
+        box-shadow: 0 6px 12px rgba(9, 132, 227, 0.6);
+        transition: background 0.3s ease, transform 0.15s ease;
+        letter-spacing: 1px;
+        user-select: none;
+      }
+
+      button:hover {
+        background: #74b9ff;
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(116, 185, 255, 0.8);
+      }
+
+      .error-message {
+        color: #d63031;
+        font-weight: 700;
+        margin-top: -14px;
+        margin-bottom: 15px;
+        font-size: 14px;
+        display: none;
+      }
+      .error-message.show {
+        display: block;
+      }
+
+      .success-message {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #55efc4;
+        color: #2d3436;
+        border-radius: 10px;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0 0 15px #00b894aa;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .success-message.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container"
+      role="main"
+      aria-label="نموذج طلب سحب شهادة البكالوريا"
+    >
+      <h2>طلب سحب شهادة البكالوريا</h2>
+
+      <form id="withdrawalForm" novalidate>
+        <label for="firstName">الاسم</label>
+        <input
+          type="text"
+          id="firstName"
+          name="firstName"
+          placeholder="أدخل اسمك الكامل"
+          autocomplete="given-name"
+          required
+          aria-required="true"
+        />
+        <div class="error-message" id="firstNameError">
+          الاسم يجب أن يحتوي فقط على حروف ومسافات.
+        </div>
+
+        <label for="lastName">النسب</label>
+        <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          placeholder="أدخل النسب"
+          autocomplete="family-name"
+          required
+          aria-required="true"
+        />
+        <div class="error-message" id="lastNameError">
+          النسب يجب أن يحتوي فقط على حروف ومسافات.
+        </div>
+
+        <label for="registrationNumber">كود مسار</label>
+        <input
+          type="text"
+          id="registrationNumber"
+          name="registrationNumber"
+          placeholder="أدخل كود مسار (8 أرقام)"
+          required
+          aria-required="true"
+          maxlength="8"
+          pattern="^\d{8}$"
+        />
+        <div class="error-message" id="registrationNumberError">
+          كود مسار يجب أن يكون 8 أرقام فقط.
+        </div>
+
+        <label for="examYear">سنة أخد البكالوريا</label>
+        <select id="examYear" name="examYear" required aria-required="true">
+          <option value="" disabled selected>اختر السنة</option>
+        </select>
+        <div class="error-message" id="examYearError">الرجاء اختيار السنة.</div>
+
+        <label for="requestType">نوع الطلب</label>
+        <select
+          id="requestType"
+          name="requestType"
+          required
+          aria-required="true"
+        >
+          <option value="" disabled selected>اختر نوع الطلب</option>
+          <option value="withdrawal">سحب شهادة</option>
+          <option value="inquiry">استفسار</option>
+        </select>
+        <div class="error-message" id="requestTypeError">
+          الرجاء اختيار نوع الطلب.
+        </div>
+
+        <label for="reason" id="reasonLabel" style="display: none"
+          >سبب طلب السحب</label
+        >
+        <textarea
+          id="reason"
+          name="reason"
+          rows="4"
+          maxlength="300"
+          placeholder="اكتب سبب طلب السحب هنا (حتى 300 حرف)..."
+          style="display: none"
+          aria-describedby="reasonCount"
+        ></textarea>
+        <div
+          id="reasonCount"
+          style="
+            color: #555;
+            font-size: 14px;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            display: none;
+          "
+        >
+          0 / 300
+        </div>
+        <div class="error-message" id="reasonError">
+          يرجى كتابة سبب صحيح لا يحتوي على رموز غير مقبولة.
+        </div>
+
+        <button type="submit" aria-label="إرسال الطلب" id="submitBtn">
+          إرسال
+        </button>
+      </form>
+
+      <div
+        class="success-message"
+        role="alert"
+        aria-live="polite"
+        id="successMessage"
+      >
+        تم إرسال الطلب بنجاح!
+      </div>
+    </div>
+
+    <script>
+      // تعبئة قائمة السنوات من 2025 نزولا إلى 2000
+      const examYearSelect = document.getElementById("examYear");
+      const currentYear = new Date().getFullYear();
+      for (let year = currentYear; year >= 2000; year--) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        examYearSelect.appendChild(option);
+      }
+
+      const requestType = document.getElementById("requestType");
+      const reason = document.getElementById("reason");
+      const reasonLabel = document.getElementById("reasonLabel");
+      const reasonCount = document.getElementById("reasonCount");
+      const reasonError = document.getElementById("reasonError");
+
+      requestType.addEventListener("change", () => {
+        if (requestType.value === "withdrawal") {
+          reason.style.display = "block";
+          reasonLabel.style.display = "block";
+          reasonCount.style.display = "block";
+        } else {
+          reason.style.display = "none";
+          reasonLabel.style.display = "none";
+          reasonCount.style.display = "none";
+          reasonError.classList.remove("show");
+        }
+      });
+
+      reason.addEventListener("input", () => {
+        reasonCount.textContent = `${reason.value.length} / 300`;
+      });
+
+      const form = document.getElementById("withdrawalForm");
+      const errors = {
+        firstName: document.getElementById("firstNameError"),
+        lastName: document.getElementById("lastNameError"),
+        registrationNumber: document.getElementById("registrationNumberError"),
+        examYear: document.getElementById("examYearError"),
+        requestType: document.getElementById("requestTypeError"),
+        reason: reasonError,
+      };
+
+      function validateName(name) {
+        // يسمح فقط بحروف عربية، إنجليزية، ومسافات
+        return /^[\u0600-\u06FFa-zA-Z\s]+$/.test(name.trim());
+      }
+
+      function validateReason(text) {
+        // يمنع رموز غير مقبولة مثل <>@#$%^&* وغيرها
+        return /^[\u0600-\u06FFa-zA-Z0-9\s.,؟?!\-_,؛:()]+$/.test(text.trim());
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        let valid = true;
+
+        // تحقق الاسم
+        if (!validateName(form.firstName.value)) {
+          errors.firstName.classList.add("show");
+          valid = false;
+        } else {
+          errors.firstName.classList.remove("show");
+        }
+
+        // تحقق النسب
+        if (!validateName(form.lastName.value)) {
+          errors.lastName.classList.add("show");
+          valid = false;
+        } else {
+          errors.lastName.classList.remove("show");
+        }
+
+        // تحقق كود مسار (8 أرقام)
+        if (!/^\d{8}$/.test(form.registrationNumber.value)) {
+          errors.registrationNumber.classList.add("show");
+          valid = false;
+        } else {
+          errors.registrationNumber.classList.remove("show");
+        }
+
+        // تحقق اختيار السنة
+        if (!form.examYear.value) {
+          errors.examYear.classList.add("show");
+          valid = false;
+        } else {
+          errors.examYear.classList.remove("show");
+        }
+
+        // تحقق نوع الطلب
+        if (!form.requestType.value) {
+          errors.requestType.classList.add("show");
+          valid = false;
+        } else {
+          errors.requestType.classList.remove("show");
+        }
+
+        // إذا كان طلب السحب، تحقق سبب الطلب
+        if (form.requestType.value === "withdrawal") {
+          if (
+            reason.value.trim().length < 5 ||
+            reason.value.trim().length > 300 ||
+            !validateReason(reason.value)
+          ) {
+            errors.reason.classList.add("show");
+            valid = false;
+          } else {
+            errors.reason.classList.remove("show");
+          }
+        }
+
+        if (valid) {
+          // إظهار رسالة نجاح
+          document.getElementById("successMessage").classList.add("show");
+          form.reset();
+          reason.style.display = "none";
+          reasonLabel.style.display = "none";
+          reasonCount.style.display = "none";
+
+          // إخفاء رسالة النجاح بعد 5 ثواني
+          setTimeout(() => {
+            document.getElementById("successMessage").classList.remove("show");
+          }, 5000);
+        }
+      });
+    </script>
+  </body>
+</html>

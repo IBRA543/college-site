@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لوحة التحكم للطالب</title>
+    <title data-translate="548">لوحة التحكم للطالب</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap"
       rel="stylesheet"
@@ -22,7 +22,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <link rel="shortcut icon" href="static/images/logo.png" />
+    <link rel="shortcut icon" href="static/images/BFG.jpg" />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
       rel="stylesheet"
@@ -47,37 +47,42 @@
         onclick="toggleProfileMenu(event)"
       />
 
-      <h1 data-translate="welcome_sending_data">
-        <i class="fas fa-university"></i> مرحبا بك في موقع كلية الجغرافيا
+      <h1>
+        <i class="fas fa-university"></i>
+        <span data-translate="568">مرحبا بك في موقع شعبة الجغرافيا</span>
       </h1>
 
       <button id="menu-btn" class="btn">☰</button>
     </div>
     <section class="main-section">
       <div class="buttons-container">
-        <a href="{{ url_for('coun') }}" class="btn"
-          ><i class="fas fa-book"></i> الدروس</a
-        >
-        <a href="{{ url_for('Login_tudent_space') }}" class="btn"
-          ><i class="fas fa-graduation-cap"></i> النقط</a
-        >
         <a href="{{ url_for('AAAAA') }}" class="btn"
-          ><i class="fas fa-chart-bar"></i> النقط الإضافية</a
-        >
+          ><i class="fas fa-book"></i>
+          <span data-translate="475">الدروس</span>
+        </a>
+        <a href="{{ url_for('Login_tudent_space') }}" class="btn"
+          ><i class="fas fa-graduation-cap"></i>
+          <span data-translate="521">النقط</span>
+        </a>
         <a href="{{ url_for('coun') }}" class="btn"
-          ><i class="fas fa-bullhorn"></i> الإعلانات</a
-        >
+          ><i class="fas fa-bullhorn"></i>
+          <span data-translate="164">إستعمال الزمن</span>
+        </a>
         <a href="{{ url_for('Quick_entry_points') }}" class="btn"
-          ><i class="fas fa-user"></i> فضاء الطالب</a
-        >
+          ><i class="fas fa-user"></i>
+          <span data-translate="476">فضاء الطالب</span>
+        </a>
         <a href="{{ url_for('control') }}" class="btn"
-          ><i class="fas fa-user"></i>لوحة التحكم</a
-        >
+          ><i class="fas fa-user"></i>
+          <span data-translate="246">لوحة التحكم</span>
+        </a>
       </div>
     </section>
 
     <div class="profile-container" id="profile-container">
-      <div class="loading" id="loading">جاري التحميل...</div>
+      <div class="loading" id="loading" data-translate="540">
+        جاري التحميل...
+      </div>
 
       <div class="profile-image-wrapper" onclick="openFileInput()">
         <img
@@ -122,7 +127,12 @@
         <i class="fas fa-ellipsis-h"></i>
       </button>
       <button class="info-button" onclick="goToAccount()">
-        <i class="fas fa-user"></i> المعلومات الشخصية
+        <i class="fas fa-user"></i>
+        <span data-translate="541">المعلومات الشخصية</span>
+      </button>
+      <button class="info-button" onclick="goToPassword()">
+        <i class="fas fa-lock"></i>
+        <span data-translate="542">تغيير كلمة المرور</span>
       </button>
 
       <div class="modal" id="suggestedModal">
@@ -132,23 +142,128 @@
         <div class="modal-content">
           <div class="modal-images">
             <img
-              src="/static/images/4.png"
+              src="/static/images/image_account/4.png"
               onclick="selectSuggestedImage(this.src)"
             />
             <img
-              src="/static/images/5.png"
+              src="/static/images/image_account/5.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+
+            <img
+              src="/static/images/image_account/9.webp"
               onclick="selectSuggestedImage(this.src)"
             />
             <img
-              src="/static/images/1.png"
+              src="/static/images/image_account/user1.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/user2.png"
               onclick="selectSuggestedImage(this.src)"
             />
             <img
-              src="/static/images/1.png"
+              src="/static/images/image_account/user5.png"
               onclick="selectSuggestedImage(this.src)"
             />
             <img
-              src="/static/images/2.png"
+              src="/static/images/image_account/user8.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/user9.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/user10.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/user11.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/woman.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/woman2.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/woman3.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/woman4.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/woman5.png"
+              onclick="selectSuggestedImage(this.src)"
+            /><img
+              src="/static/images/image_account/man.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+
+            <img
+              src="/static/images/image_account/man2.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man3.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man4.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man5.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man6.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man7.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man8.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man9.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/man10.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/profile.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/profile1.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/human.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/girl1.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/girl2.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/boy2.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/boy1.png"
+              onclick="selectSuggestedImage(this.src)"
+            />
+            <img
+              src="/static/images/image_account/avatar.png"
               onclick="selectSuggestedImage(this.src)"
             />
           </div>
@@ -159,59 +274,78 @@
     <div id="sidebar" class="sidebar">
       <button id="close-btn" class="close-btn">&times;</button>
       <a href="#" id="settings-btn" class="menu-item"
-        ><i class="fas fa-cog"></i> الإعدادات</a
-      >
+        ><i class="fas fa-cog"></i>
+        <span data-translate="480">الإعدادات</span>
+      </a>
       <a href="#" id="about-btn" class="menu-item"
-        ><i class="fas fa-info-circle"></i> حول</a
-      >
+        ><i class="fas fa-info-circle"></i>
+        <span data-translate="481">حول</span>
+      </a>
       <a href="#" id="report-issue-btn" class="menu-item"
-        ><i class="fas fa-exclamation-circle"></i> الإبلاغ عن مشكلة</a
-      >
+        ><i class="fas fa-exclamation-circle"></i>
+        <span data-translate="482">الإبلاغ عن مشكلة</span>
+      </a>
     </div>
 
     <div id="settings-menu" class="sub-menu">
       <button id="back-btn" class="close-btn">&larr;</button>
       <a href="#" id="background-btn" class="menu-item"
-        ><i class="fas fa-image"></i> الخلفية</a
-      >
+        ><i class="fas fa-image"></i>
+        <span data-translate="483">الخلفية</span>
+      </a>
       <a href="#" id="language-btn" class="menu-item"
-        ><i class="fas fa-language"></i> اللغة</a
-      >
+        ><i class="fas fa-language"></i>
+        <span data-translate="484">اللغة</span>
+      </a>
       <a href="#" id="font-size-btn" class="menu-item"
-        ><i class="fas fa-text-height"></i> حجم الخط</a
-      >
+        ><i class="fas fa-text-height"></i>
+        <span data-translate="485">حجم الخط</span>
+      </a>
       <a href="#" id="font-style-btn" class="menu-item"
-        ><i class="fas fa-font"></i> تنسيق الخط</a
-      >
-      <a href="#" id="font" class="menu-item"
-        ><i class="fas fa-font"></i> إعادة التعيين
+        ><i class="fas fa-font"></i>
+        <span data-translate="486"> تنسيق الخط</span>
+      </a>
+      <a href="#" id="font-style-btns" class="menu-item"
+        ><i class="fas fa-font"></i>
+        <span data-translate="487">إعادة التعيين</span>
       </a>
     </div>
 
     <div id="background-settings" class="background-settings">
       <button class="close-popup" id="close-background-popup">&times;</button>
-      <h3>الخلفيات الرئيسية</h3>
-      <button class="color-btn white" onclick="changeMainBackground('white')">
+      <h3 data-translate="488">الخلفيات الرئيسية</h3>
+      <button
+        data-translate="490"
+        class="color-btn white"
+        onclick="changeMainBackground('white')"
+      >
         أبيض
       </button>
-      <button class="color-btn black" onclick="changeMainBackground('black')">
+      <button
+        data-translate="491"
+        class="color-btn black"
+        onclick="changeMainBackground('black')"
+      >
         أسود
       </button>
 
-      <h3>الخلفيات الثانوية</h3>
+      <h3 data-translate="489">الخلفيات الثانوية</h3>
       <button
+        data-translate="492"
         class="color-btn blue"
         onclick="changeSecondaryBackground('lightblue')"
       >
         أزرق مفتوح
       </button>
       <button
+        data-translate="493"
         class="color-btn green"
         onclick="changeSecondaryBackground('lightgreen')"
       >
         أخضر مفتوح
       </button>
       <button
+        data-translate="494"
         class="color-btn pink"
         onclick="changeSecondaryBackground('rgb(255, 39, 112)')"
       >
@@ -220,26 +354,26 @@
     </div>
 
     <div id="language-settings" class="language-settings">
-      <h3 data-translate="Select language">اختر اللغة</h3>
+      <h3 data-translate="495">اختر اللغة</h3>
       <button class="close-popup" id="close-language-popup">&times;</button>
       <button
         class="lang-btn"
         onclick="changeLanguage('ar')"
-        data-translate="arabic"
+        data-translate="472"
       >
         العربية
       </button>
       <button
         class="lang-btn"
         onclick="changeLanguage('en')"
-        data-translate="english"
+        data-translate="473"
       >
         English
       </button>
       <button
         class="lang-btn"
         onclick="changeLanguage('fr')"
-        data-translate="french"
+        data-translate="474"
       >
         Français
       </button>
@@ -247,26 +381,54 @@
 
     <!-- قائمة الإعدادات الخاصة بحجم الخط -->
     <div id="font-size-settings" class="background-settings">
-      <h3>حجم الخط</h3>
+      <h3 data-translate="485">حجم الخط</h3>
       <button class="close-popup" id="close-size-popup">&times;</button>
-      <button class="color-btn" onclick="changeFontSize('small')">صغير</button>
-      <button class="color-btn" onclick="changeFontSize('medium')">
+      <button
+        data-translate="497"
+        class="color-btn"
+        onclick="changeFontSize('small')"
+      >
+        صغير
+      </button>
+      <button
+        data-translate="498"
+        class="color-btn"
+        onclick="changeFontSize('medium')"
+      >
         متوسط
       </button>
-      <button class="color-btn" onclick="changeFontSize('large')">كبير</button>
+      <button
+        data-translate="499"
+        class="color-btn"
+        onclick="changeFontSize('large')"
+      >
+        كبير
+      </button>
     </div>
 
     <!-- قائمة الإعدادات الخاصة بتنسيق الخط -->
     <div id="font-style-settings" class="background-settings">
-      <h3>تنسيق الخط</h3>
+      <h3 data-translate="500">تنسيق الخط</h3>
       <button class="close-popup" id="close-style-popup">&times;</button>
-      <button class="color-btn" onclick="changeFontStyle('serif')">
+      <button
+        data-translate="501"
+        class="color-btn"
+        onclick="changeFontStyle('serif')"
+      >
         خط سيريف
       </button>
-      <button class="color-btn" onclick="changeFontStyle('sans-serif')">
+      <button
+        data-translate="502"
+        class="color-btn"
+        onclick="changeFontStyle('sans-serif')"
+      >
         خط سانس سيريف
       </button>
-      <button class="color-btn" onclick="changeFontStyle('monospace')">
+      <button
+        data-translate="503"
+        class="color-btn"
+        onclick="changeFontStyle('monospace')"
+      >
         خط مونو
       </button>
     </div>
@@ -275,8 +437,10 @@
     <div id="about-popup" class="popup">
       <div class="popup-content">
         <button class="close-popup" id="close-about-popup">&times;</button>
-        <h3>حول الموقع</h3>
-        <p>.موقع إلكتروني يقدم خدمات تعليمية وأكاديمية لطلاب الكلية</p>
+        <h3 data-translate="504">حول الموقع</h3>
+        <p data-translate="505">
+          .موقع إلكتروني يقدم خدمات تعليمية وأكاديمية لطلاب الكلية
+        </p>
       </div>
     </div>
 
@@ -284,9 +448,12 @@
     <div id="report-popup" class="popup">
       <div class="popup-content">
         <button class="close-popup" id="close-report-popup">&times;</button>
-        <h3>الإبلاغ عن مشكلة</h3>
-        <textarea placeholder="...اكتب مشكلتك هنا"></textarea>
-        <button id="send-issue-btn">إرسال</button>
+        <h3 data-translate="482">الإبلاغ عن مشكلة</h3>
+        <textarea
+          data-translate="547"
+          placeholder="اكتب مشكلتك هنا..."
+        ></textarea>
+        <button data-translate="401" id="send-issue-btn">إرسال</button>
       </div>
     </div>
 
@@ -294,12 +461,12 @@
     <div id="contact-popup" class="contact-popup">
       <div class="popup-content">
         <button class="close-popup" id="close-contact-popup">&times;</button>
-        <h3>للتواصل معنا</h3>
+        <h3 data-translate="509">للتواصل معنا</h3>
         <a href="https://wa.me/1234567890" class="contact-item" target="_blank"
           ><i class="fab fa-whatsapp"></i> WhatsApp</a
         >
         <a href="mailto:email@example.com" class="contact-item" target="_blank"
-          ><i class="fas fa-envelope"></i> البريد الإلكتروني</a
+          ><i class="fas fa-envelope"></i> Emai</a
         >
         <a href="https://t.me/username" class="contact-item" target="_blank"
           ><i class="fab fa-telegram-plane"></i> Telegram</a
@@ -317,9 +484,9 @@
     </div>
 
     <footer>
-      <p>
+      <p data-translate="511">
         &copy; 2025 كلية الجغرافيا. جميع الحقوق محفوظة.
-        <a href="#">الشروط والأحكام</a>
+        <a href="#" data-translate="535">الشروط والأحكام</a>
       </p>
     </footer>
     <script src="static/js/stu_dashboard.js"></script>

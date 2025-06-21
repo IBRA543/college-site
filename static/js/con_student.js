@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    let id_card = cneInput.value.trim();
+
+    let id_card = cneInput.value.trim().replace(/[‏‎؜]/g, "");
     let major = majorInput.value.trim();
-    id_card = id_card.replace(/[‏‎؜]/g, "");
     const cneRegex = /^[A-Za-z]+\d{4,6}$/;
     const majorRegex = /^[A-Za-z]\d{9}$/;
 
@@ -19,7 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetch("/Student_space", {
       method: "POST",
-      body: new FormData(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id_card, major }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -30,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch(() => {
-        showError("❌  حذث خطأ أثناء البحث");
+        showError("❌  حدث خطأ أثناء البحث");
       });
   });
 
@@ -41,9 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
       errorMessage.style.display = "none";
     }, 3000);
   }
-});
 
-document.addEventListener("DOMContentLoaded", function () {
   let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
   let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
 
@@ -238,6 +239,41 @@ function renderTable() {
   renderPagination();
 }
 
+let smallChartRoot = null;
+function drawSmallChart() {
+  // إذا كان هناك جذر موجود مسبقًا، دمره أولًا
+  if (smallChartRoot) {
+    smallChartRoot.dispose();
+  }
+
+  smallChartRoot = am5.Root.new("smallChart");
+
+  smallChartRoot.setThemes([am5themes_Animated.new(smallChartRoot)]);
+
+  let chart = smallChartRoot.container.children.push(
+    am5percent.PieChart.new(smallChartRoot, {
+      innerRadius: am5.percent(40),
+    })
+  );
+
+  let series = chart.series.push(
+    am5percent.PieSeries.new(smallChartRoot, {
+      valueField: "value",
+      categoryField: "category",
+    })
+  );
+
+  series.data.setAll([
+    { category: "ناجح", value: 85 },
+    { category: "راسب", value: 15 },
+  ]);
+
+  series.appear(1000, 100);
+}
+function loadTeacherData() {
+  console.log("loadTeacherData غير معرفة حاليًا.");
+}
+
 function renderPagination() {
   const pagination = document.getElementById("pagination");
   pagination.innerHTML = "";
@@ -306,63 +342,3 @@ am5.ready(function () {
   legend.data.setAll(series.dataItems);
   series.appear(1000, 100);
 });
-
-// Buttons and Sections
-const dashboardElements = document.querySelectorAll(
-  ".topBar, .cardsContainer, .secondRow, .database"
-);
-const overviewButton = document.getElementById("overviewButton");
-const teacherButton = document.getElementById("teacherButton");
-const resultsButton = document.getElementById("resultsButton");
-const announcementsButton = document.getElementById("announcementsButton");
-
-const overviewSection = document.getElementById("overviewSection");
-const teacherSection = document.getElementById("teacherSection");
-const resultsSection = document.getElementById("resultsSection");
-const announcementsSection = document.getElementById("announcements-section");
-
-function toggleSections(showSection) {
-  const allSections = document.querySelectorAll(
-    ".body > div, .topBar, .cardsContainer, .secondRow, .database"
-  );
-  allSections.forEach((section) => {
-    section.style.display = "none";
-  });
-
-  if (
-    NodeList.prototype.isPrototypeOf(showSection) ||
-    Array.isArray(showSection)
-  ) {
-    showSection.forEach((el) => {
-      el.style.display = "block";
-    });
-  } else {
-    showSection.style.display = "block";
-  }
-}
-
-overviewButton.addEventListener("click", function () {
-  toggleSections(overviewSection);
-  setTimeout(drawSmallChart, 100);
-});
-
-teacherButton.addEventListener("click", function () {
-  toggleSections(teacherSection);
-  setTimeout(loadTeacherData, 100);
-});
-
-resultsButton.addEventListener("click", function () {
-  toggleSections(resultsSection);
-  const studentFormContainer = document.getElementById("studentFormContainer");
-  studentFormContainer.style.display = "block";
-  setTimeout(loadResultsData, 100);
-});
-
-announcementsButton.addEventListener("click", function () {
-  toggleSections(announcementsSection);
-});
-
-dashboardButton.addEventListener("click", function () {
-  toggleSections(dashboardElements);
-});
-

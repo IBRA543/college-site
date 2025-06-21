@@ -208,74 +208,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const studentSection = document.getElementById("studentSection");
   const teacherButton = document.getElementById("teacherButton");
   const teacherSection = document.getElementById("teacherSection");
+  const searchBox = document.getElementById("search-box-students");
+  
 
-  const students = [
-    {
-      name: "Ahmed Ali",
-      email: "ahmed.ali@example.com",
-      department: "Engineering",
-      avatar: "static/images/profile-3.jpg",
-      major: "Software",
-      status: "Active",
-      dateOfEnrollment: "2022-09-01",
-      location: "Cairo",
-    },
-
-    {
-      name: "Sara Khaled",
-      email: "ahmed.ali@example.com",
-      department: "Science",
-      avatar: "static/images/profile-3.jpg",
-      major: "Biology",
-      status: "Inactive",
-      dateOfEnrollment: "2021-03-15",
-      location: "Alexandria",
-    },
-    {
-      name: "Mona Ahmed",
-      email: "ahmed.ali@example.com",
-      department: "Arts",
-      avatar: "static/images/profile-3.jpg",
-      major: "Philosophy",
-      status: "Active",
-      dateOfEnrollment: "2023-01-20",
-      location: "Cairo",
-    },
-    {
-      name: "Ahmed Ali",
-      email: "ahmed.ali@example.com",
-      department: "Engineering",
-      avatar: "static/images/profile-3.jpg",
-      major: "Software",
-      status: "Active",
-      dateOfEnrollment: "2022-09-01",
-      location: "Cairo",
-    },
-    {
-      name: "Sara Khaled",
-      email: "ahmed.ali@example.com",
-      department: "Science",
-      avatar: "static/images/profile-3.jpg",
-      major: "Biology",
-      status: "Inactive",
-      dateOfEnrollment: "2021-03-15",
-      location: "Alexandria",
-    },
-    {
-      name: "Mona Ahmed",
-      email: "ahmed.ali@example.com",
-      department: "Arts",
-      avatar: "static/images/profile-3.jpg",
-      major: "Philosophy",
-      status: "Active",
-      dateOfEnrollment: "2023-01-20",
-      location: "Cairo",
-    },
-    // Add more student data here
-  ];
-
-  let filteredStudents = [...students];
-
+  
   studentButton.addEventListener("click", function () {
     toggleSections(studentSection);
     setTimeout(renderStudentTable, 100);
@@ -299,42 +235,69 @@ document.addEventListener("DOMContentLoaded", function () {
       currentPage = 1;
       renderStudentTable();
     });
+  
+  function setupEventListeners() {
+    tabs.addEventListener("click", handleTabClick);
+    sideBarSelector.addEventListener("click", handleSideBarClick);
+    studentButton.addEventListener("click", () =>
+      toggleSection(studentSection)
+    );
+    teacherButton.addEventListener("click", () =>
+      toggleSection(teacherSection)
+    );
+    searchBox.addEventListener("input", handleSearchInput);
+  }
 
   function renderStudentTable() {
     const tableBody = document.getElementById("studentTableBody");
-    tableBody.innerHTML = ""; // Clear previous rows
+    tableBody.innerHTML = "";
 
     filteredStudents.forEach((student) => {
       const row = document.createElement("tr");
-
-      // تحديد اللون حسب الحالة
-      let statusColor = "";
-      if (student.status.toLowerCase() === "active") {
-        statusColor = "green";
-      } else if (student.status.toLowerCase() === "inactive") {
-        statusColor = "red";
-      } else if (student.status.toLowerCase() === "onleave") {
-        statusColor = "orange";
-      }
-
+      const statusColor = getStatusColor(student.status);
       row.innerHTML = `
-          <td style="display: flex; align-items: center; gap: 0.5rem;">
-            <img src="${student.avatar}" alt="Avatar" style="width:40px; height:40px; border-radius:50%;">
-            <div>
-              <b>${student.name}</b><br>
-              <small style="color: var(--color-info);">student@example.com</small>
-            </div>
-          </td>
-          <td>${student.department}</td>
-          <td>${student.major}</td>
-          <td style="color: ${statusColor}; font-weight: bold;">${student.status}</td>
-          <td>${student.dateOfEnrollment}</td>
-          <td>${student.location}</td>
-        `;
-
+        <td style="display: flex; align-items: center; gap: 0.5rem;">
+          <img src="${student.avatar}" alt="Avatar" style="width:40px; height:40px; border-radius:50%;">
+          <div>
+            <b>${student.name}</b><br>
+            <small style="color: var(--color-info);">${student.email}</small>
+          </div>
+        </td>
+        <td>${student.department}</td>
+        <td>${student.major}</td>
+        <td style="color: ${statusColor}; font-weight: bold;">${student.status}</td>
+        <td>${student.dateOfEnrollment}</td>
+        <td>${student.location}</td>
+      `;
       tableBody.appendChild(row);
     });
   }
+
+  function getStatusColor(status) {
+    switch (status.toLowerCase()) {
+      case "active":
+        return "green";
+      case "inactive":
+        return "red";
+      case "onleave":
+        return "orange";
+      default:
+        return "gray";
+    }
+  }
+
+  // ===== تحميل بيانات من السيرفر =====
+  fetch("/students1")
+    .then((res) => res.json())
+    .then((data) => {
+      students = data;
+      filteredStudents = [...students];
+      renderStudentTable();
+    })
+    .catch((err) => console.error("Error fetching students:", err));
+
+  init();
+
 
   function renderStudentPagination() {
     const pagination = document.getElementById("student-pagination");
@@ -362,3 +325,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderStudentTable();
 });
+
+const userRole = "{{ session['role'] }}"; // تحديد الدور في جافا سكربت
+
+// دالة لجلب الإعلانات
+function fetchAnnouncements() {
+  fetch("/get_announcements")
+    .then((response) => response.json())
+    .then((data) => {
+      const container = document.getElementById("announcements-container");
+      container.innerHTML = ""; // تفريغ الحاوية السابقة
+
+      if (data.length > 0) {
+        data.forEach((announcement) => {
+          const announcementDiv = document.createElement("div");
+          announcementDiv.classList.add("announcement");
+          announcementDiv.innerHTML = `
+                  <h4>${announcement.type}</h4>
+                  <p>${announcement.content}</p>
+                  <p><strong>الأستاذ:</strong> ${
+                    announcement.teacher_name
+                      ? announcement.teacher_name
+                      : "غير متوفر"
+                  }</p>
+                  <p class="text-muted">نُشر في: ${
+                    announcement.timestamp || "غير متوفر"
+                  }</p>
+                `;
+          container.appendChild(announcementDiv);
+        });
+      } else {
+        container.innerHTML =
+          "<p class='text-muted'>لا توجد إعلانات متاحة حاليًا.</p>";
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching announcements:", error);
+    });
+}
+
+// استدعاء الدالة عند تحميل الصفحة
+window.onload = function () {
+  fetchAnnouncements(); // جلب الإعلانات عند تحميل الصفحة للطلاب فقط
+};

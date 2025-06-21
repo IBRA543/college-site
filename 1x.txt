@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>من نحن - شعبة الجغرافية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #4a90e2 0%, #50c9c3 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    header {
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+    header p {
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #e0f7f7cc;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+    }
+
+    main {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 25px;
+      max-width: 900px;
+      width: 100%;
+      padding: 30px 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 1.2s ease forwards;
+    }
+
+    main h2 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+      color: #fff;
+      border-bottom: 2px solid #fff;
+      padding-bottom: 10px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    main p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #f0f9f9;
+    }
+
+    .team-section {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .team-member {
+      background: #3399ffcc;
+      border-radius: 20px;
+      padding: 20px;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      cursor: default;
+    }
+    .team-member:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    .team-member img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      margin-bottom: 15px;
+      box-shadow: 0 0 15px #fff;
+    }
+    .team-member h3 {
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .team-member span {
+      font-size: 1rem;
+      color: #d6f1f1;
+    }
+
+    footer {
+      margin-top: 60px;
+      color: #d6f1f1aa;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>شعبة الجغرافية</h1>
+  <p>نسعى لتقديم أفضل الدراسات والبحوث في مجال الجغرافيا، ونشر الوعي الجغرافي بين الطلاب والمجتمع.</p>
+</header>
+
+<main>
+  <h2>من نحن</h2>
+  <p>
+    شعبة الجغرافية هي مكان يلتقي فيه حب الطبيعة والبيئة مع العلم والبحث. نحن فريق متخصص من الأكاديميين والباحثين الذين يسعون لفهم العالم من حولنا عبر دراسة الأرض والظواهر الجغرافية المختلفة.
+  </p>
+  <p>
+    مهمتنا هي إثراء المعرفة الجغرافية من خلال التعليم والتدريب والبحوث التطبيقية التي تخدم المجتمع وتساهم في التنمية المستدامة.
+  </p>
+
+  <div class="team-section">
+    <div class="team-member">
+      <img src="https://i.pravatar.cc/100?img=15" alt="د. أحمد علي" />
+      <h3>د. أحمد علي</h3>
+      <span>رئيس الشعبة</span>
+    </div>
+    <div class="team-member">
+      <img src="https://i.pravatar.cc/100?img=21" alt="د. سارة محمود" />
+      <h3>د. سارة محمود</h3>
+      <span>خبيرة نظم المعلومات الجغرافية</span>
+    </div>
+    <div class="team-member">
+      <img src="https://i.pravatar.cc/100?img=32" alt="م. محمد حسن" />
+      <h3>م. محمد حسن</h3>
+      <span>باحث جغرافي</span>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 شعبة الجغرافية. جميع الحقوق محفوظة.
+</footer>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>من نحن - شعبة الجغرافية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/css/ionicons.min.css" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a3c72 0%, #2a5298 100%);
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    /* Parallax Background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      opacity: 0.15;
+      z-index: -1;
+      transform: translateZ(0);
+      will-change: transform;
+      animation: slowZoom 20s linear infinite alternate;
+      filter: brightness(0.6);
+    }
+    @keyframes slowZoom {
+      0% { transform: scale(1) translateZ(0); }
+      100% { transform: scale(1.05) translateZ(0); }
+    }
+
+    header {
+      max-width: 1000px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    header h1 {
+      font-size: 3.8rem;
+      font-weight: 900;
+      color: #ffffffdd;
+      margin-bottom: 15px;
+      letter-spacing: 0.15em;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    header p {
+      font-size: 1.4rem;
+      color: #c9e4e5cc;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.8;
+      letter-spacing: 0.08em;
+    }
+
+    main {
+      background: rgba(10, 40, 80, 0.8);
+      border-radius: 30px;
+      max-width: 1000px;
+      width: 100%;
+      padding: 50px 60px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      animation: fadeInUp 1.5s ease forwards;
+    }
+    main h2 {
+      font-size: 2.7rem;
+      color: #fff;
+      border-bottom: 3px solid #40e0d0;
+      padding-bottom: 15px;
+      text-align: center;
+      font-weight: 800;
+      margin-bottom: 35px;
+      letter-spacing: 0.1em;
+      text-shadow: 0 2px 8px #00b5b1;
+    }
+    main p {
+      font-size: 1.3rem;
+      line-height: 2.1;
+      margin-bottom: 30px;
+      color: #d4f0f1;
+      letter-spacing: 0.05em;
+    }
+
+    /* Values / Features Section */
+    .values {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 50px;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+    .value-item {
+      background: #267f81cc;
+      border-radius: 18px;
+      flex: 1 1 280px;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 6px 20px #16a6aacc;
+      transition: background-color 0.4s ease;
+      cursor: default;
+    }
+    .value-item:hover {
+      background-color: #40e0d0cc;
+      box-shadow: 0 10px 30px #40e0d0ff;
+    }
+    .value-item ion-icon {
+      font-size: 3.2rem;
+      color: #c5f3f4;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 3px #00b8b5);
+    }
+    .value-item h3 {
+      color: #e0f9f9;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+    }
+    .value-item p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #b9f1f1cc;
+    }
+
+    /* Team Section */
+    .team-section {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      flex-wrap: wrap;
+    }
+    .team-member {
+      background: linear-gradient(145deg, #1a4a69, #10475d);
+      border-radius: 25px;
+      padding: 30px 20px 40px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 8px 25px #0a394ecc;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .team-member:hover {
+      transform: translateY(-15px) scale(1.07);
+      box-shadow: 0 15px 50px #0cc7c7cc;
+    }
+    .team-member img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #40e0d0;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px #39cfcf;
+      transition: box-shadow 0.3s ease;
+    }
+    .team-member:hover img {
+      box-shadow: 0 0 30px #00fff7;
+    }
+    .team-member h3 {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+      font-weight: 800;
+      color: #a9ffff;
+      text-shadow: 0 0 8px #00e0de;
+    }
+    .team-member span {
+      font-size: 1.1rem;
+      color: #9ee9e9;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 5px #40e0d0aa;
+    }
+
+    /* Call to Action */
+    .cta {
+      margin: 50px auto 0;
+      text-align: center;
+    }
+    .cta a {
+      display: inline-block;
+      background: #40e0d0;
+      color: #004d4d;
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 6px 25px #2acfcfcc;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .cta a:hover {
+      background: #17b3ad;
+      color: #e0f9f9;
+      box-shadow: 0 8px 30px #11a29e;
+    }
+
+    footer {
+      margin-top: 60px;
+      color: #88dedeaa;
+      font-size: 0.95rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+      main {
+        padding: 40px 30px;
+      }
+      header h1 {
+        font-size: 2.8rem;
+      }
+      main h2 {
+        font-size: 2.2rem;
+      }
+      .team-member {
+        width: 100%;
+        max-width: 320px;
+      }
+      .values {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>شعبة الجغرافية</h1>
+  <p>نسعى لتقديم أفضل الدراسات والبحوث في مجال الجغرافيا، ونشر الوعي الجغرافي بين الطلاب والمجتمع.</p>
+</header>
+
+<main>
+  <h2>من نحن</h2>
+  <p>
+    شعبة الجغرافية هي مكان يلتقي فيه حب الطبيعة والبيئة مع العلم والبحث. نحن فريق متخصص من الأكاديميين والباحثين الذين يسعون لفهم العالم من حولنا عبر دراسة الأرض والظواهر الجغرافية المختلفة.
+  </p>
+  <p>
+    مهمتنا هي إثراء المعرفة الجغرافية من خلال التعليم والتدريب والبحوث التطبيقية التي تخدم المجتمع وتساهم في التنمية المستدامة.
+  </p>
+
+  <section class="values" aria-label="قيم الشعبة">
+    <div class="value-item" role="article" tabindex="0">
+      <ion-icon name="earth-outline" aria-hidden="true"></ion-icon>
+      <h3>توعية جغرافية</h3>
+      <p>نشر الوعي بأهمية الجغرافيا وتأثيرها على البيئة والتنمية.</p>
+    </div>
+    <div class="value-item" role="article" tabindex="0">
+      <ion-icon name="analytics-outline" aria-hidden="true"></ion-icon>
+      <h3>بحوث متقدمة</h3>
+      <p>تنفيذ بحوث علمية متقدمة تسهم في تطوير المجال الجغرافي.</p>
+    </div>
+    <div class="value-item" role="article" tabindex="0">
+      <ion-icon name="school-outline" aria-hidden="true"></ion-icon>
+      <h3>تعليم متميز</h3>
+      <p>تقديم برامج تعليمية متميزة تلبي احتياجات الطلاب.</p>
+    </div>
+  </section>
+
+  <section class="team-section" aria-label="فريق العمل">
+    <article class="team-member" tabindex="0">
+      <img src="https://i.pravatar.cc/120?img=15" alt="د. أحمد علي" />
+      <h3>د. أحمد علي</h3>
+      <span>رئيس الشعبة</span>
+    </article>
+    <article class="team-member" tabindex="0">
+      <img src="https://i.pravatar.cc/120?img=21" alt="د. سارة محمود" />
+      <h3>د. سارة محمود</h3>
+      <span>خبيرة نظم المعلومات الجغرافية</span>
+    </article>
+    <article class="team-member" tabindex="0">
+      <img src="https://i.pravatar.cc/120?img=32" alt="م. محمد حسن" />
+      <h3>م. محمد حسن</h3>
+      <span>باحث جغرافي</span>
+    </article>
+  </section>
+
+  <div class="cta">
+    <a href="/contact_us" aria-label="تواصل معنا">تواصل معنا للمزيد</a>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 شعبة الجغرافية. جميع الحقوق محفوظة.
+</footer>
+
+<script>
+  // Parallax scroll effect on background (optional)
+  window.addEventListener('scroll', () => {
+    const offset = window.pageYOffset;
+    document.body.style.setProperty('--scroll-offset', offset * 0.5 + 'px');
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

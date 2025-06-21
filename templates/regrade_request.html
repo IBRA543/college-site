@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>طلب إعادة تصحيح الامتحان</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* الخطوط والاعدادات الأساسية */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #2c3e50;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+      }
+      .container {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 480px;
+        padding: 40px 35px 50px;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 700;
+        font-size: 32px;
+        color: #5a2d82;
+        user-select: text;
+        letter-spacing: 1.2px;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        color: #4b3c69;
+        user-select: text;
+      }
+      input[type="text"],
+      input[type="number"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 2.5px solid #c2bde1;
+        font-size: 17px;
+        font-weight: 500;
+        color: #3d3160;
+        background-color: #f9f7ff;
+        resize: vertical;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        user-select: text;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #7a54ff;
+        box-shadow: 0 0 10px 3px rgba(122, 84, 255, 0.5);
+        background-color: #fff;
+        color: #341f8f;
+      }
+      textarea {
+        min-height: 120px;
+      }
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+      .error-message {
+        color: #e74c3c;
+        font-size: 13px;
+        margin-top: -18px;
+        margin-bottom: 15px;
+        display: none;
+        font-weight: 600;
+        user-select: none;
+        text-shadow: 0 0 3px rgba(231, 76, 60, 0.8);
+      }
+      .error-message.show {
+        display: block;
+      }
+      #reasonCount {
+        font-size: 13px;
+        color: #8e84c8;
+        position: absolute;
+        bottom: 10px;
+        left: 18px;
+        user-select: none;
+      }
+      button.submit-btn {
+        width: 100%;
+        background: linear-gradient(45deg, #7a54ff, #aa7fff);
+        color: white;
+        border: none;
+        padding: 16px 0;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 16px;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(122, 84, 255, 0.7);
+        transition: background 0.4s ease, transform 0.2s ease,
+          box-shadow 0.4s ease;
+        user-select: none;
+      }
+      button.submit-btn:hover {
+        background: linear-gradient(45deg, #aa7fff, #7a54ff);
+        transform: scale(1.07);
+        box-shadow: 0 12px 35px rgba(170, 127, 255, 0.9);
+      }
+      .success-message {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #2ecc711a;
+        color: #27ae60;
+        border-radius: 12px;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0 0 20px #27ae60cc;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        user-select: none;
+      }
+      .success-message.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" role="main" aria-labelledby="pageTitle">
+      <h1 id="pageTitle">طلب إعادة تصحيح الامتحان</h1>
+      <form id="correctionForm" novalidate>
+        <div class="form-group">
+          <label for="firstName">الاسم</label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            placeholder="أدخل الاسم"
+            autocomplete="given-name"
+            required
+          />
+          <div class="error-message" id="firstNameError">
+            الرجاء إدخال اسم صحيح (حروف عربية فقط)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">النسب</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            placeholder="أدخل النسب"
+            autocomplete="family-name"
+            required
+          />
+          <div class="error-message" id="lastNameError">
+            الرجاء إدخال النسب بشكل صحيح (حروف عربية فقط)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="trackCode">كود المسار</label>
+          <input
+            type="text"
+            id="trackCode"
+            name="trackCode"
+            placeholder="أدخل كود المسار"
+            required
+          />
+          <div class="error-message" id="trackCodeError">
+            الرجاء إدخال كود المسار
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="studentNumber">رقم الطالب</label>
+          <input
+            type="number"
+            id="studentNumber"
+            name="studentNumber"
+            placeholder="مثال: 12345678"
+            required
+            minlength="8"
+            maxlength="8"
+          />
+          <div class="error-message" id="studentNumberError">
+            يجب إدخال رقم مكوّن من 8 أرقام
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nationalID">رقم البطاقة الوطنية</label>
+          <input
+            type="text"
+            id="nationalID"
+            name="nationalID"
+            placeholder="أدخل رقم البطاقة الوطنية"
+            required
+          />
+          <div class="error-message" id="nationalIDError">
+            الرجاء إدخال رقم البطاقة الوطنية بشكل صحيح
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="department">الشعبة</label>
+          <input
+            type="text"
+            id="department"
+            name="department"
+            placeholder="أدخل الشعبة"
+            required
+          />
+          <div class="error-message" id="departmentError">
+            الرجاء إدخال الشعبة
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="year">السنة الدراسية</label>
+          <select id="year" name="year" required>
+            <option value="" disabled selected>اختر السنة</option>
+            <option value="الأولى">الأولى</option>
+            <option value="الثانية">الثانية</option>
+            <option value="الثالثة">الثالثة</option>
+            <option value="الرابعة">الرابعة</option>
+          </select>
+          <div class="error-message" id="yearError">
+            الرجاء اختيار السنة الدراسية
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="session">الدورة</label>
+          <select id="session" name="session" required>
+            <option value="" disabled selected>اختر الدورة</option>
+            <option value="الأولى">الأولى</option>
+            <option value="الثانية">الثانية</option>
+          </select>
+          <div class="error-message" id="sessionError">
+            الرجاء اختيار الدورة
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">المادة الدراسية</label>
+          <select id="subject" name="subject" required>
+            <option value="" disabled selected>اختر المادة</option>
+            <option value="رياضيات">رياضيات</option>
+            <option value="فيزياء">فيزياء</option>
+            <option value="كيمياء">كيمياء</option>
+            <option value="لغة عربية">لغة عربية</option>
+            <option value="تاريخ">تاريخ</option>
+            <option value="جغرافيا">جغرافيا</option>
+            <!-- يمكنك إضافة المزيد حسب الحاجة -->
+          </select>
+          <div class="error-message" id="subjectError">
+            الرجاء اختيار المادة الدراسية
+          </div>
+        </div>
+
+        <div class="form-group" style="position: relative">
+          <label for="reason">سبب طلب إعادة التصحيح</label>
+          <textarea
+            id="reason"
+            name="reason"
+            placeholder="اكتب سبب طلب إعادة التصحيح هنا..."
+            maxlength="300"
+            required
+          ></textarea>
+          <div id="reasonCount">0/300</div>
+          <div class="error-message" id="reasonError">
+            السبب يجب أن يحتوي 5-300 حرف، بدون رموز خاصة
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          aria-label="إرسال طلب إعادة التصحيح"
+        >
+          إرسال الطلب
+        </button>
+        <div
+          class="success-message"
+          id="successMessage"
+          role="alert"
+          aria-live="polite"
+        >
+          تم إرسال طلبك بنجاح. شكرًا لك!
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("correctionForm");
+      const successMessage = document.getElementById("successMessage");
+
+      function validateName(name) {
+        return /^[\u0600-\u06FF\s]{2,50}$/.test(name.trim());
+      }
+
+      function validateStudentNumber(num) {
+        return /^\d{8}$/.test(num.trim());
+      }
+
+      function validateNationalID(id) {
+        // رقم البطاقة الوطنية يمكن أن يكون أرقام وحروف حسب النظام - هنا افتراض أرقام فقط 8-12 رقم
+        return /^\d{8,12}$/.test(id.trim());
+      }
+
+      function validateText(text) {
+        return text.trim().length > 0;
+      }
+
+      function validateReason(text) {
+        return /^[\u0600-\u06FFa-zA-Z0-9\s.,\-]{5,300}$/.test(text.trim());
+      }
+
+      function showError(input, messageId) {
+        document.getElementById(messageId).classList.add("show");
+        input.setAttribute("aria-invalid", "true");
+      }
+
+      function hideError(input, messageId) {
+        document.getElementById(messageId).classList.remove("show");
+        input.removeAttribute("aria-invalid");
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        // الاسم
+        const firstName = form.firstName;
+        if (!validateName(firstName.value)) {
+          showError(firstName, "firstNameError");
+          valid = false;
+        } else {
+          hideError(firstName, "firstNameError");
+        }
+
+        // النسب
+        const lastName = form.lastName;
+        if (!validateName(lastName.value)) {
+          showError(lastName, "lastNameError");
+          valid = false;
+        } else {
+          hideError(lastName, "lastNameError");
+        }
+
+        // كود المسار
+        const trackCode = form.trackCode;
+        if (!validateText(trackCode.value)) {
+          showError(trackCode, "trackCodeError");
+          valid = false;
+        } else {
+          hideError(trackCode, "trackCodeError");
+        }
+
+        // رقم الطالب
+        const studentNumber = form.studentNumber;
+        if (!validateStudentNumber(studentNumber.value)) {
+          showError(studentNumber, "studentNumberError");
+          valid = false;
+        } else {
+          hideError(studentNumber, "studentNumberError");
+        }
+
+        // رقم البطاقة الوطنية
+        const nationalID = form.nationalID;
+        if (!validateNationalID(nationalID.value)) {
+          showError(nationalID, "nationalIDError");
+          valid = false;
+        } else {
+          hideError(nationalID, "nationalIDError");
+        }
+
+        // الشعبة
+        const department = form.department;
+        if (!validateText(department.value)) {
+          showError(department, "departmentError");
+          valid = false;
+        } else {
+          hideError(department, "departmentError");
+        }
+
+        // السنة
+        const year = form.year;
+        if (!year.value) {
+          showError(year, "yearError");
+          valid = false;
+        } else {
+          hideError(year, "yearError");
+        }
+
+        // الدورة
+        const session = form.session;
+        if (!session.value) {
+          showError(session, "sessionError");
+          valid = false;
+        } else {
+          hideError(session, "sessionError");
+        }
+
+        // المادة الدراسية
+        const subject = form.subject;
+        if (!subject.value) {
+          showError(subject, "subjectError");
+          valid = false;
+        } else {
+          hideError(subject, "subjectError");
+        }
+
+        // سبب الطلب
+        const reason = form.reason;
+        if (!validateReason(reason.value)) {
+          showError(reason, "reasonError");
+          valid = false;
+        } else {
+          hideError(reason, "reasonError");
+        }
+
+        if (valid) {
+          // هنا يمكن إضافة إرسال البيانات عبر AJAX أو أي عملية أخرى
+          successMessage.classList.add("show");
+          form.reset();
+          document.getElementById("reasonCount").textContent = "0/300";
+
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 6000);
+        } else {
+          successMessage.classList.remove("show");
+        }
+      });
+
+      // عداد الأحرف في textarea
+      const reasonInput = form.reason;
+      const reasonCount = document.getElementById("reasonCount");
+      reasonInput.addEventListener("input", () => {
+        reasonCount.textContent = `${reasonInput.value.length}/300`;
+      });
+    </script>
+  </body>
+</html>

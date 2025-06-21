@@ -1,199 +1,301 @@
 <!DOCTYPE html>
 <html lang="ar">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>عرض الملفات</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-whatever"
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
     <style>
-        body {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            background: #1e1e2e;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            padding: 0;
-            border: 2px solid #ff2770;
-            box-shadow: inset 0 0 30px #ff2770;
-            overflow: hidden;
-        }
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        background: linear-gradient(to left, #a166af, #1e1e2e);
+        color: #333;
+        font-family: "Cairo", sans-serif;
+        margin: 0;
+        padding: 20px;
+        overflow: auto;
+      }
 
-        .file-card {
-            background-color: #007bff;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
+      .file-card {
+        background: linear-gradient(to top, #ffffff, #f0f8ff);
+        border: 1px solid #d0e6ff;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 140, 255, 0.15);
+        transition: all 0.3s ease;
+        color: #222;
+        position: relative;
+        overflow: visible;
+        position: relative;
+        z-index: 1;
+      }
 
-        .file-card:hover {
-            transform: scale(1.05);
-        }
+      .file-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 25px rgba(0, 140, 255, 0.25);
+      }
 
-        .file-card .options-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #666;
-            font-size: 1.2rem;
-        }
+      .file-card .options-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 1.2rem;
+      }
 
-        .file-card .options-btn:hover {
-            color: #333;
-        }
+      .file-card .options-btn:hover {
+        color: #007bff;
+      }
 
-        .file-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: contain;
-            background-color: white;
-            padding: 10px;
-        }
+      .file-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+        background-color: #f9f9f9;
+        padding: 10px;
+      }
 
-        .file-card .card-body {
-            padding: 15px;
-            text-align: center;
-        }
+      .file-card .card-body {
+        padding: 15px;
+        text-align: center;
+      }
 
-        .file-card .card-body a {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 15px;
-            color: black;
-            background: white;
-            border-radius: 25px;
-            text-decoration: none;
-            transition: background 0.3s;
-        }
+      .file-card .card-body a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        color: #fff;
+        background: #00bcd4;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
 
-        .file-card .card-body a:hover {
-            background: #0056b3;
-        }
+      .file-card .card-body a:hover {
+        background: #0097a7;
+      }
 
-        .dropdown-menu {
-            text-align: right;
-        }
+      .file-card .card-title {
+        color: #007bff;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
 
-        .dropdown-item {
-            font-size: 0.9rem;
-        }
+      .dropdown {
+        position: relative;
+        z-index: 1000;
+      }
 
-        .dropdown-item:hover {
-            background-color: #f0f0f0;
-            color: #333;
-        }
+      .dropdown-menu {
+        text-align: right;
+      }
 
-        .favorite-heart {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 1.5rem;
-            color: #ccc;
-            cursor: pointer;
-        }
+      .dropdown-item {
+        font-size: 0.9rem;
+      }
 
-        .favorite-heart.liked {
-            color: red;
-        }
+      .dropdown-item:hover {
+        background-color: #e0f7fa;
+        color: #007bff;
+      }
 
-        .container h1 {
-            color: #85c0ff;
-        }
+      .favorite-heart {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 1.5rem;
+        color: #bbb;
+        cursor: pointer;
+      }
+
+      .favorite-heart.liked {
+        color: #ff4081;
+      }
+
+      .container h1 {
+        color: #007bff;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1 class="text-center mb-5">الملفات المرفوعة</h1>
-        <div class="row g-4">
-            {% if pdf_files %}
-            {% for file in pdf_files %}
-            <div class="col-md-4">
-                <div class="file-card">
-                    <i class="fas fa-heart favorite-heart" id="favorite{{ loop.index }}"></i>
+      <h1 class="text-center mb-5">الملفات المرفوعة</h1>
+      <div class="row g-4">
+        {% if pdf_files %} {% for file in pdf_files %}
+        <div class="col-md-4">
+          <div class="file-card">
+            <i
+              class="fas fa-heart favorite-heart"
+              id="favorite{{ loop.index }}"
+            ></i>
 
-                    <button class="options-btn" data-bs-toggle="dropdown" aria-expanded="false"
-                        id="dropdown{{ loop.index }}">&#8942;</button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown{{ loop.index }}">
-                        <li><button class="dropdown-item favorite-btn" id="favorite{{ loop.index }}"> المفضلة</button>
-                        </li>
+            <div class="dropdown position-absolute top-0 end-0 m-2">
+              <button
+                class="btn options-btn dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                &#8942;
+              </button>
 
-                        {% if role == 'teacher' %}
-                        <li><button class="dropdown-item text-danger delete-btn"
-                                data-file="{{ file | urlencode }}">حذف</button></li>
-                        {% endif %}
-                    </ul>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <button
+                    class="dropdown-item favorite-btn"
+                    data-index="{{ loop.index }}"
+                  >
+                    <i
+                      class="fas fa-heart me-2 favorite-heart"
+                      data-index="{{ loop.index }}"
+                    ></i>
+                    مفضلة
+                  </button>
+                </li>
 
-                    {% if file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png') or
-                    file.endswith('.gif') %}
-                    <img src="{{ url_for('uploaded_file', filename=file) }}" alt="Uploaded Image">
-                    {% else %}
-                    <img src="{{ url_for('static', filename='images/pdf.png') }}" alt="PDF Icon">
-                    {% endif %}
-
-                    <div class="card-body">
-                        <h5 class="card-title">{{ file.split('_', 2)[2] }}</h5>
-                        <a href="{{ url_for('static', filename='pdfs/' + teacher_email + '/' + subject + '/' + file) }}"
-                            target="_blank">
-                            عرض
-                        </a>
-                    </div>
-                </div>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{{ url_for('static', filename='pdfs/' + teacher_email + '/' + subject + '/' + file) }}"
+                    download
+                  >
+                    <i class="fas fa-download me-2 text-success"></i>
+                    تنزيل
+                  </a>
+                </li>
+              </ul>
             </div>
-            {% endfor %}
-            {% else %}
-            <p class="text-center">.لا توجد ملفات متاحة لهذه المادة</p>
-            {% endif %}
+
+            <div class="file-icon text-center my-4">
+              {% if file.endswith('.pdf') %}
+              <i class="fas fa-file-pdf fa-5x text-danger"></i>
+              {% elif file.endswith('.doc') or file.endswith('.docx') %}
+              <i class="fas fa-file-word fa-5x text-primary"></i>
+              {% elif file.endswith('.xls') or file.endswith('.xlsx') %}
+              <i class="fas fa-file-excel fa-5x text-success"></i>
+              {% elif file.endswith('.ppt') or file.endswith('.pptx') %}
+              <i class="fas fa-file-powerpoint fa-5x text-warning"></i>
+              {% elif file.endswith('.txt') %}
+              <i class="fas fa-file-alt fa-5x text-white"></i>
+              {% elif file.endswith('.jpg') or file.endswith('.jpeg') or
+              file.endswith('.png') or file.endswith('.gif') %}
+              <img
+                src="{{ url_for('uploaded_file', filename=file) }}"
+                alt="Uploaded Image"
+                style="width: 100%; height: 150px; object-fit: contain"
+              />
+              {% else %}
+              <i class="fas fa-file fa-5x text-secondary"></i>
+              {% endif %}
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">{{ file }}</h5>
+
+              <a
+                href="{{ url_for('static', filename='pdfs/' + teacher_email + '/' + subject + '/' + file) }}"
+                target="_blank"
+              >
+                عرض
+              </a>
+            </div>
+          </div>
         </div>
+        {% endfor %} {% else %}
+        <p class="text-center">.لا توجد ملفات متاحة لهذه المادة</p>
+        {% endif %}
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const deleteButtons = document.querySelectorAll('.delete-btn');
+      document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-btn");
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const fileName = decodeURIComponent(this.getAttribute('data-file'));
-                    const teacherEmail = '{{ teacher_email }}';  // استخدم البريد الإلكتروني للأستاذ الفعلي من المتغير المرسل للخادم
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const fileName = decodeURIComponent(this.getAttribute("data-file"));
+            const teacherEmail = "{{ teacher_email }}"; // استخدم البريد الإلكتروني للأستاذ الفعلي من المتغير المرسل للخادم
 
-                    const confirmed = confirm(`هل أنت متأكد أنك تريد حذف الملف: ${fileName}؟`);
+            const confirmed = confirm(
+              `هل أنت متأكد أنك تريد حذف الملف: ${fileName}؟`
+            );
 
-                    if (confirmed) {
-                        fetch('/delete_file', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                file_name: fileName,
-                                teacher_email: teacherEmail  // إرسال البريد الإلكتروني مع الطلب
-                            })
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                alert(data.message);
-                                if (data.success) {
-                                    location.reload();
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                alert('!حدث خطأ أثناء محاولة حذف الملف');  
-                            });
-                    }
+            if (confirmed) {
+              fetch("/delete_file", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  file_name: fileName,
+                  teacher_email: teacherEmail, // إرسال البريد الإلكتروني مع الطلب
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  alert(data.message);
+                  if (data.success) {
+                    location.reload();
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                  alert("!حدث خطأ أثناء محاولة حذف الملف");
                 });
-            });
+            }
+          });
         });
+      });
     </script>
-</body>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // كود الحذف كما هو موجود...
 
+        // التعامل مع أيقونة القلب
+        document.querySelectorAll(".favorite-heart").forEach((heart) => {
+          heart.addEventListener("click", function () {
+            this.classList.toggle("liked");
+            // يمكنك إرسال طلب إلى الخادم هنا لتخزين حالة "المفضلة"
+            const fileIndex = this.getAttribute("data-index");
+            console.log("تم تغيير المفضلة للملف رقم:", fileIndex);
+          });
+        });
 
+        // التعامل مع زر "المفضلة" داخل القائمة المنسدلة
+        document.querySelectorAll(".favorite-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const index = this.getAttribute("data-index");
+            const heartIcon = document.querySelector(
+              `.favorite-heart[data-index="${index}"]`
+            );
+            if (heartIcon) heartIcon.classList.toggle("liked");
+          });
+        });
+      });
+    </script>
+  </body>
 </html>

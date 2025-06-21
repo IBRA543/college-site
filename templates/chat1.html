@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>شات الطلاب المتطور</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --bg-color: #1e1e2f;
+        --chat-bg: #1a1a28;
+        --sidebar-bg: #202030;
+        --sent-msg: #4a4aff;
+        --recv-msg: #3c3c5c;
+        --text-color: #fff;
+        --accent: #4a4aff;
+      }
+      [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --chat-bg: #ffffff;
+        --sidebar-bg: #eeeeee;
+        --sent-msg: #4a90e2;
+        --recv-msg: #cccccc;
+        --text-color: #000;
+        --accent: #4a90e2;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        margin: 0;
+        background: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      header {
+        background-color: #2c2c3c;
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        font-size: 22px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      }
+      header div {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+      .theme-toggle {
+        cursor: pointer;
+        font-size: 20px;
+        color: var(--text-color);
+        transition: color 0.3s;
+      }
+      .theme-toggle:hover {
+        color: var(--accent);
+      }
+      #notif-icon {
+        cursor: pointer;
+        font-size: 20px;
+        color: var(--text-color);
+        position: relative;
+      }
+      #notif-icon.active::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 8px;
+        height: 8px;
+        background: red;
+        border-radius: 50%;
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        0%,
+        50%,
+        100% {
+          opacity: 1;
+        }
+        25%,
+        75% {
+          opacity: 0;
+        }
+      }
+
+      .container {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+      .sidebar {
+        width: 270px;
+        background-color: var(--sidebar-bg);
+        padding: 20px 10px;
+        overflow-y: auto;
+        border-left: 2px solid #333;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: none;
+        background: #3a3a59;
+        color: var(--text-color);
+        font-size: 15px;
+        transition: background 0.3s;
+      }
+      .search-bar input::placeholder {
+        color: #bbb;
+      }
+      .search-bar input:focus {
+        background: var(--recv-msg);
+        outline: none;
+      }
+      .contact {
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #292940;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .contact:hover {
+        background-color: #3b3b5c;
+      }
+      .contact img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-left: 10px;
+        object-fit: cover;
+      }
+      .contact-info {
+        flex: 1;
+      }
+      .contact-info h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .contact-info span {
+        font-size: 12px;
+        color: #ccc;
+      }
+
+      .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--chat-bg);
+      }
+      .messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      .typing-status {
+        padding: 0 20px;
+        font-size: 13px;
+        color: #aaa;
+        font-style: italic;
+        min-height: 20px;
+        height: 20px;
+      }
+      .input-area {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid #444;
+        background-color: #222;
+        position: relative;
+      }
+      .input-area input {
+        flex: 1;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: none;
+        border-radius: 20px;
+        outline: none;
+        margin: 0 10px;
+        background: #333;
+        color: white;
+        transition: background 0.3s;
+      }
+      .input-area input::placeholder {
+        color: #bbb;
+      }
+      .input-area input:focus {
+        background: #444;
+      }
+      .input-area button {
+        background: var(--accent);
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background 0.3s;
+      }
+      .input-area button:hover {
+        background: #2e2eff;
+      }
+      .emoji-picker {
+        position: absolute;
+        bottom: 60px;
+        right: 60px;
+        background: #333;
+        padding: 10px;
+        border-radius: 10px;
+        display: none;
+        z-index: 10;
+      }
+      .emoji-picker span {
+        font-size: 22px;
+        margin: 5px;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s;
+      }
+      .emoji-picker span:hover {
+        transform: scale(1.3);
+      }
+
+      .contacts-list-modern {
+        display: flex;
+        flex-direction: column;
+        gap: 14px; /* مسافة بين بطاقات الطلاب */
+        padding: 20px;
+      }
+
+      /* بطاقة الطالب */
+      .student-card {
+        display: flex;
+        align-items: center;
+        padding: 10px 32px; /* ↓ قلل الارتفاع، ↑ زد العرض */
+        border-radius: 16px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #3e3e3e, #2b2b2b);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        color: #f0f0f0;
+        font-weight: 500;
+        font-size: 17px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          background 0.3s ease;
+        max-width: 620px; /* ← زيادة العرض */
+        min-height: 56px; /* ← تحديد ارتفاع مخصص قليل */
+        user-select: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .student-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #4d4d4d, #363636);
+      }
+
+      /* صورة الطالب */
+      .profile-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        object-fit: cover;
+        margin-right: 16px;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .student-card:hover .profile-img {
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+      }
+
+      /* اسم الطالب */
+      .student-name {
+        margin: 0;
+        color: #fff;
+        flex: 1;
+        text-align: left;
+        letter-spacing: 0.5px;
+      }
+
+      /* Modal Overlay */
+      .student-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        justify-content: center;
+        align-items: center;
+        animation: modalFade 0.4s ease;
+      }
+
+      /* Modal Content */
+      .modal-content {
+        background: linear-gradient(145deg, #f9f9f9, #e0e0e0);
+        padding: 25px 30px;
+        border-radius: 20px;
+        text-align: center;
+        width: 90%;
+        max-width: 420px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        position: relative;
+        animation: fadeIn 0.35s ease;
+        color: #333;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      /* Profile Image */
+      .modal-content img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 4px solid #4a4aff30;
+        box-shadow: 0 0 10px rgba(74, 74, 255, 0.25);
+        transition: transform 0.3s ease;
+      }
+      .modal-content img:hover {
+        transform: scale(1.05);
+      }
+
+      /* Student Name */
+      .modal-content h3 {
+        font-size: 22px;
+        color: #2c2c54;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+      }
+
+      /* Info Lines */
+      .modal-content p {
+        font-size: 16px;
+        margin: 6px 0;
+        color: #444;
+      }
+      .modal-content p strong {
+        color: #222;
+      }
+
+      /* Close Button */
+      .close-btn {
+        position: absolute;
+        top: 14px;
+        right: 18px;
+        font-size: 28px;
+        cursor: pointer;
+        color: #1a1a28;
+        transition: color 0.2s ease;
+      }
+      .close-btn:hover {
+        color: #000;
+      }
+
+      .message {
+        max-width: 80%;
+        margin: 12px 0;
+        padding: 12px 18px;
+        border-radius: 18px;
+        position: relative;
+        animation: popIn 0.4s ease;
+        transition: transform 0.25s, box-shadow 0.25s;
+        word-break: break-word;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+      }
+      .message:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      }
+
+      .message.sent {
+        background: linear-gradient(135deg, var(--sent-msg), #5f5fff);
+        align-self: flex-end;
+        color: white;
+      }
+      .message.received {
+        background: linear-gradient(135deg, var(--recv-msg), #4c4c6d);
+        align-self: flex-start;
+        color: var(--text-color);
+      }
+
+      /* ذيول الفقاعات */
+      .message.sent::after,
+      .message.received::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        top: 12px;
+      }
+      .message.sent::after {
+        right: -12px;
+        border-width: 10px 0 10px 12px;
+        border-color: transparent transparent transparent var(--sent-msg);
+      }
+      .message.received::after {
+        left: -12px;
+        border-width: 10px 12px 10px 0;
+        border-color: transparent var(--recv-msg) transparent transparent;
+      }
+
+      /* توقيت الرسائل */
+      .message-time {
+        font-size: 11px;
+        position: absolute;
+        bottom: -18px;
+        left: 14px;
+        color: #bbb;
+        font-style: italic;
+      }
+
+      /* فقاعات مع الصورة الرمزية */
+      .message-with-name {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 1em;
+      }
+
+      .message-with-name.sent {
+        align-items: flex-end;
+      }
+
+      .message-sender {
+        font-weight: bold;
+        font-size: 0.85rem;
+        margin-bottom: 0.2em;
+        color: #2c3e50;
+        opacity: 0.8;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          transform: scale(0.85);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes modalFade {
+        from {
+          background: rgba(0, 0, 0, 0);
+        }
+        to {
+          background: rgba(0, 0, 0, 0.7);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          height: 150px;
+          overflow-x: auto;
+          display: flex;
+        }
+        .contact {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          margin-right: 10px;
+        }
+        .contact img {
+          margin: 0 0 5px 0;
+        }
+        .chat-area {
+          flex: 1;
+          height: calc(100vh - 210px);
+        }
+        .input-area {
+          padding: 10px 5px;
+        }
+        .emoji-picker {
+          bottom: 80px;
+          right: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body data-theme="">
+    <header>
+      <span>💬 شات الطلاب المتطور</span>
+      <div>
+        <i class="fas fa-bell" id="notif-icon" title="الإشعارات"></i>
+        <i
+          class="fas fa-moon theme-toggle"
+          id="themeToggle"
+          title="تبديل الوضع الليلي"
+        ></i>
+      </div>
+    </header>
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="searchContacts"
+            placeholder="🔍 ابحث عن جهة اتصال"
+          />
+        </div>
+
+        <div class="contacts-list-modern" id="contactsList">
+          {% for student in students %}
+          <div
+            class="student-card"
+            onclick="showStudentModal('{{ student.name }} {{ student.second_name }}', '{{ student.class }}', '{{ student.contact }}', '{{ student.address }}', '{{ student.profile_image }}')"
+          >
+            <img
+              src="{{ student.profile_image }}"
+              alt="Profile Image"
+              class="profile-img"
+            />
+            <h4 class="student-name">
+              {{ student.name }} {{ student.second_name }}
+            </h4>
+          </div>
+          {% endfor %}
+        </div>
+      </aside>
+
+      <section class="chat-area" aria-live="polite" aria-atomic="true">
+        <div
+          class="messages"
+          id="messages"
+          role="list"
+          aria-label="رسائل المحادثة"
+        >
+          {% for msg in messages %}
+          <div class="message received" role="listitem">
+            <strong class="message-sender">{{ msg.student_name }}</strong>
+            <div class="message-bubble">
+              {{ msg.text }}
+              <span class="message-time">{{ msg.time }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div
+          class="typing-status"
+          id="typingStatus"
+          aria-live="polite"
+          aria-atomic="true"
+        ></div>
+        <div class="input-area">
+          <button
+            type="button"
+            aria-label="إظهار الرموز التعبيرية"
+            onclick="toggleEmojiPicker()"
+            id="emojiBtn"
+          >
+            😀
+          </button>
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="اكتب رسالتك..."
+            autocomplete="off"
+            aria-describedby="emojiBtn"
+          />
+          <button
+            type="button"
+            aria-label="إرسال الرسالة"
+            onclick="sendMessage()"
+          >
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </section>
+      <div class="student-modal" id="studentModal">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeStudentModal()">&times;</span>
+          <img id="modalImage" src="" alt="Student Image" />
+          <h3 id="modalName"></h3>
+          <p><strong>📚 الفصل:</strong> <span id="modalClass"></span></p>
+          <p><strong>📞 الهاتف:</strong> <span id="modalContact"></span></p>
+          <p><strong>🏠 السكن:</strong> <span id="modalAddress"></span></p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="emoji-picker"
+      id="emojiPicker"
+      role="list"
+      aria-label="اختيار الرموز التعبيرية"
+    >
+      <span role="listitem" tabindex="0" onclick="addEmoji('😊')">😊</span>
+      <span role="listitem" tabindex="0" onclick="addEmoji('😂')">😂</span>
+      <span role="listitem" tabindex="0" onclick="addEmoji('👍')">👍</span>
+      <span role="listitem" tabindex="0" onclick="addEmoji('❤️')">❤️</span>
+      <!-- يمكن إضافة المزيد من الرموز التعبيرية -->
+    </div>
+
+    <audio
+      id="notifSound"
+      src="https://www.myinstants.com/media/sounds/notification.mp3"
+      preload="auto"
+    ></audio>
+    <script>
+      const currentStudentName =
+        "{{ current_student_name if current_student_name else 'طالب' }}";
+    </script>
+    <script>
+      console.log("الطالب الحالي:", currentStudentName);
+    </script>
+
+    <script>
+      const input = document.getElementById("chatInput");
+      const messages = document.getElementById("messages");
+      const emojiPicker = document.getElementById("emojiPicker");
+      const notifIcon = document.getElementById("notif-icon");
+      const notifSound = document.getElementById("notifSound");
+      const typingStatus = document.getElementById("typingStatus");
+      const themeToggle = document.getElementById("themeToggle");
+
+      // تحميل وضع الثيم من التخزين المحلي
+      document.body.dataset.theme = localStorage.getItem("chatTheme") || "";
+
+      // تبديل الوضع الليلي/النهاري مع حفظ الاختيار
+      function toggleTheme() {
+        if (document.body.dataset.theme === "light") {
+          document.body.dataset.theme = "";
+          localStorage.setItem("chatTheme", "");
+          themeToggle.classList.remove("fa-sun");
+          themeToggle.classList.add("fa-moon");
+        } else {
+          document.body.dataset.theme = "light";
+          localStorage.setItem("chatTheme", "light");
+          themeToggle.classList.remove("fa-moon");
+          themeToggle.classList.add("fa-sun");
+        }
+      }
+      themeToggle.addEventListener("click", toggleTheme);
+
+      // إرسال رسالة
+      function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+
+        // أرسل الرسالة للسيرفر
+        fetch("/send_message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            student_name: currentStudentName,
+            message: text,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              addMessage(text, "sent", currentStudentName);
+              input.value = "";
+              input.focus();
+              scrollMessages();
+              notifSound.play();
+              notifIcon.classList.remove("active");
+              typingStatus.textContent = "";
+            } else {
+              alert("حدث خطأ في إرسال الرسالة.");
+            }
+          })
+          .catch(() => alert("تعذر الاتصال بالخادم"));
+      }
+
+      // إضافة رسالة إلى المحادثة
+      function addMessage(text, type, studentName = null) {
+        const msg = document.createElement("div");
+        msg.className = `message ${type}`;
+        msg.setAttribute("role", "listitem");
+
+        const time = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        msg.innerHTML = `
+    <div class="message-with-name">
+      ${
+        studentName
+          ? `<strong class="message-sender">${escapeHTML(studentName)}</strong>`
+          : ""
+      }
+      <div class="message-bubble">
+        ${escapeHTML(text)}<span class="message-time">${time}</span>
+      </div>
+    </div>
+  `;
+
+        messages.appendChild(msg);
+        scrollMessages();
+      }
+
+      // إضافة رمز تعبيري في موضع المؤشر
+      function addEmoji(emoji) {
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const before = input.value.slice(0, start);
+        const after = input.value.slice(end);
+        input.value = before + emoji + after;
+        input.focus();
+        input.selectionStart = input.selectionEnd = start + emoji.length;
+        emojiPicker.style.display = "none";
+      }
+
+      // تبديل عرض لوحة الرموز التعبيرية
+      function toggleEmojiPicker() {
+        if (emojiPicker.style.display === "block") {
+          emojiPicker.style.display = "none";
+        } else {
+          emojiPicker.style.display = "block";
+          // إغلاق عند النقر خارجها
+          setTimeout(() => {
+            window.addEventListener("click", outsideClickListener);
+          }, 100);
+        }
+      }
+      function outsideClickListener(e) {
+        if (!emojiPicker.contains(e.target) && e.target.id !== "emojiBtn") {
+          emojiPicker.style.display = "none";
+          window.removeEventListener("click", outsideClickListener);
+        }
+      }
+
+      // التمرير لأسفل تلقائياً عند إضافة رسالة
+      function scrollMessages() {
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      // تشفير HTML لمنع إدخال أكواد خبيثة
+      function escapeHTML(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // محاكاة حالة "يكتب الآن" (يمكن ربطها بنظام حقيقي لاحقاً)
+      input.addEventListener("input", () => {
+        if (input.value.trim() !== "") {
+          typingStatus.textContent = "يكتب الآن...";
+          notifIcon.classList.add("active");
+          debounce(() => {
+            typingStatus.textContent = "";
+            notifIcon.classList.remove("active");
+          }, 1500)();
+        } else {
+          typingStatus.textContent = "";
+          notifIcon.classList.remove("active");
+        }
+      });
+
+      // دالة ديباونس (تأخير التكرار)
+      function debounce(fn, delay = 300) {
+        let timeout;
+        return function () {
+          clearTimeout(timeout);
+          timeout = setTimeout(fn, delay);
+        };
+      }
+
+      // بحث في جهات الاتصال
+      const searchInput = document.getElementById("searchContacts");
+      searchInput.addEventListener("input", () => {
+        const filter = searchInput.value.toLowerCase();
+        document.querySelectorAll(".contact").forEach((contact) => {
+          const name = contact.querySelector("h4").textContent.toLowerCase();
+          contact.style.display = name.includes(filter) ? "flex" : "none";
+        });
+      });
+
+      // ارسال رسالة عند الضغط Enter (مع منع السطر الجديد)
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // تحميل الثيم عند التحميل
+      window.addEventListener("load", () => {
+        scrollMessages();
+        if (document.body.dataset.theme === "light") {
+          themeToggle.classList.remove("fa-moon");
+          themeToggle.classList.add("fa-sun");
+        } else {
+          themeToggle.classList.remove("fa-sun");
+          themeToggle.classList.add("fa-moon");
+        }
+      });
+      function showStudentModal(name, studentClass, contact, address, image) {
+        document.getElementById("modalName").textContent = name;
+        document.getElementById("modalClass").textContent = studentClass;
+        document.getElementById("modalContact").textContent = contact;
+        document.getElementById("modalAddress").textContent = address;
+        document.getElementById("modalImage").src = image;
+        document.getElementById("studentModal").style.display = "flex";
+      }
+
+      function closeStudentModal() {
+        document.getElementById("studentModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

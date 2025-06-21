@@ -117,6 +117,10 @@
       <button onclick="filterBySemester('الفصل الخامس')">الفصل الخامس</button>
       <button onclick="filterBySemester('الفصل السادس')">الفصل السادس</button>
     </div>
+    <script>
+      const filteredData = {{ data | tojson | safe }};
+      console.log(filteredData);
+    </script>
 
     <script>
 
@@ -429,3 +433,19 @@
     </script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

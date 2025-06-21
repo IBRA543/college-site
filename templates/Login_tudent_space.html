@@ -1,225 +1,235 @@
 <!DOCTYPE html>
 <html lang="ar">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>إضافة بيانات</title>
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "poppins";
-            color: #fff;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "poppins";
+        color: #fff;
+      }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #1e1e2e;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #1e1e2e;
+        color: #fff;
+        font-family: "Cairo", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
 
-        .container {
-            position: relative;
-            width: 600px;
-            padding: 70px;
-            border: 2px solid #ff2770;
-            box-shadow: 0 0 25px #ff2770;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
+      .container {
+        position: relative;
+        width: 600px;
+        padding: 70px;
+        border: 2px solid #ff2770;
+        box-shadow: 0 0 25px #ff2770;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
 
-        .container h2 {
-            font-size: 28px;
-            margin-bottom: 40px;
-        }
+      .container h2 {
+        font-size: 28px;
+        margin-bottom: 40px;
+      }
 
-        .input-box {
-            position: relative;
-            width: 100%;
-            margin-top: 20px;
-        }
+      .input-box {
+        position: relative;
+        width: 100%;
+        margin-top: 20px;
+      }
 
-        .input-box input {
-            width: 100%;
-            height: 45px;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 20px;
-            color: #fff;
-            font-weight: 600;
-            border-bottom: 2px solid #fff;
-            padding: 10px;
-        }
+      .input-box input {
+        width: 100%;
+        height: 45px;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 20px;
+        color: #fff;
+        font-weight: 600;
+        border-bottom: 2px solid #fff;
+        padding: 10px;
+      }
 
+      .input-box input:focus {
+        border-bottom: 2px solid #ff2770;
+      }
 
-        .input-box input:focus {
-            border-bottom: 2px solid #ff2770;
-        }
+      .btn {
+        width: 100%;
+        height: 45px;
+        background: linear-gradient(45deg, #ff2770, #ff5e8a);
+        border-radius: 40px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        outline: none;
+        margin-top: 20px;
+        transition: 0.3s ease-in-out;
+      }
 
-        .btn {
-            width: 100%;
-            height: 45px;
-            background: linear-gradient(45deg, #ff2770, #ff5e8a);
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            outline: none;
-            margin-top: 20px;
-            transition: 0.3s ease-in-out;
-        }
+      .btn:hover {
+        background: linear-gradient(45deg, #ff5e8a, #ff2770);
+        box-shadow: 0 0 20px rgba(255, 39, 112, 0.8);
+        transform: scale(1.05);
+      }
 
-        .btn:hover {
-            background: linear-gradient(45deg, #ff5e8a, #ff2770);
-            box-shadow: 0 0 20px rgba(255, 39, 112, 0.8);
-            transform: scale(1.05);
-        }
-
-        .error-message {
-            display: none;
-            color: red;
-            font-weight: bold;
-            font-size: 16px;
-            text-align: center;
-            margin-top: 10px;
-        }
+      .error-message {
+        display: none;
+        color: red;
+        font-weight: bold;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 10px;
+      }
     </style>
-</head>
+  </head>
 
-<body data-page-group="group2">
-
+  <body data-page-group="group2">
     <div class="container">
-        <h2 data-translate="Welcome">إدخال بيانات الطالب</h2>
-        <form id="dataForm" method="POST" action="/Student_space">
-            <div class="input-box">
-                <input type="text" name="id_card" id="id_card" placeholder="CNE (مثال: ZT2261)" required>
-            </div>
-            <div class="input-box">
-                <input type="text" name="major" id="major" placeholder="مسار (مثال: A123456789)" required>
-            </div>
-            <button type="submit" class="btn">تأكيد</button>
-        </form>
-        <p class="error-message" id="error-message">❌ المعلومات غير صحيحة</p>
+      <h2 data-translate="Welcome">إدخال بيانات الطالب</h2>
+      <form id="dataForm" method="POST" action="/Student_space">
+        <div class="input-box">
+          <input
+            type="text"
+            name="id_card"
+            id="id_card"
+            placeholder="CNE (مثال: ZT2261)"
+            required
+          />
+        </div>
+        <div class="input-box">
+          <input
+            type="text"
+            name="major"
+            id="major"
+            placeholder="مسار (مثال: A123456789)"
+            required
+          />
+        </div>
+        <button type="submit" class="btn">تأكيد</button>
+      </form>
+      <p class="error-message" id="error-message">❌ المعلومات غير صحيحة</p>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.querySelector('#dataForm');
-            const cneInput = document.getElementById('id_card');
-            const majorInput = document.getElementById('major');
-            const errorMessage = document.getElementById('error-message');
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("dataForm");
+        const cneInput = document.getElementById("id_card");
+        const majorInput = document.getElementById("major");
+        const errorMessage = document.getElementById("error-message");
+        const pageGroup = document.body.getAttribute("data-page-group");
+        const savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar";
 
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                let id_card = cneInput.value.trim();
-                let major = majorInput.value.trim();
-                id_card = id_card.replace(/[‏‎؜]/g, '');
-                const cneRegex = /^[A-Za-z]+\d{4,6}$/;
-                const majorRegex = /^[A-Za-z]\d{9}$/;
+        // تحميل الترجمة عند فتح الصفحة
+        fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() =>
+          loadTranslations(savedLang)
+        );
 
-                if (!cneRegex.test(id_card) || !majorRegex.test(major)) {
-                    showError("❌ المعلومات غير صحيحة");
-                    return;
+        // إرسال البيانات والتحقق منها
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          let id_card = cneInput.value.trim().replace(/[‏‎؜]/g, "");
+          let major = majorInput.value.trim();
+
+          const cneRegex = /^[A-Za-z]+\d{4,6}$/;
+          const majorRegex = /^[A-Za-z]\d{9}$/;
+
+          if (!cneRegex.test(id_card) || !majorRegex.test(major)) {
+            showError("❌ المعلومات غير صحيحة");
+            return;
+          }
+
+          console.log("📤 Sending request with:", { id_card, major });
+
+          fetch("/Student_space", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_card, major }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("📥 Response received:", data);
+              if (data.success) {
+                if (data.success) {
+                  console.log("📄 تحميل واجهة النتائج");
+                  document.open();
+                  document.write(data.html);
+                  document.close();
                 }
-
-                fetch('/Student_space', {
-                    method: 'POST',
-                    body: new FormData(form)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.body.innerHTML = data.html;
-                        } else {
-                            showError(data.error);
-                        }
-                    })
-                    .catch(() => {
-                        showError("❌  حذث خطأ أثناء البحث");
-                    });
-            });
-
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = "block";
-                setTimeout(() => {
-                    errorMessage.style.display = "none";
-                }, 3000);
-            }
-        });
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
-            let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
-
-            // ضبط اللغة عند تحميل الصفحة
-            fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() => loadTranslations(savedLang));
-
-            function loadTranslations(lang) {
-                fetch(`/get_translations/${lang}`)
-                    .then(response => response.json())
-                    .then(data => updateTranslations(data.translations));
-            }
-
-            window.changeLanguage = function (lang) {
-                localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
-
-                fetch(`/change_language/${lang}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            updateTranslations(data.translations);
-                        }
-                    });
-
-                // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
-                fetch(`/set_language/${lang}`, { method: "POST" });
-
-                // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
-                localStorage.setItem("language_update", JSON.stringify({ group: pageGroup, lang: lang }));
-            };
-
-            function updateTranslations(translations) {
-                document.querySelectorAll("[data-translate]").forEach(element => {
-                    let key = element.getAttribute("data-translate");
-                    if (translations[key]) {
-                        element.textContent = translations[key];
-                    }
-                });
-            }
-
-            // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
-            window.addEventListener("storage", function (event) {
-                if (event.key === "language_update") {
-                    let data = JSON.parse(event.newValue);
-                    if (data.group === pageGroup) {
-                        loadTranslations(data.lang);
-                    }
-                }
+              } else {
+                showError(data.error || "❌ حدث خطأ غير متوقع");
+              }
+            })
+            .catch((err) => {
+              console.error("❌ Network or server error:", err);
+              showError("❌ حدث خطأ أثناء الاتصال بالخادم");
             });
         });
 
+        // عرض رسالة الخطأ بشكل مؤقت
+        function showError(message) {
+          errorMessage.textContent = message;
+          errorMessage.style.display = "block";
+          setTimeout(() => (errorMessage.style.display = "none"), 3000);
+        }
 
+        // تغيير اللغة
+        window.changeLanguage = function (lang) {
+          localStorage.setItem(`language_${pageGroup}`, lang);
+          fetch(`/change_language/${lang}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.success) updateTranslations(data.translations);
+            });
+
+          fetch(`/set_language/${lang}`, { method: "POST" });
+          localStorage.setItem(
+            "language_update",
+            JSON.stringify({ group: pageGroup, lang })
+          );
+        };
+
+        // تحديث الترجمة على الصفحة
+        function loadTranslations(lang) {
+          fetch(`/get_translations/${lang}`)
+            .then((res) => res.json())
+            .then((data) => updateTranslations(data.translations));
+        }
+
+        function updateTranslations(translations) {
+          document.querySelectorAll("[data-translate]").forEach((el) => {
+            let key = el.getAttribute("data-translate");
+            if (translations[key]) el.textContent = translations[key];
+          });
+        }
+
+        // مراقبة تغيير اللغة من صفحات أخرى ضمن نفس المجموعة
+        window.addEventListener("storage", (event) => {
+          if (event.key === "language_update") {
+            let data = JSON.parse(event.newValue);
+            if (data.group === pageGroup) loadTranslations(data.lang);
+          }
+        });
+      });
     </script>
-
-</body>
-
+  </body>
 </html>

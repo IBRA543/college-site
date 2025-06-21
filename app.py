@@ -15,7 +15,9 @@ from flask import Response
 from flask_babel import Babel
 from werkzeug.utils import secure_filename
 import time
-from waitress import serve
+from flask import Flask, jsonify, request
+import mysql.connector
+from flask import Flask, session
 
 
 app = Flask(__name__)
@@ -26,6 +28,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # مجلدات التحميل والبيانات
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'pdfs')
 DATA_DIR = os.path.join(BASE_DIR, 'data')
+UPLOAD_IMAGES_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
+app.config['UPLOAD_IMAGES_FOLDER'] = UPLOAD_IMAGES_FOLDER
+
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['BABEL_DEFAULT_LOCALE'] = 'ar'
@@ -75,6 +80,7 @@ with open(translations_path, "r", encoding="utf-8") as file:
 
 LANGUAGES = ['en', 'ar', 'fr']
 
+
 def get_locale():
     return session.get('language', 'ar')
 
@@ -96,6 +102,13 @@ def change_language(lang):
         session.modified = True
         return jsonify({'success': True, 'translations': TRANSLATIONS.get(lang, TRANSLATIONS['ar'])})
     return jsonify({'success': False})
+
+
+
+
+
+
+
 
 
 @app.route('/delete_file', methods=['POST'])
@@ -248,7 +261,7 @@ def check_file_exists():
     return jsonify({'exists': False})
 
 
-BASE_DIR = os.path.join(os.getcwd(), "site_college21", "static", "pdfs")
+BASE_DIR = os.path.join(os.getcwd(), "site_college30", "static", "pdfs")
 
 def email_to_folder(email):
     return email.replace('@', '_').replace('.', '_')
@@ -412,7 +425,7 @@ def lessonss():
     return render_template("lessonss.html", pdf_files=pdf_files, subject=subject, teacher_email=teacher_email, language=get_locale())
 
 def get_files_for_teacher(teacher_email, subject):
-    base_folder = os.path.join("site_college21", "static", "pdfs", teacher_email, subject)
+    base_folder = os.path.join("site_college30", "static", "pdfs", teacher_email, subject)
 
     print(f"🔍 البحث في: {os.path.abspath(base_folder)}")  # عرض المسار المطلق للتحقق
 
@@ -577,9 +590,10 @@ def AAAAA():
 def announcement_list():
     return render_template('announcement_list.html', language=get_locale())
 
-@app.route('/saved_students_table')
-def saved_students_table():
-    return render_template('saved_students_table.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+@app.route('/button_chat')
+def button_chat():
+    return render_template('button_chat.html', language=get_locale())
+
 
 @app.route('/Quick_entry_points')
 def Quick_entry_points():
@@ -598,17 +612,12 @@ def control_teacher():
 def news():
     return render_template('news.html', language=get_locale())  # تأكد من أن هذا الملف موجود
 
-@app.route('/student')
-def student():
-    return render_template('student.html', language=get_locale())  # تأكد من أن هذا الملف موجود
-
-
 
 @app.route('/coun')
 def coun():
     email = session.get('email', None)
     student = get_student_by_email(email)
-    profile_image = student['profile_image'] if student and student.get('profile_image') else '/static/images/user.png'
+    profile_image = student['profile_image'] if student and student.get('profile_image') else '/static/images/image_account/user8.png'
     if 'email' not in session:
         print("🔴 لم يتم تسجيل الدخول - لا توجد جلسة email")
         return redirect(url_for('login'))
@@ -672,13 +681,360 @@ def coun():
 
     return render_template('coun.html', language=get_locale(), student=student_data, profile_image=profile_image)
 
+
+
+
+@app.route('/coun_teacher')
+def coun_teacher():
+    email = session.get('email', None)
+    student = get_student_by_email(email)
+    profile_image = student['profile_image'] if student and student.get('profile_image') else '/static/images/image_account/user8.png'
+    if 'email' not in session:
+        print("🔴 لم يتم تسجيل الدخول - لا توجد جلسة email")
+        return redirect(url_for('login'))
+
+    print("🟢 الجلسة الحالية:", session)
+
+    student_number = str(session.get("student_number", ""))
+    result = get_student_data(student_number)
+
+    # استخراج جميع النقاط لجميع الطلاب
+    all_scores = []
+    try:
+        with open(STUDENTS01_FILE, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                try:
+                    point = float(row['points'])
+                    all_scores.append(point)
+                except ValueError:
+                    continue
+    except Exception as e:
+        print(f"❌ خطأ أثناء قراءة النقاط: {e}")
+    
+    student_data = {
+        "name": session.get("name", ""),
+        "email": session.get("email", ""),
+        "dob": session.get("dob", ""),
+        "contact": session.get("contact", ""),
+        "address": session.get("address", ""),
+        "course": session.get("course", ""),
+        "student_number": student_number,
+        "max_point": result.get("max_point", 0),
+        "min_point": result.get("min_point", 0),
+        "percentage_max": result.get("percentage_max", 0),
+        "percentage_min": result.get("percentage_min", 0),
+        "circle_offset_max": result.get("circle_offset_max", 226.2),
+        "circle_offset_min": result.get("circle_offset_min", 226.2),
+        "color_min": result.get("color_min", "rgb(0,255,0)"),
+        "all_scores": all_scores,
+
+        # ✅ القيم الجديدة الخاصة بالمعدل
+        "average_score": result.get("average", 0),
+        "average_percentage": result.get("percentage_avg", 0),
+        "circle_offset_avg": result.get("circle_offset_avg", 226.2),
+        "color_avg": result.get("color_avg", "rgb(0,255,0)"),
+
+        # ✅ بيانات أدنى معدل
+        "min_average_score": result.get("min_average", 0),
+        "percentage_min_avg": result.get("percentage_min_avg", 0),
+        "circle_offset_min_avg": result.get("circle_offset_min_avg", 226.2),
+        "color_min_avg": result.get("color_min_avg", "rgb(0,255,0)"),
+
+        "success_average": result.get("success_average", 0),
+        "success_percentage": result.get("success_percentage", 0),
+        "success_offset": result.get("success_offset", 226.2),
+        "success_color": result.get("success_color", "rgb(0,255,0)")
+
+    }
+
+    print("📦 بيانات الطالب المرسلة إلى القالب:", student_data)
+
+    return render_template('coun_teacher.html', language=get_locale(), student=student_data, profile_image=profile_image)
+
+
 @app.route('/timetable')
 def timetable():
     return render_template('timetable.html', language=get_locale())  # تأكد من أن هذا الملف موجود
 
+
 @app.route('/exam')
 def exam():
     return render_template('exam.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/withdraw_bac')
+def withdraw_bac():
+    return render_template('withdraw_bac.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+
+@app.route('/request_points_statement')
+def request_points_statement():
+    return render_template('request_points_statement.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/request_data_audit')
+def request_data_audit():
+    return render_template('request_data_audit.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/regrade_request')
+def regrade_request():
+    return render_template('regrade_request.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/vegetation_studies')
+def vegetation_studies():
+    return render_template('vegetation_studies.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/mawarid')
+def mawarid():
+    return render_template('mawarid.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/environmental_planning')
+def environmental_planning():
+    return render_template('environmental_planning.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+
+@app.route('/transportation')
+def transportation():
+    return render_template('transportation.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+@app.route('/climate_change')
+def climate_change():
+    return render_template('climate_change.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+@app.route('/natural_resources')
+def natural_resources():
+    return render_template('natural_resources.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+
+
+
+
+
+
+@app.route('/discover_program')
+def discover_program():
+    return render_template('discover_program.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/population_distribution')
+def population_distribution():
+    return render_template('population_distribution.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/climat_change')
+def climat_change():
+    return render_template('climat_change.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/energy_study')
+def energy_study():
+    return render_template('energy_study.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/economic_geography')
+def economic_geography():
+    return render_template('economic_geography.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/geology')
+def geology():
+    return render_template('geology.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/urban_growth')
+def urban_growth():
+    return render_template('urban_growth.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/whow_are_we')
+def whow_are_we():
+    return render_template('whow_are_we.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+
+@app.route('/upcoming_activities')
+def upcoming_activities():
+    return render_template('upcoming_activities.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/news_developments')
+def news_developments():
+    return render_template('news_developments.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/frequentlt_question')
+def frequentlt_question():
+    return render_template('frequentlt_question.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/students_opinions')
+def students_opinions():
+    return render_template('students_opinions.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/professors_biographies')
+def professors_biographies():
+    return render_template('professors_biographies.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/terms_conditions')
+def terms_conditions():
+    return render_template('terms_conditions.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/policy_privacy')
+def policy_privacy():
+    return render_template('policy_privacy.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/useful_links')
+def useful_links():
+    return render_template('useful_links.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html', language=get_locale())  # تأكد من أن هذا الملف موجود
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 ميجابايت
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash('❌ حجم الملف كبير جداً! الرجاء رفع ملفات بحجم أقل من 16 ميغابايت.')
+    return redirect(url_for('references'))  # بدون تحديد الكود هنا (يصبح 302 تلقائيًا)
+
+
+from flask import make_response, render_template
+
+@app.route('/references')
+def references():
+    response = make_response(render_template('references.html'))
+    # تمنع المتصفح من إعادة استخدام نسخة قديمة وتطلب إعادة تحميل صحيحة
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+import re
+
+
+def clean_filename(filename):
+    # إزالة المسارات المحتملة
+    filename = filename.split('/')[-1].split('\\')[-1]
+    
+    # استبدال الفراغات بـ _
+    filename = filename.replace(' ', '_')
+    
+    # إزالة أو استبدال الأحرف الغير مرغوبة (تبقي الأحرف العربية والإنجليزية والأرقام والـ _ و - فقط)
+    # التعبير النظامي يسمح بالحروف العربية: \u0600-\u06FF
+    filename = re.sub(r'[^\w\u0600-\u06FF\-\.]', '', filename)
+    
+    # منع أكثر من نقطة متتالية أو في بداية/نهاية الاسم
+    filename = re.sub(r'\.+', '.', filename).strip('.')
+    
+    return filename
+
+
+def unique_filename(directory, filename):
+    base, ext = os.path.splitext(filename)
+    counter = 1
+    new_filename = filename
+    while os.path.exists(os.path.join(directory, new_filename)):
+        new_filename = f"{base}_{counter}{ext}"
+        counter += 1
+    return new_filename
+
+
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx', 'ppt', 'pptx', 'mp4', 'avi', 'mov', 'wmv', 'png', 'jpg', 'jpeg', 'gif', 'svg'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['POST'])
+def upload_file1():
+    print("===> بدأ تنفيذ دالة upload_file1")
+
+    if 'file' not in request.files:
+        print("🚫 'file' غير موجود في request.files")
+        flash('❌ لم يتم اختيار أي ملف.')
+        return redirect(url_for('references'))
+
+    file = request.files['file']
+    print(f"📁 اسم الملف المستلم: {file.filename}")
+    if file.filename == '':
+        print("🚫 اسم الملف فارغ.")
+        flash('❌ اسم الملف فارغ.')
+        return redirect(url_for('references'))
+
+    # الحصول على الحقول
+    publish_type = request.form.get('publish_type', '')
+    year = request.form.get('selected_year', '')
+    session_period = request.form.get('selected_semester', '')
+    path = request.form.get('selected_path', '')
+    username = session.get('professor', '')
+
+    print("📋 البيانات المستلمة من النموذج:")
+    print(f" - publish_type: {publish_type} -> {[c for c in publish_type]}")
+    print(f" - year: {year} -> {[c for c in year]}")
+    print(f" - session_period: {session_period} -> {[c for c in session_period]}")
+    print(f" - path: {path} -> {[c for c in path]}")
+    print(f" - username: {username} -> {[c for c in username]}")
+
+    if not all([file, publish_type, username, year, session_period]):
+        print("🚫 أحد الحقول المطلوبة مفقود.")
+        flash('❌ حدث خطأ أثناء رفع الملف. تأكد من تعبئة جميع الحقول.')
+        return redirect(url_for('references'))
+
+    if year == "3" and not path:
+        print("🚫 السنة 3 ولكن لم يتم اختيار مسار.")
+        flash('❌ يجب اختيار المسار للسنة الثالثة.')
+        return redirect(url_for('references'))
+
+    if not allowed_file(file.filename):
+        print("🚫 نوع الملف غير مدعوم.")
+        flash('❌ نوع الملف غير مدعوم...')
+        return redirect(url_for('references'))
+
+    base_path = os.path.join(BASE_DIR, 'static', 'pdfs', username.replace("@", "_").replace(".", "_"))
+    print(f"📁 مجلد البداية: {base_path}")
+
+    if publish_type == 'مراجع':
+        base_path = os.path.join(base_path, 'references')
+    elif publish_type == 'خرائط':
+        base_path = os.path.join(base_path, 'maps')
+    elif publish_type == 'نماذج الامتحانات':
+        base_path = os.path.join(base_path, 'exam')
+    elif publish_type == 'آخر':
+        base_path = os.path.join(base_path, 'last')
+    else:
+        print("⚠️ نوع النشر غير معروف")
+
+    print(f"📁 بعد إضافة نوع النشر: {base_path}")
+
+    base_path = os.path.join(base_path, year, f"session{session_period}")
+    print(f"📁 بعد إضافة السنة والدورة: {base_path}")
+
+    if year == "3":
+        base_path = os.path.join(base_path, path)
+        print(f"📁 بعد إضافة المسار: {base_path}")
+
+    os.makedirs(base_path, exist_ok=True)
+
+    filename = clean_filename(file.filename)
+    filename = unique_filename(base_path, filename)
+    save_path = os.path.join(base_path, filename)
+
+    print(f"💾 حفظ الملف في: {save_path}")
+    file.save(save_path)
+
+    flash('✅ تم رفع الملف بنجاح.')
+    return redirect(url_for('references'))
+
+
+
+
+
+
+
 
 @app.route('/password_recovery')
 def password_recovery():
@@ -812,10 +1168,15 @@ def login():
                 print(f"📘 التخصص: {session.get('course')}")
                 print(f"🟢 الدور: {session.get('role')}")
                 print(f"📦 الجلسة الكاملة: {dict(session)}")
+                session['current_student'] = {
+                    'name': student.get('name'),
+                    'second_name': student.get('second_name')
+                }
 
                 if session['role'] == 'student':
                     return redirect(url_for('dashboard'))
                 elif session['role'] == 'teacher':
+                    session['professor'] = session.get('email')
                     return redirect(url_for('teacher_dashboard'))
                 else:
                     return redirect(url_for('home'))
@@ -833,8 +1194,8 @@ def home():
     return render_template('index.html', language=get_locale())
 
 
-@app.route('/', methods=['GET', 'POST'])
-def homes():
+@app.route('/student', methods=['GET', 'POST'])
+def student():
     if request.method == 'POST':
         if 'buttons' in request.form:
             return redirect(url_for('buttons'))
@@ -859,7 +1220,7 @@ def signup():
         code_massar_clean = clean_string(code_massar)
 
         # تحميل بيانات الطلاب من ملف S1.csv
-        s_students = load_students_from_csv('site_college21/S1.csv')
+        s_students = load_students_from_csv('site_college30/S1.csv')
 
         # البحث عن الطالب باستخدام رقم البطاقة وكود المسار
         student = next((s for s in s_students if clean_string(s["id_card"]) == id_card_clean and clean_string(s["code_massar"]) == code_massar_clean), None)
@@ -883,6 +1244,12 @@ def signup():
             session['role'] = 'student'
             session['email'] = student_data["email"]  # تخصيص البريد الإلكتروني
             session['student_name'] = student_data["name"]  # حفظ اسم الطالب في الجلسة
+
+            session['current_student'] = {
+                'name': student.get('name'),
+                'second_name': student.get('second_name')
+            }
+
             
 
             # إعادة التوجيه إلى صفحة تسجيل الدخول مع البريد الإلكتروني الذي تم إضافته
@@ -905,9 +1272,18 @@ def teacher_dashboard():
     if role != 'teacher' or not email:
         return redirect(url_for('signup'))
 
+    student = get_student_by_email(email)
+
     # إضافة رابط خاص لكل أستاذ
     special_lessons_link = None
     teacher_subjects = {}  # معجم لتخزين المواد لكل أستاذ
+
+    # التأكد من أن الصورة موجودة في بيانات الطالب في الـ CSV
+    profile_image = student['profile_image'] if student and student.get('profile_image') and student['profile_image'].strip() else '/static/images/image_account/user8.png'
+
+    
+    # تخزين الصورة في الجلسة ليتم استخدامها لاحقًا
+    session['profile_image'] = profile_image
 
     if email == 'bansalem.rj@usmba.ac.ma':
         special_lessons_link = url_for('lessons', teacher='teacher1')
@@ -937,8 +1313,10 @@ def teacher_dashboard():
     teacher_subject = teacher_subjects.get(email, [])
     readable_subjects = [subject.replace("_", " ").capitalize() for subject in teacher_subject]
 
-    return render_template('teacher_dashboard.html', email=email, teacher_name=teacher_name, teacher_subject=teacher_subject, special_lessons_link=special_lessons_link,available_subjects=teacher_subject, language=get_locale())
+    return render_template('teacher_dashboard.html', email=email, profile_image=profile_image, teacher_name=teacher_name, teacher_subject=teacher_subject, special_lessons_link=special_lessons_link,available_subjects=teacher_subject, language=get_locale())
 # صفحة الطالب
+
+
 
 
 # صفحة الدخول - يمكن أن تكون صفحة فارغة أو تحتوي على تحقق من البيانات
@@ -1103,35 +1481,9 @@ def delete_announcement(id):
 def buttons():
     return render_template('buttons.html', language=get_locale())  # تأكد من أن هذا الملف موجود
 
-@app.route('/Student_space')
-def Student_space():
-    return render_template('Student_space.html', language=get_locale())  # تأكد من أن هذا الملف موجود
 
      
-def load_students(file_path, teacher_subject=None, student_number=None):
-    """ تحميل بيانات الطلاب من ملف CSV مع تصفية حسب المادة أو رقم الطالب """
-    temp_students = []
-    
-    if os.path.exists(os.path.join(BASE_DIR, file_path)):
-        with open(os.path.join(BASE_DIR, file_path), newline='', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                row = {key.strip(): (value.strip() if value else '') for key, value in row.items()}
 
-                if 'student_number' not in row or not row['student_number']:
-                    continue
-
-                # إذا كان هناك رقم طالب، يجب مطابقته
-                if student_number and row['student_number'].strip() != student_number.strip():
-                    continue
-
-                # إذا كان الملف الأساسي، يجب مطابقة المادة
-                if teacher_subject and file_path.startswith("students") and row.get('subject', '').strip() != teacher_subject.strip():
-                    continue
-
-                temp_students.append(row)
-
-    return temp_students
 # ------------------------- تغيير كلمة المرور بصفحة password ----------------------------
 @app.route('/password')
 def password():
@@ -1224,112 +1576,7 @@ def forgot_password():
     return render_template('password.html')
 
 
-# -------------------------
-# ------------------------- الجزء الخاص بالرسائل و حفضها و تحميلها في صفحة الطالب ----------------
-MESSAGE_FILE = MESSAGE_FILE
-# تأكد من أن المجلد الذي يحتوي على الملف موجود
-if not os.path.exists(os.path.dirname(MESSAGE_FILE)):
-    os.makedirs(os.path.dirname(MESSAGE_FILE))
 
-@app.route('/send_message', methods=['POST'])
-def send_message():
-    try:
-        # التحقق من البيانات المرسلة
-        data = request.get_json()
-        name = data.get("name")
-        message = data.get("message")
-        email = data.get("email", "")  # إذا لم يكن البريد موجودًا سيأخذ قيمة فارغة
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # الوقت الحالي
-
-        # طباعة البيانات المستلمة للتحقق منها
-        print(f"Received data: name={name}, message={message}, email={email}, timestamp={timestamp}")
-
-        # تأكد من أن الرسالة والبريد ليست فارغة
-        if not message or not name:
-            return jsonify({"status": "error", "message": "البيانات غير مكتملة"}), 400
-        
-        # محاولة حفظ الرسالة في ملف CSV مع الوقت والبريد الشخصي
-        with open(MESSAGE_FILE, mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow([name, email, message, timestamp])  # إضافة البريد والوقت (البريد قد يكون فارغًا)
-        
-        return jsonify({"status": "success"}), 200
-    except Exception as e:
-        print(f"Error saving message: {e}")
-        return jsonify({"status": "error", "message": f"حدث خطأ أثناء حفظ الرسالة: {str(e)}"}), 500
-
-@app.route('/messages')
-def get_messages():
-    messages = []
-    try:
-        with open(MESSAGE_FILE, mode='r', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if len(row) == 4:
-                    name, email, message, timestamp = row
-                    messages.append({
-                        'name': name,
-                        'email': email,
-                        'message': message,
-                        'timestamp': timestamp
-                    })
-    except FileNotFoundError:
-        pass
-
-    return jsonify(messages)
-
-
-@app.route('/delete_message', methods=['POST'])
-def delete_message():
-    try:
-        data = request.get_json()
-        message_text = data.get("messageText").strip()  # إزالة الفراغات من النص
-        timestamp = data.get("timestamp").strip()  # إزالة الفراغات من التوقيت
-
-        # طباعة البيانات التي وصلتنا
-        print(f"Received data for deletion: messageText={message_text}, timestamp={timestamp}")
-
-        updated_rows = []
-        deleted = False
-
-        # فتح الملف وقراءة البيانات
-        with open(MESSAGE_FILE, mode='r', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if len(row) < 4:
-                    continue  # تخطي الصفوف غير المكتملة
-                name, email, message, time = row
-                # بناء الرسالة بدون البريد الإلكتروني
-                full_message = f"{name}: {message}".strip()  # تأكد من إزالة الفراغات
-
-                # طباعة الرسائل للتحقق من المطابقة
-                print(f"Full message: {full_message} vs messageText: {message_text}")
-                print(f"Checking time: {time} vs timestamp: {timestamp}")
-
-                # إزالة الفراغات من الوقت أيضًا
-                time = time.strip()
-
-                # تحقق إذا كانت الرسالة والتوقيت مطابقين
-                if full_message == message_text and time == timestamp:
-                    print(f"Message matched and will be deleted: {full_message}")
-                    deleted = True
-                    continue
-                updated_rows.append(row)
-
-        if deleted:
-            with open(MESSAGE_FILE, mode='w', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerows(updated_rows)
-
-            print("Message deleted successfully.")
-            return jsonify({"status": "success"}), 200
-        else:
-            print("Message not found for deletion.")
-            return jsonify({"status": "error", "message": "لم يتم العثور على الرسالة"}), 404
-
-    except Exception as e:
-        print(f"Error occurred: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
 
 # ---------------------------------------- الجزء المخصص لنشر إعلانات من طرف الاستاذ و حفضها في الملف ---------------------------------------------
 @app.route('/ads', methods=['GET', 'POST'])
@@ -1562,7 +1809,14 @@ def get_student_data(student_number):
     elif len(averages_by_file) == 1:
         success_average = list(averages_by_file.values())[0]
 
-    success_percentage = (success_average / 20) * 100 if success_average > 0 else 0
+    # إذا كانت كل النقاط ≥ 70، نملأ الشريط 100%
+    if len(student_data['all_scores']) == 7 and all(score >= 70 for score in student_data['all_scores']):
+        success_percentage = 100
+    else:
+        # نسبة التقدم بناءً على الاقتراب من 70
+        success_percentage = (success_average / 70) * 100 if success_average > 0 else 0
+        success_percentage = min(success_percentage, 100)  # للتأكد أنها لا تتجاوز 100
+
     success_circle = 2 * math.pi * 36
     success_offset = success_circle - (success_circle * success_percentage / 100)
 
@@ -1613,6 +1867,7 @@ def default_result():
 
 # -----------------------------------------------------------------------------------------------------------
 
+
 print("المسار الكامل لملف الطلاب:", STUDENTS_FILE)
 print("هل الملف موجود؟", os.path.exists(STUDENTS_FILE))
 
@@ -1655,7 +1910,7 @@ def dashboard():
     student = get_student_by_email(email)
     
     # التأكد من أن الصورة موجودة في بيانات الطالب في الـ CSV
-    profile_image = student['profile_image'] if student and student.get('profile_image') and student['profile_image'].strip() else '/static/images/user.png'
+    profile_image = student['profile_image'] if student and student.get('profile_image') and student['profile_image'].strip() else '/static/images/image_account/user8.png'
 
     
     # تخزين الصورة في الجلسة ليتم استخدامها لاحقًا
@@ -1665,55 +1920,102 @@ def dashboard():
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
+    print("Start upload_image()")
     email = session.get('email')
+    print(f"Session email: {email}")
     if not email:
+        print("Unauthorized: no email in session")
         return 'Unauthorized', 401
 
     if 'image' not in request.files:
+        print("No file part in request")
         return 'No file part', 400
+
     file = request.files['image']
+    print(f"Uploaded file: {file.filename}")
     if file.filename == '':
+        print("No selected file")
         return 'No selected file', 400
+
     if file and allowed_file(file.filename):
+        print("File allowed")
         ext = file.filename.rsplit('.', 1)[1].lower()
-        # 🟢 نحفظ الصورة باسم البريد بدون الرموز (لكل مستخدم صورة خاصة)
         safe_email = email.replace('@', '_').replace('.', '_')
         filename = f"{safe_email}.{ext}"
-        full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        full_path = os.path.join(app.config['UPLOAD_IMAGES_FOLDER'], filename)
         print(f"Saving file to: {full_path}")
-        file.save(full_path)
+
+        try:
+            file.save(full_path)
+            print("File saved successfully")
+        except Exception as e:
+            print(f"Error saving file: {e}")
+            return f"Error saving file: {e}", 500
 
         timestamp = int(time.time())
         image_url = f'/static/uploads/{filename}?t={timestamp}'
-        session['profile_image'] = image_url  # تخزين مؤقت
-        update_student_image(email, f'/static/uploads/{filename}')  # تخزين دائم في CSV بدون timestamp
+        session['profile_image'] = image_url
+        print(f"Session profile_image set to: {image_url}")
 
+        try:
+            update_student_image(email, f'/static/uploads/{filename}')
+            print("Updated student image in CSV successfully")
+        except Exception as e:
+            print(f"Error updating student image in CSV: {e}")
+            return f"Error updating student image: {e}", 500
+
+        print("Returning success response")
         return jsonify({"image_url": image_url}), 200
+
+    print("File not allowed")
     return 'File not allowed', 400
+
 
 @app.route('/save-suggested-image', methods=['POST'])
 def save_suggested_image():
+    print("Start save_suggested_image()")
     email = session.get('email')
+    print(f"Session email: {email}")
     if not email:
+        print("Unauthorized: no email in session")
         return 'Unauthorized', 401
 
     data = request.get_json()
     image_url = data.get('image_url')
+    print(f"Received image_url: {image_url}")
 
     session['profile_image'] = image_url
-    update_student_image(email, image_url)  # نحفظ في CSV أيضاً
+    print("Session profile_image updated")
+
+    try:
+        update_student_image(email, image_url)
+        print("Updated student image in CSV successfully")
+    except Exception as e:
+        print(f"Error updating student image in CSV: {e}")
+        return f"Error updating student image: {e}", 500
 
     return jsonify({"message": "Image saved successfully"}), 200
 
+
 @app.route('/account')
 def account():
-    email = session.get('email', None)
+    email = session.get('email')
+    print(f"Account page requested by: {email}")
+
     student = get_student_by_email(email)
-    profile_image = student['profile_image'] if student and student.get('profile_image') else '/static/images/user.png'
-    return render_template('account.html', profile_image=profile_image)
 
+    if not student:
+        return redirect('/login')  # أو صفحة خطأ مخصصة
 
+    # تحديد صورة الملف الشخصي
+    profile_image = student.get('profile_image') or '/static/images/image_account/user8.png'
+    student['profile_image'] = profile_image
 
+    # جلب الإحصائيات المرتبطة بالطالب
+    student_number = student.get('student_number')
+    stats = get_student_data_account(student_number) if student_number else {}
+
+    return render_template('account.html', student=student, stats=stats)
 
 
 
@@ -1721,12 +2023,95 @@ def account():
 def get_profile_image():
     email = session.get('email', None)
     student = get_student_by_email(email)
-    profile_image = student['profile_image'] if student and student.get('profile_image') else '/static/images/user.png'
+    profile_image = student['profile_image'] if student and student.get('profile_image') else '/static/images/image_account/user8.png'
     return jsonify({'profile_image': profile_image})
 
 
+
+
+
+
+
+
+DATA_DIR = "student_chats"
+os.makedirs(DATA_DIR, exist_ok=True)
+
+
+@app.route("/students1")
+def get_students1():
+    students = []
+    file_path = r"C:\Users\DATA\OneDrive\Desktop\Python\Calcolator\site_college30\data\students.csv"
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row.get("role") != "student":
+                continue  # تجاهل الأساتذة أو أي دور آخر
+
+            avatar = row.get("profile_image") or "/static/images/image_account/user8.png"
+            students.append({
+                "name": row.get("name"),
+                "email": row.get("email", "student@example.com"),
+                "department": row.get("course"),
+                "avatar": avatar,
+                "major": row.get("specialization"),
+                "status": "نشط",  # أو يمكن أخذها من ملف إن وُجد عمود مخصص
+                "dateOfEnrollment": row.get("address"),
+                "location": row.get("address"),
+            })
+    return jsonify(students)
+
+
+
+
+def get_student_file_path(student_id):
+    return os.path.join(DATA_DIR, f"student_{student_id}.json")
+
+@app.route('/student_chat_data/<student_id>', methods=['GET'])
+def get_student_chat_data(student_id):
+    path = get_student_file_path(student_id)
+    if not os.path.exists(path):
+        # لو الملف مش موجود نرجع بيانات فارغة
+        return jsonify({"messages": [], "friends": []})
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return jsonify(data)
+
+@app.route('/student_chat_data/<student_id>', methods=['POST'])
+def save_student_chat_data(student_id):
+    data = request.get_json()
+    path = get_student_file_path(student_id)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    return jsonify({"status": "success"})
+
 # -----------------------------------------------------------------------------------------------------------
 
+
+def load_students(file_path, teacher_subject=None, student_number=None):
+    """ تحميل بيانات الطلاب من ملف CSV مع تصفية حسب المادة أو رقم الطالب """
+    temp_students = []
+    
+    if os.path.exists(os.path.join(BASE_DIR, file_path)):
+        with open(os.path.join(BASE_DIR, file_path), newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                row = {key.strip(): (value.strip() if value else '') for key, value in row.items()}
+
+                if 'student_number' not in row or not row['student_number']:
+                    continue
+
+                # إذا كان هناك رقم طالب، يجب مطابقته
+                if student_number and row['student_number'].strip() != student_number.strip():
+                    continue
+
+                # إذا كان الملف الأساسي، يجب مطابقة المادة
+                if teacher_subject and file_path.startswith("students") and row.get('subject', '').strip() != teacher_subject.strip():
+                    continue
+
+                temp_students.append(row)
+
+    return temp_students
+    
 @app.route('/get_students', methods=['GET'])
 def get_students():
     """إرجاع الطلاب بناءً على الزر الذي تم الضغط عليه، مع إعطاء أولوية للملف الأساسي ثم الثانوي"""
@@ -2206,9 +2591,645 @@ def show_names():
 def error():
     return render_template('error.html', language=get_locale())
 
+# ----------------------------------------------------------------------------------------
+
+
+def get_student_data_account(student_number):
+    import csv
+    import math
+    from collections import defaultdict
+
+    files = [
+        STUDENTS01_FILE,
+        STUDENTS02_FILE,
+        STUDENTS03_FILE,
+        STUDENTS04_FILE,
+        STUDENTS05_FILE,
+        STUDENTS06_FILE,
+    ]
+
+    # دالة افتراضية تُعيد نتيجة فارغة (تحتاج لتعريفها خارج الدالة حسب مشروعك)
+    def default_result():
+        return {}
+
+    # دوال مساعدة لحساب اللون (تحتاج لتعريفها في مكان آخر ضمن مشروعك)
+    def get_gradient_color(value):
+        # مثال: ارجع لون بناءً على القيمة (0-100)
+        return f"hsl({(100 - value) * 1.2}, 70%, 50%)"
+
+    def get_gradient_color_max(value):
+        # مثال: لون تدرج مخصص للقيم العليا
+        return f"hsl({value * 1.2}, 80%, 60%)"
+
+    # تخزين بيانات الطالب
+    student_data = {
+        'all_scores': [],
+        'scores_by_file': {},
+        'max': {'point': -1, 'file': None},
+        'min': {'point': 21, 'file': None}
+    }
+
+    file_data = {}
+
+    averages_by_file = {}
+
+    # قراءة البيانات من الملفات
+    for file_path in files:
+        max_points = {}
+        min_points = {}
+        total_points = defaultdict(float)
+        count_points = defaultdict(int)
+        scores = []
+
+        try:
+            with open(file_path, mode='r', encoding='utf-8') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    try:
+                        sn = row['student_number'].strip()
+                        point = float(row['points'])
+
+                        total_points[sn] += point
+                        count_points[sn] += 1
+
+                        max_points[sn] = max(max_points.get(sn, point), point)
+                        min_points[sn] = min(min_points.get(sn, point), point)
+
+                        if sn == student_number.strip():
+                            scores.append(point)
+                            if point > student_data['max']['point']:
+                                student_data['max']['point'] = point
+                                student_data['max']['file'] = file_path
+                            if point < student_data['min']['point']:
+                                student_data['min']['point'] = point
+                                student_data['min']['file'] = file_path
+                    except ValueError:
+                        continue
+
+            file_data[file_path] = {
+                'max_points': max_points,
+                'min_points': min_points,
+                'total_points': total_points,
+                'count_points': count_points
+            }
+
+            if scores:
+                student_data['scores_by_file'][file_path] = scores
+                student_data['all_scores'].extend(scores)
+
+            if len(scores) == 7:
+                averages_by_file[file_path] = sum(scores) / 7
+
+        except Exception as e:
+            print(f"❌ خطأ في قراءة {file_path}:", e)
+
+    if not student_data['all_scores']:
+        return default_result()
+
+    # دالة لحساب النسبة والoffset للدائرة بناءً على القيمة
+    def circle_offset(percent):
+        circumference = 2 * math.pi * 36
+        return circumference - (circumference * percent / 100)
+
+    # حساب النسب المئوية للmax و min
+    def calculate_metrics(score_type):
+        file_path = student_data[score_type]['file']
+        student_score = student_data[score_type]['point']
+        points = list(file_data[file_path]['max_points' if score_type == 'max' else 'min_points'].values())
+
+        if score_type == 'max':
+            rank = sum(1 for p in points if p < student_score)
+            total = len(points)
+            percentile = (rank / (total - 1)) * 100 if total > 1 else 100
+        else:
+            min_all = min(points)
+            max_all = max(points)
+            if max_all - min_all == 0:
+                percentile = 100
+            else:
+                percentile = 100 - ((student_score - min_all) / (max_all - min_all) * 100)
+
+        return percentile, circle_offset(percentile)
+
+    # حساب المتوسط الأفضل (max أو min) بناءً على ملفات الطالب
+    def calculate_average(is_max=True):
+        best_value = -1 if is_max else 21
+        best_file = None
+
+        for file_path, scores in student_data['scores_by_file'].items():
+            if len(scores) == 7:
+                avg = sum(scores) / 7
+                if (is_max and avg > best_value) or (not is_max and avg < best_value):
+                    best_value = avg
+                    best_file = file_path
+
+        if not best_file:
+            return 0, 0, circle_offset(0), None, []
+
+        all_averages = [
+            file_data[best_file]['total_points'][sn] / 7
+            for sn in file_data[best_file]['total_points']
+            if file_data[best_file]['count_points'][sn] == 7
+        ]
+        ref_avg = max(all_averages) if is_max else min(all_averages)
+        percentage = (best_value / ref_avg) * 100 if ref_avg != 0 else 100
+        percentage = max(0, min(100, percentage))
+        return best_value, percentage, circle_offset(percentage), best_file, all_averages
+
+    # حساب البيانات الرئيسية
+    percentile_max, offset_max = calculate_metrics('max')
+    percentile_min, offset_min = calculate_metrics('min')
+
+    avg, percentage_avg, offset_avg, avg_file, all_avg_list = calculate_average(True)
+    min_avg, percentage_min_avg, offset_min_avg, min_avg_file, all_min_list = calculate_average(False)
+
+    # حساب معدل النجاح (متوسط متوسطات الملفات)
+    if len(averages_by_file) == 2:
+        success_average = sum(averages_by_file.values()) / 2
+    elif len(averages_by_file) == 1:
+        success_average = list(averages_by_file.values())[0]
+    else:
+        success_average = 0
+
+    success_percentage = (success_average / 20) * 100 if success_average > 0 else 0
+    success_offset = circle_offset(success_percentage)
+
+    # حساب بيانات كل فصل دراسي (7 نقاط لكل ملف)
+    def semester_stats(file_key):
+        scores = student_data['scores_by_file'].get(file_key, [])
+        if not scores:
+            return 0, 0
+
+        avg_score = sum(scores) / len(scores)
+
+        total = sum(scores)
+        under_5_count = sum(1 for p in scores if p < 5)
+
+        if total > 70:
+            if under_5_count == 0:
+                fulfillment = 100
+            else:
+                fulfillment = max(0, 100 - (under_5_count * 14))
+        else:
+            fulfillment = (total / 140) * 100
+
+        return round(avg_score, 2), round(fulfillment, 2)
+
+    semesters = [
+        STUDENTS01_FILE,
+        STUDENTS02_FILE,
+        STUDENTS03_FILE,
+        STUDENTS04_FILE,
+        STUDENTS05_FILE,
+        STUDENTS06_FILE,
+    ]
+
+    semester_scores = {}
+    semester_fulfillments = {}
+
+    for i, sem_file in enumerate(semesters, 1):
+        avg_sem, fulfill_sem = semester_stats(sem_file)
+        semester_scores[f'semester_{i}'] = avg_sem
+        semester_fulfillments[f'{i}'] = fulfill_sem
+
+    # تحديد إن تم استيفاء الفصل الأول (مثال)
+    semester_fulfilled = semester_fulfillments['1'] == 100
+
+    # حساب إزاحة الاستيفاء للفصل الأول
+    fulfillment_offset = circle_offset(semester_fulfillments['1'])
+
+    return {
+        'min_point': round(student_data['min']['point'], 1),
+        'max_point': round(student_data['max']['point'], 1),
+
+        'average': round(avg, 1),
+        'percentage_avg': round(percentage_avg, 1),
+        'circle_offset_avg': round(offset_avg, 1),
+        'color_avg': get_gradient_color_max(percentage_avg),
+
+        'higher_than_max': sorted(
+            [p for p in file_data[student_data['max']['file']]['max_points'].values() if p > student_data['max']['point']],
+            reverse=True
+        )[:5],
+
+        'percentage_max': round(percentile_max, 1),
+        'circle_offset_max': round(offset_max, 1),
+
+        'percentage_min': round(percentile_min, 1),
+        'circle_offset_min': round(offset_min, 1),
+        'color_min': get_gradient_color(percentile_min),
+
+        'all_scores': student_data['all_scores'],
+
+        'semester_scores': {
+        key: {
+            'avg': val,
+            'percent': 0 if val == 0 else (100 if val >= 10 else 60)  # 0 تعني لا توجد بيانات
+        } for key, val in semester_scores.items()
+    },
+
+
+        'min_average': round(min_avg, 1),
+        'percentage_min_avg': round(percentage_min_avg, 1),
+        'circle_offset_min_avg': round(offset_min_avg, 1),
+        'color_min_avg': get_gradient_color(percentage_min_avg),
+        'lower_than_min_avg': sorted([a for a in all_min_list if a < min_avg])[:5],
+
+        'success_average': round(success_average, 1),
+        'success_percentage': round(success_percentage, 1),
+        'success_offset': round(success_offset, 1),
+        'success_color': get_gradient_color_max(success_percentage),
+
+        'semester_fulfilled': semester_fulfilled,
+        'fulfillment_percentage': round(semester_fulfillments['1'], 1),
+        'fulfillment_offset': round(fulfillment_offset, 1),
+        'fulfillment_color': get_gradient_color_max(semester_fulfillments['1']),
+
+        # إضافة نسب الاستيفاء لكل فصل دراسي بشكل منفصل
+        'fulfillment_percentages_by_semester': semester_fulfillments,
+    }
 
 
 
+
+
+
+
+
+# -----------------------------------saved_students_table فضاء الطالب -----------------------------------
+
+def load_students():
+    data_folder = r'C:\Users\DATA\OneDrive\Desktop\Python\Calcolator\site_college30\data'
+    files = [os.path.join(data_folder, f'students0{i}.csv') for i in range(1, 7)]
+
+    students = []
+    for file in files:
+        print(f"Checking file: {file}")
+        if os.path.exists(file):
+            print(f"Reading file: {file}")
+            with open(file, newline='', encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    print(f"Loaded student: {row}")
+                    students.append(row)
+        else:
+            print(f"File not found: {file}")
+    return students
+
+@app.route('/')
+def index():
+    print("Rendering Quick_entry_points.html")
+    return render_template('Quick_entry_points.html')
+
+@app.route('/search', methods=['POST'])
+def search_student():
+    card_number = request.form['cardNumber'].strip()
+    code_massar = request.form['misterCode'].strip()
+
+    print(f"Searching for student: ID Card={card_number}, Code Massar={code_massar}")
+
+    student_subjects = []
+
+    data_folder = r'C:\Users\DATA\OneDrive\Desktop\Python\Calcolator\site_college30\data'
+    files = [os.path.join(data_folder, f'students0{i}.csv') for i in range(1, 7)]
+
+    for file in files:
+        print(f"Checking file: {file}")
+        if os.path.exists(file):
+            with open(file, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    if row['id_card'].strip() == card_number and row['code_massar'].strip() == code_massar:
+                        print(f"Match found in {file}: {row}")
+                        student_subjects.append({
+                            'subject': row['subject'],
+                            'points': row['points'],
+                            'student_number': row['student_number'],
+                            'name': row['name']
+                        })
+        else:
+            print(f"File not found: {file}")
+
+    if student_subjects:
+        session['card_number'] = card_number
+        session['mister_code'] = code_massar
+        print(f"Student subjects found: {student_subjects}")
+        return jsonify({"found": True, "name": student_subjects[0]['name'], "subjects": student_subjects})
+    else:
+        print("Student not found!")
+        return jsonify({"found": False, "message": "الطالب غير موجود!"})
+
+@app.route('/saved_students_table')
+def saved_students_table():
+    card_number = session.get('card_number')
+    mister_code = session.get('mister_code')
+
+    if not card_number or not mister_code:
+        print("No session data found, redirecting to index.")
+        return redirect(url_for('index'))
+
+    data_folder = r'C:\Users\DATA\OneDrive\Desktop\Python\Calcolator\site_college30\data'
+    files = [os.path.join(data_folder, f'students0{i}.csv') for i in range(1, 7)]
+
+
+    def read_csv(file_path):
+        print(f"Reading file: {file_path}")
+        students = []
+        if os.path.exists(file_path):
+            with open(file_path, newline='', encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row.get('id_card', '').strip() == card_number and row.get('code_massar', '').strip() == mister_code:
+                        print(f"Matched student in file {file_path}: {row}")
+                        students.append(row)
+        else:
+            print(f"File not found: {file_path}")
+        return students
+
+    all_students = [read_csv(file) for file in files]
+
+    subject_lists = [
+        ["قراءة و تحليل الخرائط الطبوغرافية", "مدخل إلى علم الإجتماع", "جغرافية السكان والديموغرافيا", "جيومورفولوجيا عامة", "مدخل لدراسة تاريخ المغرب الوسيط", "المهارات الحياتية والذاتية", "اللغة الفرنسية", "اللغة الإنجليزية"],
+        ["المناخ", "الإتجاهات الكلاسيكية الحديثة في علم الإجتماع", "جغرافية المغرب العامة", "جغرافية الأرياف", "مدخل لدراسة تاريخ المغرب المعاصر والراهن", "المهارات الحياتية والرقمية", "اللغة الفرنسية", "اللغة الإنجليزية"],
+        ["مناخ دينامي", "المهارات الفنية والثقافية", "جيومورفلوجيا البنيوية", "قراءة وتحليل الخرائط الجيولوجية والجيومرفوفوجية", "جغرافية المدن", "دينامية المجال الريفي", "اللغة الفرنسية", "اللغة الإنجليزية"],
+        ["الخرائط والسيميولوجيا", "النظم البيئية والتربة والنبات", "جغرافية البحر المتوسط وإفريقيا جنوب الصحراء", "جغرافية الطاقة", "دينامية المجال الحضري", "المهارات الهياتية والذاتية", "اللغة الفرنسية", "اللغة الإنجليزية"],
+        ["التاريخ الجيولوجي", "الفضاء", "الكون", "الأرض", "الصخور", "الأنهار"],
+        ["التاريخ الجيولوجي", "الفضاء", "الكون", "الأرض", "الصخور", "الأنهار"]
+    ]
+    semester_names = ["الفصل الأول", "الفصل الثاني", "الفصل الثالث", "الفصل الرابع", "الفصل الخامس", "الفصل السادس"]
+
+    def build_subjects_data(rows, subject_list, semester_name):
+        data = []
+        for subject in subject_list:
+            match = next((r for r in rows if r.get('subject') == subject), None)
+            print(f"Processing subject '{subject}' in {semester_name}")
+            if match:
+                points = match.get('points', '').strip()
+                student_number = match.get('student_number', '').strip()
+                try:
+                    point_val = float(points)
+                    note = "مستف" if point_val >= 10 else "مستدرك"
+                    note_color = "green" if point_val >= 10 else "red"
+                except:
+                    note = ""
+                    note_color = ""
+            else:
+                points = "-"
+                student_number = "-"
+                note = "-"
+                note_color = "black"
+
+            print(f"Subject: {subject}, Points: {points}, Note: {note}")
+            data.append({
+                'subject': subject,
+                'points': points,
+                'note': note,
+                'note_color': note_color,
+                'semester': semester_name,
+                'student_number': student_number
+            })
+        return data
+
+    all_data = [build_subjects_data(rows, subjects, semester)
+                for rows, subjects, semester in zip(all_students, subject_lists, semester_names)]
+
+    return render_template('saved_students_table.html',
+                           main_data=all_data[0] if any(d['points'] != '-' for d in all_data[0]) else None,
+                           extra_data=all_data[1] if any(d['points'] != '-' for d in all_data[1]) else None,
+                           third_data=all_data[2] if any(d['points'] != '-' for d in all_data[2]) else None,
+                           fourth_data=all_data[3] if any(d['points'] != '-' for d in all_data[3]) else None,
+                           fifth_data=all_data[4] if any(d['points'] != '-' for d in all_data[4]) else None,
+                           sixth_data=all_data[5] if any(d['points'] != '-' for d in all_data[5]) else None)
+
+@app.route("/stats")
+def stats():
+    card_number = session.get('card_number')
+    mister_code = session.get('mister_code')
+
+    if not card_number or not mister_code:
+        print("No session data found for stats, redirecting to index.")
+        return redirect(url_for('index'))
+
+    print(f"Generating stats for card_number={card_number} and mister_code={mister_code}")
+
+    data_folder = r'C:\Users\DATA\OneDrive\Desktop\Python\Calcolator\site_college30\data'
+    file_paths = [os.path.join(data_folder, f'students0{i}.csv') for i in range(1, 7)]
+
+    subjects_by_file = [
+        (["قراءة و تحليل الخرائط الطبوغرافية", "مدخل إلى علم الإجتماع", "جغرافية السكان والديموغرافيا",
+          "جيومورفولوجيا عامة", "مدخل لدراسة تاريخ المغرب الوسيط", "المهارات الحياتية والذاتية",
+          "اللغة الفرنسية", "اللغة الإنجليزية"], "الفصل الأول"),
+        (["المناخ", "الإتجاهات الكلاسيكية الحديثة في علم الإجتماع", "جغرافية المغرب العامة",
+          "جغرافية الأرياف", "مدخل لدراسة تاريخ المغرب المعاصر والراهن", "المهارات الحياتية والرقمية",
+          "اللغة الفرنسية", "اللغة الإنجليزية"], "الفصل الثاني"),
+        (["مناخ دينامي", "المهارات الفنية والثقافية", "جيومورفلوجيا البنيوية",
+          "قراءة وتحليل الخرائط الجيولوجية والجيومرفوفوجية", "جغرافية المدن", "دينامية المجال الريفي",
+          "اللغة الفرنسية", "اللغة الإنجليزية"], "الفصل الثالث"),
+        (["الخرائط والسيميولوجيا", "النظم البيئية والتربة والنبات", "جغرافية البحر المتوسط وإفريقيا جنوب الصحراء",
+          "جغرافية الطاقة", "دينامية المجال الحضري", "المهارات الهياتية والذاتية",
+          "اللغة الفرنسية", "اللغة الإنجليزية"], "الفصل الرابع"),
+        (["التاريخ الجيولوجي", "الفضاء", "الكون", "الأرض", "الصخور", "الأنهار"], "الفصل الخامس"),
+        (["التاريخ الجيولوجي", "الفضاء", "الكون", "الأرض", "الصخور", "الأنهار"], "الفصل السادس"),
+    ]
+
+    matched_file = None
+    for file in file_paths:
+        print(f"Searching student in file: {file}")
+        if os.path.exists(file):
+            with open(file, encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    if row.get('id_card', '').strip() == card_number and row.get('code_massar', '').strip() == mister_code:
+                        matched_file = file
+                        print(f"Student found in file: {file}")
+                        break
+        if matched_file:
+            break
+
+    if not matched_file:
+        print("Student data not found in any file for stats.")
+        return "بيانات الطالب غير موجودة في الملفات."
+
+
+    idx = file_paths.index(matched_file)
+    subject_list, semester = subjects_by_file[idx]
+
+    print(f"Processing stats for semester: {semester}")
+
+    # قراءة كل النقاط من الملف لحساب max و min
+    with open(matched_file, encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        points = [float(row['points']) for row in reader if row.get('points', '').replace('.', '', 1).isdigit()]
+    max_point = max(points) if points else 0
+    min_point = min(points) if points else 0
+    print(f"Max point: {max_point}, Min point: {min_point}")
+
+    # استخراج نقاط الطالب نفسه
+    student_points = []
+    data = []
+    with open(matched_file, encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row.get('id_card', '').strip() == card_number and row.get('code_massar', '').strip() == mister_code:
+                point_str = row.get('points', '').strip()
+                subject = row.get('subject', '').strip()
+                if point_str.replace('.', '', 1).isdigit():
+                    point = float(point_str)
+                    student_points.append(point)
+                    data.append({"subject": subject, "points": point})
+
+    student_max = max(student_points) if student_points else 0
+    student_min = min(student_points) if student_points else 0
+    print(f"Student max point: {student_max}, Student min point: {student_min}")
+
+        # إحصائيات الطالب
+    total_subjects = len(data)
+    scores = [item["points"] for item in data if isinstance(item["points"], (int, float))]
+    average_score = round(sum(scores) / len(scores), 2) if scores else 0
+    top_score = max(scores) if scores else 0
+    lowest_score = min(scores) if scores else 0
+
+
+    return render_template('stats.html',
+                        max_point=max_point,
+                        min_point=min_point,
+                        student_max=student_max,
+                        student_min=student_min,
+                        semester=semester,
+                        data=data,
+                        total_subjects=total_subjects,
+                        average_score=average_score,
+                        top_score=top_score,
+                        lowest_score=lowest_score)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def read_messages():
+    print("بدأت قراءة الرسائل...")
+    messages = []
+    try:
+        with open(MESSAGES_FILE, encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                print("سطر مقروء من ملف الرسائل:", row)
+                if len(row) == 3:
+                    messages.append({'student_name': row[0], 'text': row[1], 'time': row[2]})
+                else:
+                    print("❌ سطر غير صالح (ليس 3 عناصر):", row)
+    except FileNotFoundError:
+        print("❌ ملف الرسائل غير موجود:", MESSAGES_FILE)
+    return messages
+
+
+
+@app.route('/chat1')
+def chat1():
+    print("🚀 دخل إلى مسار /chat1")
+    students = []
+    filepath = STUDENTS_FILE
+    current_student_session = session.get('current_student')
+    print("🧠 جلسة الطالب:", current_student_session)
+    current_student = None
+
+    with open(filepath, encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            print("🔍 سطر طالب:", row)
+            if row['role'].lower() == 'student' and row['class'] == 'S1':
+                profile_img = row['profile_image'].strip()
+                print("🖼️ صورة الملف الشخصي الأصلية:", profile_img)
+                if not profile_img:
+                    profile_img = '/static/images/default-avatar.png'
+                else:
+                    if not profile_img.startswith('http'):
+                        if not profile_img.startswith('/static'):
+                            profile_img = '/static/' + profile_img.lstrip('/')
+
+                student_data = {
+                    'name': row['name'],
+                    'second_name': row['second_name'],
+                    'class': row['class'],
+                    'contact': row['contact'],
+                    'address': row['address'],
+                    'profile_image': profile_img
+                }
+                print("✅ طالب مضاف:", student_data)
+                students.append(student_data)
+
+                if (current_student_session and
+                    row['name'] == current_student_session.get('name') and
+                    row['second_name'] == current_student_session.get('second_name')):
+                    current_student = student_data
+                    print("🎯 الطالب الحالي تم التعرف عليه:", current_student)
+
+    if not current_student and current_student_session:
+        print("⚠️ لم يتم العثور على الطالب، استخدام بيانات الجلسة الاحتياطية")
+        current_student = {
+            'name': current_student_session.get('name'),
+            'second_name': current_student_session.get('second_name'),
+            'profile_image': '/static/images/image_account/user8.png'
+        }
+
+    current_student_name = None
+    if current_student:
+        current_student_name = f"{current_student['name']} {current_student['second_name']}"
+        print("📛 اسم الطالب الكامل:", current_student_name)
+
+    messages = read_messages()
+    print("📨 عدد الرسائل:", len(messages))
+    return render_template('chat1.html',
+                           students=students,
+                           current_student=current_student,
+                           current_student_name=current_student_name,
+                           messages=messages)
+
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    data = request.json
+    print("📥 بيانات مستلمة من POST:", data)
+
+    student_name = data.get('student_name')
+    message_text = data.get('message')
+
+    if not student_name or not message_text:
+        print("❌ بيانات ناقصة:", student_name, message_text)
+        return jsonify({'status': 'error', 'message': 'Missing data'}), 400
+
+    from datetime import datetime
+    time_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    print(f"✍️ حفظ الرسالة: [{student_name}] - {message_text} في {time_str}")
+
+    with open(MESSAGES_FILE, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow([student_name, message_text, time_str])
+
+    print("✅ تم حفظ الرسالة بنجاح.")
+    return jsonify({'status': 'success'})
+
+MESSAGES_FILE = r"C:\Users\DATA\OneDrive\Desktop\Python\Calcolator\site_college30\data\message.csv"
+
+
+
+
+# ----------------------------------------------------------------------------------------
 # إعداد قاعدة البيانات
 def init_db():
     with sqlite3.connect('users.db') as conn:
@@ -2315,7 +3336,8 @@ def get_users():
         print(f"المستخدمون في قاعدة البيانات: {users}")  # طباعة للتأكد من البيانات
         return users
 
+
 if __name__ == '__main__':
-    init_db()
-    update_passwords_to_hashed()
-    serve(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    init_db()  # إنشاء قاعدة البيانات إذا لم تكن موجودة
+    update_passwords_to_hashed()  # تحديث كلمات المرور غير المشفرة
+    app.run(debug=True)

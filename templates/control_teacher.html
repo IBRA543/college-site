@@ -20,7 +20,7 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <body>
+  <body data-page-group="group1">
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
@@ -488,6 +488,76 @@
             errorMessage.textContent = "❌ حدث خطأ أثناء الاتصال بالخادم.";
             errorMessage.classList.remove("hidden");
             studentTable.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
+        let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
+
+        // ضبط اللغة عند تحميل الصفحة
+        fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() =>
+          loadTranslations(savedLang)
+        );
+
+        function loadTranslations(lang) {
+          fetch(`/get_translations/${lang}`)
+            .then((response) => response.json())
+            .then((data) => updateTranslations(data.translations));
+        }
+
+        window.changeLanguage = function (lang) {
+          localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
+
+          fetch(`/change_language/${lang}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                updateTranslations(data.translations);
+              }
+            });
+
+          // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
+          fetch(`/set_language/${lang}`, { method: "POST" });
+
+          // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
+          localStorage.setItem(
+            "language_update",
+            JSON.stringify({ group: pageGroup, lang: lang })
+          );
+        };
+
+        function updateTranslations(translations) {
+          document.querySelectorAll("[data-translate]").forEach((element) => {
+            let key = element.getAttribute("data-translate");
+            if (translations[key]) {
+              if (
+                element.tagName === "INPUT" ||
+                element.tagName === "TEXTAREA"
+              ) {
+                element.setAttribute("placeholder", translations[key]);
+              } else if (element.tagName === "OPTION") {
+                element.textContent = translations[key];
+              } else {
+                element.textContent = translations[key];
+              }
+            }
+          });
+        }
+
+        // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
+        window.addEventListener("storage", function (event) {
+          if (event.key === "language_update") {
+            let data = JSON.parse(event.newValue);
+            if (data.group === pageGroup) {
+              loadTranslations(data.lang);
+            }
           }
         });
       });

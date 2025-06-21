@@ -3,7 +3,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 10vh;
   background: #1e1e2e;
   color: #fff;
   font-family: "Cairo", sans-serif;
@@ -64,6 +64,7 @@ h1:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .btn i {
@@ -752,7 +753,7 @@ body {
   top: 60px; /* تعديل لتحديد المسافة بين الأيقونة والقائمة */
   left: 20px; /* تظهر القائمة أسفل الأيقونة */
   z-index: 999;
-  height: 400px;
+  height: 500px;
   width: 350px;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(20px);

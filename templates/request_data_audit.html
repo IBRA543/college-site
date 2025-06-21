@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>طلب تدقيق المعطيات</title>
+    <style>
+      /* Reset and base */
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        margin: 0;
+        background: #f5f7fa;
+        color: #222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 1rem;
+      }
+      main {
+        background: white;
+        max-width: 480px;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        padding: 2rem 2.5rem;
+        direction: rtl;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: #0b3d91;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      label {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+        display: block;
+        color: #333;
+      }
+      input[type="text"],
+      input[type="email"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        resize: vertical;
+        min-height: 40px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #0b3d91;
+        outline: none;
+      }
+      textarea {
+        min-height: 90px;
+      }
+      .error-message {
+        color: #e74c3c;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: none;
+      }
+      .error-message.show {
+        display: block;
+      }
+      .char-count {
+        font-size: 0.8rem;
+        color: #666;
+        text-align: left;
+        margin-top: -0.6rem;
+        margin-bottom: 0.6rem;
+        font-family: monospace;
+      }
+
+      button {
+        background: #0b3d91;
+        color: white;
+        border: none;
+        padding: 0.85rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        user-select: none;
+      }
+      button:disabled {
+        background: #9bb7d4;
+        cursor: not-allowed;
+      }
+      button:hover:not(:disabled) {
+        background: #07306c;
+      }
+
+      .success-message {
+        margin-top: 1rem;
+        background: #27ae60;
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        display: none;
+        text-align: center;
+      }
+      .success-message.show {
+        display: block;
+      }
+
+      @media (max-width: 520px) {
+        main {
+          padding: 1.5rem 1.5rem;
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main role="main" aria-labelledby="pageTitle">
+      <h1 id="pageTitle">طلب تدقيق المعطيات</h1>
+
+      <form id="dataAuditForm" novalidate>
+        <label for="fullName">الاسم الكامل</label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          placeholder="أدخل الاسم الكامل"
+          required
+          aria-describedby="fullNameError"
+          autocomplete="name"
+          pattern="^[\u0600-\u06FF\s]{3,50}$"
+        />
+        <div class="error-message" id="fullNameError">
+          يرجى إدخال اسم عربي صحيح (3-50 حرفًا).
+        </div>
+
+        <label for="idNumber">رقم البطاقة الوطنية / التعريف</label>
+        <input
+          type="text"
+          id="idNumber"
+          name="idNumber"
+          placeholder="أدخل رقم البطاقة (8-12 رقمًا)"
+          required
+          aria-describedby="idNumberError"
+          pattern="^\d{8,12}$"
+        />
+        <div class="error-message" id="idNumberError">
+          يرجى إدخال رقم يتكون من 8 إلى 12 رقمًا.
+        </div>
+
+        <label for="phoneNumber">رقم الهاتف</label>
+        <input
+          type="text"
+          id="phoneNumber"
+          name="phoneNumber"
+          placeholder="مثلاً: 0612345678"
+          required
+          aria-describedby="phoneNumberError"
+          pattern="^(0|\+212)([ \-_/]*)(\d{9})$"
+        />
+        <div class="error-message" id="phoneNumberError">
+          يرجى إدخال رقم هاتف صالح.
+        </div>
+
+        <label for="email">البريد الإلكتروني</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="example@mail.com"
+          aria-describedby="emailError"
+        />
+        <div class="error-message" id="emailError">
+          البريد الإلكتروني غير صالح.
+        </div>
+
+        <!-- الحقول الجديدة -->
+        <label for="percentage">النسب (%)</label>
+        <input
+          type="text"
+          id="percentage"
+          name="percentage"
+          placeholder="أدخل النسبة"
+          required
+          aria-describedby="percentageError"
+          pattern="^\d{1,3}(\.\d{1,2})?$"
+          title="أدخل نسبة رقمية صحيحة، مثلاً: 75 أو 75.50"
+        />
+        <div class="error-message" id="percentageError">
+          يرجى إدخال نسبة صحيحة بين 0 و 100.
+        </div>
+
+        <label for="massarCode">كود مسار</label>
+        <input
+          type="text"
+          id="massarCode"
+          name="massarCode"
+          placeholder="أدخل كود مسار"
+          required
+          aria-describedby="massarCodeError"
+          pattern="^[a-zA-Z0-9]{5,15}$"
+          title="كود مسار يجب أن يكون من 5 إلى 15 حرفًا أو رقمًا"
+        />
+        <div class="error-message" id="massarCodeError">
+          يرجى إدخال كود مسار صالح (5-15 حرفًا أو رقمًا).
+        </div>
+
+        <label for="section">الشعبة</label>
+        <select
+          id="section"
+          name="section"
+          required
+          aria-describedby="sectionError"
+        >
+          <option value="">اختر الشعبة</option>
+          <option value="علوم_تطبيقية">علوم تطبيقية</option>
+          <option value="علوم_تجريبية">علوم تجريبية</option>
+          <option value="آداب">آداب</option>
+          <option value="اقتصاد">اقتصاد</option>
+          <!-- يمكن إضافة المزيد حسب الحاجة -->
+        </select>
+        <div class="error-message" id="sectionError">يرجى اختيار الشعبة.</div>
+
+        <label for="studyYear">السنة الدراسية</label>
+        <select
+          id="studyYear"
+          name="studyYear"
+          required
+          aria-describedby="studyYearError"
+        >
+          <option value="">اختر السنة الدراسية</option>
+          <option value="الأولى">الأولى</option>
+          <option value="الثانية">الثانية</option>
+          <option value="الثالثة">الثالثة</option>
+          <option value="الرابعة">الرابعة</option>
+          <!-- يمكن تعديل حسب نظام الدراسة -->
+        </select>
+        <div class="error-message" id="studyYearError">
+          يرجى اختيار السنة الدراسية.
+        </div>
+
+        <label for="details">تفاصيل طلب التدقيق</label>
+        <textarea
+          id="details"
+          name="details"
+          placeholder="صف المشكلة أو الخطأ المطلوب تدقيقه (50-300 حرف)"
+          minlength="50"
+          maxlength="300"
+          required
+          aria-describedby="detailsError detailsCount"
+        ></textarea>
+        <div class="char-count" id="detailsCount">0 / 300</div>
+        <div class="error-message" id="detailsError">
+          يجب أن تكون التفاصيل بين 50 و300 حرفًا.
+        </div>
+
+        <button type="submit" id="submitBtn" disabled>إرسال الطلب</button>
+      </form>
+
+      <div class="success-message" role="alert" aria-live="polite"></div>
+    </main>
+
+    <script>
+      (() => {
+        const form = document.getElementById("dataAuditForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const successMessage = document.querySelector(".success-message");
+
+        const inputs = {
+          fullName: form.fullName,
+          idNumber: form.idNumber,
+          phoneNumber: form.phoneNumber,
+          email: form.email,
+          percentage: form.percentage,
+          massarCode: form.massarCode,
+          section: form.section,
+          studyYear: form.studyYear,
+          details: form.details,
+        };
+
+        const errors = {
+          fullName: document.getElementById("fullNameError"),
+          idNumber: document.getElementById("idNumberError"),
+          phoneNumber: document.getElementById("phoneNumberError"),
+          email: document.getElementById("emailError"),
+          percentage: document.getElementById("percentageError"),
+          massarCode: document.getElementById("massarCodeError"),
+          section: document.getElementById("sectionError"),
+          studyYear: document.getElementById("studyYearError"),
+          details: document.getElementById("detailsError"),
+        };
+
+        const detailsCount = document.getElementById("detailsCount");
+
+        function validateField(field) {
+          const val = inputs[field].value.trim();
+
+          switch (field) {
+            case "fullName":
+              if (!/^[\u0600-\u06FF\s]{3,50}$/.test(val)) {
+                errors.fullName.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "idNumber":
+              if (!/^\d{8,12}$/.test(val)) {
+                errors.idNumber.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "phoneNumber":
+              if (!/^(0|\+212)([ \-_/]*)(\d{9})$/.test(val)) {
+                errors.phoneNumber.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "email":
+              if (val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+                errors.email.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "percentage":
+              // تحقق من النسبة من 0 إلى 100 مع إمكانية وجود فاصلة عشرية
+              const num = parseFloat(val);
+              if (isNaN(num) || num < 0 || num > 100) {
+                errors.percentage.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "massarCode":
+              if (!/^[a-zA-Z0-9]{5,15}$/.test(val)) {
+                errors.massarCode.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "section":
+              if (val === "") {
+                errors.section.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "studyYear":
+              if (val === "") {
+                errors.studyYear.classList.add("show");
+                return false;
+              }
+              break;
+
+            case "details":
+              if (val.length < 50 || val.length > 300) {
+                errors.details.classList.add("show");
+                return false;
+              }
+              break;
+          }
+
+          errors[field].classList.remove("show");
+          return true;
+        }
+
+        inputs.details.addEventListener("input", () => {
+          const length = inputs.details.value.length;
+          detailsCount.textContent = `${length} / 300`;
+          validateField("details");
+          checkFormValidity();
+        });
+
+        Object.keys(inputs).forEach((field) => {
+          inputs[field].addEventListener("input", () => {
+            validateField(field);
+            checkFormValidity();
+          });
+          if (inputs[field].tagName === "SELECT") {
+            inputs[field].addEventListener("change", () => {
+              validateField(field);
+              checkFormValidity();
+            });
+          }
+        });
+
+        function checkFormValidity() {
+          const valid = Object.keys(inputs).every((field) => {
+            if (field === "email" && !inputs.email.value.trim()) return true;
+            return validateField(field);
+          });
+          submitBtn.disabled = !valid;
+        }
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (submitBtn.disabled) return;
+
+          // إرسال البيانات للسيرفر هنا (AJAX أو Fetch)
+
+          successMessage.textContent =
+            "تم إرسال طلب تدقيق المعطيات بنجاح. شكراً لك!";
+          successMessage.classList.add("show");
+
+          form.reset();
+          detailsCount.textContent = "0 / 300";
+          submitBtn.disabled = true;
+
+          setTimeout(() => {
+            successMessage.classList.remove("show");
+          }, 6000);
+        });
+      })();
+    </script>
+  </body>
+</html>

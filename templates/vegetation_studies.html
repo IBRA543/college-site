@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>دراسات الغطاء النباتي - المغرب</title>
+    <style>
+      /* قاعدة عامة للجسم */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #e0f2f1, #f0f8ff);
+        color: #2c3e50;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.7;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* رأس الصفحة */
+      header {
+        width: 100%;
+        max-width: 900px;
+        text-align: center;
+        padding: 25px 15px;
+        background-color: #27ae60;
+        color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(39, 174, 96, 0.5);
+        margin-bottom: 35px;
+      }
+      header h1 {
+        margin: 0;
+        font-weight: 900;
+        font-size: 2.4rem;
+        letter-spacing: 0.1em;
+      }
+
+      /* أقسام المحتوى */
+      section {
+        width: 100%;
+        max-width: 900px;
+        background: #fff;
+        padding: 25px 35px;
+        margin-bottom: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+        transition: transform 0.3s ease;
+      }
+      section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      /* عناوين الأقسام */
+      h2 {
+        color: #27ae60;
+        margin-top: 0;
+        font-weight: 800;
+        font-size: 1.8rem;
+        border-bottom: 3px solid #27ae60;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+      }
+
+      /* الفقرات */
+      p {
+        margin-bottom: 20px;
+        text-align: justify;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #34495e;
+      }
+
+      /* القوائم */
+      ul {
+        margin: 0 0 25px 25px;
+        padding-left: 15px;
+        color: #34495e;
+        font-size: 1.1rem;
+        list-style-type: disc;
+      }
+
+      /* الصور */
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 25px auto;
+        display: block;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+      img:hover {
+        transform: scale(1.03);
+      }
+
+      /* الخريطة */
+      #map {
+        width: 100%;
+        height: 420px;
+        border-radius: 15px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+        margin-top: 20px;
+      }
+
+      /* توضيحات إضافية تحت الخريطة */
+      .map-description {
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 10px;
+        text-align: center;
+        font-style: italic;
+        letter-spacing: 0.03em;
+      }
+
+      /* التذييل */
+      footer {
+        width: 100%;
+        max-width: 900px;
+        text-align: center;
+        padding: 18px 0;
+        font-size: 1rem;
+        color: #777;
+        border-top: 1px solid #ddd;
+        margin-top: auto;
+        user-select: none;
+      }
+
+      /* استجابة الهواتف */
+      @media (max-width: 600px) {
+        body {
+          padding: 15px 10px;
+        }
+        header h1 {
+          font-size: 1.8rem;
+        }
+        section {
+          padding: 20px 15px;
+        }
+        h2 {
+          font-size: 1.5rem;
+        }
+        p,
+        ul {
+          font-size: 1rem;
+        }
+        #map {
+          height: 300px;
+        }
+      }
+    </style>
+
+    <!-- مكتبة Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-sA+eCHh9yG1dGgpFE3kj7VzQbQxxk2lv8A4/5bA4Q1o="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-n0yZyB7kP9E0VkcMIpjzzGqLzWtCJeAQup1kMgN1y+M="
+      crossorigin=""
+      defer
+    ></script>
+  </head>
+  <body>
+    <header>
+      <h1>دراسات الغطاء النباتي - المغرب</h1>
+    </header>
+
+    <section>
+      <h2>مقدمة</h2>
+      <p>
+        الغطاء النباتي هو مجموعة النباتات التي تغطي سطح الأرض في منطقة معينة.
+        تهدف دراسات الغطاء النباتي إلى فهم التنوع النباتي، توزيعه، وعلاقته
+        بالبيئة والتغيرات المناخية. تُعد هذه الدراسات مهمة للحفاظ على التوازن
+        البيئي والتخطيط المستدام.
+      </p>
+    </section>
+
+    <section>
+      <h2>الغطاء النباتي في المغرب</h2>
+      <p>
+        يتميز المغرب بتنوع بيئي كبير يشمل مناطق جبلية، سهول، وسواحل، مما يتيح
+        وجود أنواع متعددة من الغطاء النباتي، من الغابات الكثيفة في جبال الأطلس
+        إلى المناطق الشبه الصحراوية في الجنوب.
+      </p>
+      <ul>
+        <li>غابات الأرز والبلوط في جبال الأطلس المتوسط والكبير.</li>
+        <li>النباتات الشجرية والمراعي في مناطق السهول الشمالية.</li>
+        <li>الغطاء الصحراوي والمراعي في الصحراء المغربية الجنوبية.</li>
+        <li>النباتات الساحلية والمتوسطية على طول السواحل.</li>
+      </ul>
+      <p>
+        تواجه الغابات المغربية تحديات عديدة مثل إزالة الغابات، التصحر، وتغير
+        المناخ، مما يجعل دراسة الغطاء النباتي أمراً أساسياً للحفاظ على التنوع
+        البيولوجي.
+      </p>
+    </section>
+
+    <section>
+      <h2>خريطة الغطاء النباتي في المغرب</h2>
+      <div id="map"></div>
+      <p class="map-description">
+        هذه الخريطة التفاعلية توضح الغطاء النباتي في المغرب مع تظليل المناطق
+        الغابية والمناطق العشبية.
+      </p>
+    </section>
+
+    <section>
+      <h2>طرق دراسة الغطاء النباتي</h2>
+      <p>تُستخدم عدة طرق لدراسة الغطاء النباتي منها:</p>
+      <ul>
+        <li>المسح الميداني وجمع العينات النباتية.</li>
+        <li>الاستشعار عن بعد باستخدام الأقمار الصناعية.</li>
+        <li>استخدام نظم المعلومات الجغرافية (GIS).</li>
+        <li>تحليل الصور الجوية والفضائية.</li>
+      </ul>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Satellite_image_of_vegetation_on_the_surface_of_the_Earth_%28Terra_MODIS%29.jpg/640px-Satellite_image_of_vegetation_on_the_surface_of_the_Earth_%28Terra_MODIS%29.jpg"
+        alt="صورة من الأقمار الصناعية للغطاء النباتي"
+        loading="lazy"
+        decoding="async"
+      />
+    </section>
+
+    <section>
+      <h2>أهمية دراسات الغطاء النباتي</h2>
+      <p>تساعد دراسات الغطاء النباتي في:</p>
+      <ul>
+        <li>تقييم التنوع البيولوجي وحمايته.</li>
+        <li>فهم تأثير التغيرات المناخية على النظم البيئية.</li>
+        <li>التخطيط لاستخدام الأراضي بشكل مستدام.</li>
+        <li>التقليل من مخاطر التصحر وتدهور الأراضي.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>خاتمة</h2>
+      <p>
+        تعد دراسات الغطاء النباتي من العلوم البيئية الحيوية التي تلعب دوراً
+        محورياً في الحفاظ على البيئة وتوجيه السياسات البيئية والتخطيط العمراني
+        والزراعي.
+      </p>
+    </section>
+
+    <footer>جميع الحقوق محفوظة © 2025</footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const map = L.map("map").setView([31.7917, -7.0926], 6); // مركز المغرب
+
+        // إضافة خريطة OpenStreetMap
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 18,
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
+
+        // مناطق مبسطة للغطاء النباتي (للتمثيل)
+        const vegetationZones = [
+          {
+            coords: [
+              [34.0, -6.5],
+              [34.5, -6.5],
+              [34.5, -7.5],
+              [34.0, -7.5],
+            ],
+            color: "#27ae60",
+            name: "غابات الأطلس المتوسط",
+          },
+          {
+            coords: [
+              [31.5, -8.0],
+              [32.0, -8.0],
+              [32.0, -8.5],
+              [31.5, -8.5],
+            ],
+            color: "#a3d977",
+            name: "مراعي السهول",
+          },
+        ];
+
+        vegetationZones.forEach((zone) => {
+          L.polygon(zone.coords, {
+            color: zone.color,
+            fillColor: zone.color,
+            fillOpacity: 0.5,
+            weight: 2,
+          })
+            .addTo(map)
+            .bindPopup(zone.name);
+        });
+      });
+    </script>
+  </body>
+</html>

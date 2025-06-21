@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edu Dashboard</title>
+    <title data-translate="246">لوحة التحكم</title>
     <link rel="stylesheet" href="static/css/con_student.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,44 +28,31 @@
 
     <div class="container">
       <div class="sidebar">
-        <div class="logo">
-          <img src="images/logo.png" alt="" />
-        </div>
         <div class="selectorsCombined">
           <div class="selectors default activeBar" id="dashboardButton">
             <i class="fa-solid fa-table-cells-large dashboardIcon"></i>
-            <div>لوحة التحكم</div>
+            <div data-translate="246">لوحة التحكم</div>
           </div>
           <div class="selectors default" id="overviewButton">
             <i class="fa-solid fa-gauge"></i>
-            <div>نظرة عامة</div>
+            <div data-translate="245">نظرة عامة</div>
           </div>
           <div class="selectors default" id="studentButton">
             <i class="fa-solid fa-graduation-cap"></i>
-            <div>الطلاب</div>
+            <div data-translate="244">الطلاب</div>
           </div>
           <div class="selectors default" id="teacherButton">
             <i class="fa-solid fa-chalkboard-user"></i>
-            <div>الأساتذة</div>
+            <div data-translate="243">الأساتذة</div>
           </div>
-          <div class="selectors default">
-            <i class="fa-solid fa-note-sticky"></i>
-            <div>الامتحانات</div>
-          </div>
+
           <div class="selectors default" id="resultsButton">
             <i class="fa-solid fa-chart-column"></i>
-            <div>نتائج الطلاب</div>
+            <div data-translate="242">نتائج الطلاب</div>
           </div>
           <div class="selectors default" id="announcementsButton">
             <i class="fa-solid fa-bullhorn"></i>
-            <div>الإعلانات</div>
-          </div>
-          <div
-            class="selectors default"
-            id="announcementsButton1111111111111111111111111"
-          >
-            <i class="fa-solid fa-bullhorn"></i>
-            <div>الندوات</div>
+            <div data-translate="470">الإعلانات</div>
           </div>
         </div>
       </div>
@@ -74,12 +61,14 @@
         <!-- 🟢 قسم لوحة التحكم -->
         <div id="dashboardSection">
           <div class="topBar">
-            <h2 class="h2">لوحة التحكم</h2>
+            <h2 class="h2" data-translate="246">لوحة التحكم</h2>
             <div class="right-section">
-              <input class="searchBar" type="text" placeholder="بحث" />
-              <button class="searchButton">
-                <img class="searchIcon" src="images/search.png" alt="" />
-              </button>
+              <input
+                class="searchBar"
+                type="text"
+                data-translate="571"
+                placeholder="بحث"
+              />
             </div>
           </div>
 
@@ -90,30 +79,125 @@
                   <i class="fa-solid fa-graduation-cap"></i>
                 </div>
               </div>
-              <p class="textIcon">إجمالي الطلاب</p>
+              <p class="textIcon" data-translate="247">إجمالي الطلاب</p>
               <p class="number">1220</p>
             </div>
             <div class="cards teacherCard">
               <div class="Icon">
                 <i class="fa-solid fa-chalkboard-user"></i>
               </div>
-              <p class="textIcon">إجمالي الأساتذة</p>
+              <p class="textIcon" data-translate="248">إجمالي الأساتذة</p>
               <p class="number">120</p>
             </div>
             <div class="cards courseCard">
               <div class="Icon">
                 <i class="fa-solid fa-book-open"></i>
               </div>
-              <p class="textIcon">إجمالي المقررات</p>
+              <p class="textIcon" data-translate="249">إجمالي المقررات</p>
               <p class="number">15</p>
             </div>
             <div class="cards examCard">
               <div class="Icon">
                 <i class="fa-solid fa-note-sticky"></i>
               </div>
-              <p class="textIcon">إجمالي الامتحانات</p>
+              <p class="textIcon" data-translate="250">إجمالي الامتحانات</p>
               <p class="number">6</p>
             </div>
+          </div>
+          <div class="secondRow">
+            <div class="statistics">
+              <p data-translate="251">إحصائيات</p>
+              <div id="chartdiv1"></div>
+            </div>
+            <div class="studentRatio">
+              <p data-translate="252">نسبة الطلاب</p>
+              <div id="chartdiv2"></div>
+            </div>
+          </div>
+          <div class="database">
+            <div class="databaseHeader">
+              <p data-translate="253">أبرز من خلد بصمته</p>
+              <div class="tabs">
+                <button
+                  id="studentTab"
+                  class="default active"
+                  data-translate="254"
+                >
+                  الدكتور
+                </button>
+                <div class="line"></div>
+              </div>
+            </div>
+
+            <!-- جدول الطلاب -->
+            <table id="studentTable1" class="table">
+              <thead>
+                <tr>
+                  <th data-translate="255">اسم الشخصي</th>
+                  <th data-translate="256">النتيجة</th>
+                  <th data-translate="257">الفترة</th>
+                  <th data-translate="258">التقدير</th>
+                  <th data-translate="259">أهم إنجازات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>الطالب 1</td>
+                  <td>80/100</td>
+                  <td>12/10/22 - 10:00 م</td>
+                  <td>ممتاز</td>
+                  <td class="passDesign">ناجح</td>
+                </tr>
+                <tr>
+                  <td>الطالب 2</td>
+                  <td>70/100</td>
+                  <td>12/08/22 - 09:00 م</td>
+                  <td>متوسط</td>
+                  <td class="passDesign">ناجح</td>
+                </tr>
+                <tr>
+                  <td>الطالب 3</td>
+                  <td>30/100</td>
+                  <td>12/10/22 - 12:45 م</td>
+                  <td>ضعيف</td>
+                  <td class="failDesign">راسب</td>
+                </tr>
+                <tr>
+                  <td>الطالب 4</td>
+                  <td>80/100</td>
+                  <td>23/10/22 - 10:00 م</td>
+                  <td>ممتاز</td>
+                  <td class="passDesign">ناجح</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="overviewSection" class="overview-section hidden">
+          <div class="overview-card">
+            <h3 class="overview-title" data-translate="572">
+              📊 ملخص الأداء العام
+            </h3>
+            <div class="overview-stats">
+              <div class="stat-item">
+                <span class="stat-label" data-translate="261">نسبة النجاح</span>
+                <span class="stat-value">85%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label" data-translate="262"
+                  >عدد الطلاب الناجحين</span
+                >
+                <span class="stat-value">1037</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label" data-translate="263"
+                  >عدد الطلاب الراسبين</span
+                >
+                <span class="stat-value">183</span>
+              </div>
+            </div>
+            <div id="smallChart" class="small-chart"></div>
           </div>
         </div>
 
@@ -122,7 +206,7 @@
           id="announcements-section"
           style="display: none"
         >
-          <h2 class="section-title">قائمة الإعلانات</h2>
+          <h2 class="section-title" data-translate="264">قائمة الإعلانات</h2>
 
           <!-- شريط التحميل -->
           <div id="loading-bar" class="loading-bar" style="display: none"></div>
@@ -134,8 +218,9 @@
               <p>{{ announcement["content"] }}</p>
 
               <p class="teacher-info">
-                <strong>الأستاذ:</strong> {{ announcement.teacher_name if
-                announcement.teacher_name else 'غير متوفر' }}
+                <strong data-translate="573">الأستاذ:</strong> {{
+                announcement.teacher_name if announcement.teacher_name else 'غير
+                متوفر' }}
               </p>
 
               <p class="text-muted">
@@ -143,51 +228,35 @@
               </p>
             </div>
             {% endfor %} {% else %}
-            <p class="text-muted">لا توجد إعلانات متاحة حاليًا.</p>
+            <p class="text-muted" data-translate="265">
+              لا توجد إعلانات متاحة حاليًا.
+            </p>
             {% endif %}
           </div>
         </div>
 
         <!-- 🟡 قسم الإعلانات (يبدأ مخفي) -->
 
-        <div id="overviewSection" class="overview-section hidden">
-          <div class="overview-card">
-            <h3 class="overview-title">📊 ملخص الأداء العام</h3>
-            <div class="overview-stats">
-              <div class="stat-item">
-                <span class="stat-label">نسبة النجاح</span>
-                <span class="stat-value">85%</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">عدد الطلاب الناجحين</span>
-                <span class="stat-value">1037</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">عدد الطلاب الراسبين</span>
-                <span class="stat-value">183</span>
-              </div>
-            </div>
-            <div id="smallChart" class="small-chart"></div>
-          </div>
-        </div>
         <div id="studentSection" class="section hidden">
-          <h2>Student Directory <span id="student-count"></span></h2>
+          <h2 data-translate="574">طلاب الفصل<span id="student-count"></span></h2>
           <input
             type="text"
             class="search-input"
             id="search-box-students"
-            placeholder="Search students..."
+            data-translate="575"
+            placeholder="بحث عن طالب ..."
           />
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Student</th>
-                  <th>Department</th>
-                  <th>Major</th>
-                  <th>Status</th>
-                  <th>Enrollment Date</th>
-                  <th>Location</th>
+                  <th data-translate="576">طالب</th>
+                  <th data-translate="318">الفصل</th>
+                  <th data-translate="577">التوجه</th>
+                  <th data-translate="105">الحالة</th>
+                  <th data-translate="578">مكان</th>
+                  <th data-translate="579">تأثير</th>
+                  
                 </tr>
               </thead>
               <tbody id="studentTableBody"></tbody>
@@ -197,7 +266,7 @@
 
         <div id="teacherSection" class="teacher-section hidden">
           <!-- هذا هو الجزء الذي سيتم إظهاره عند الضغط على زر الأساتذة -->
-          <h2>Employee Directory <span id="total-count"></span></h2>
+          <h2 data-translate="580">أساتذة السنة<span id="total-count"></span></h2>
           <input
             type="text"
             class="search-input"
@@ -207,12 +276,12 @@
           <table>
             <thead>
               <tr>
-                <th>اسم</th>
-                <th>التخصص</th>
-                <th>الفصول</th>
-                <th>Date Of Hire</th>
-                <th>Location</th>
-                <th>Status</th>
+                <th data-translate="581">دكتور</th>
+                <th data-translate="267">التخصص</th>
+                <th data-translate="268">الفصول</th>
+                <th data-translate="582">الخبرة</th>
+                <th data-translate="579">تأثير</th>
+                <th data-translate="105">الحالة</th>
               </tr>
             </thead>
             <tbody id="employee-body"></tbody>
@@ -221,13 +290,14 @@
         </div>
 
         <div id="resultsSection" class="results-section hidden">
-          <h2>إدخال بيانات الطالب</h2>
+          <h2 data-translate="269">إدخال بيانات الطالب</h2>
           <form id="dataForm">
             <div class="input-box">
               <input
                 type="text"
                 name="id_card"
                 id="id_card"
+                data-translate="22"
                 placeholder="CNE (مثال: ZT2261)"
                 required
               />
@@ -237,30 +307,31 @@
                 type="text"
                 name="major"
                 id="major"
+                data-translate="23"
                 placeholder="مسار (مثال: A123456789)"
                 required
               />
             </div>
-            <button type="submit" class="btn">تأكيد</button>
+            <button type="submit" class="btn" data-translate="270">تأكيد</button>
           </form>
 
-          <p class="error-message hidden" id="error-message">
+          <p class="error-message hidden" id="error-message" data-translate="271">
             ❌ المعلومات غير صحيحة
           </p>
 
           <div id="studentTable" class="hidden">
-            <h2>نتائج الطالب</h2>
+            <h2 data-translate="272">نتائج الطالب</h2>
             <div id="studentInfo" class="student-info">
               <!-- سيتم عرض اسم الطالب والبريد هنا -->
             </div>
             <table>
               <thead>
                 <tr>
-                  <th>رقم الطالب</th>
-                  <th>المستوى</th>
-                  <th>المادة</th>
-                  <th>المعدل</th>
-                  <th>الملاحظات</th>
+                  <th data-translate="456">رقم الطالب</th>
+                  <th data-translate="274">المستوى</th>
+                  <th data-translate="479">المادة</th>
+                  <th data-translate="276">المعدل</th>
+                  <th data-translate="277">الملاحظات</th>
                 </tr>
               </thead>
               <tbody id="tableBody">
@@ -269,73 +340,10 @@
             </table>
           </div>
         </div>
-
-        <div class="secondRow">
-          <div class="statistics">
-            <p>إحصائيات</p>
-            <div id="chartdiv1"></div>
-          </div>
-          <div class="studentRatio">
-            <p>نسبة الطلاب</p>
-            <div id="chartdiv2"></div>
-          </div>
-        </div>
-        <div class="database">
-          <div class="databaseHeader">
-            <p>أبرز من خلد بصمته</p>
-            <div class="tabs">
-              <button id="studentTab" class="default active">الدكتور</button>
-              <div class="line"></div>
-            </div>
-          </div>
-
-          <!-- جدول الطلاب -->
-          <table id="studentTable1" class="table">
-            <thead>
-              <tr>
-                <th>اسم الشخصي</th>
-                <th>النتيجة</th>
-                <th>الفترة</th>
-                <th>التقدير</th>
-                <th>أهم إنجازات</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>الطالب 1</td>
-                <td>80/100</td>
-                <td>12/10/22 - 10:00 م</td>
-                <td>ممتاز</td>
-                <td class="passDesign">ناجح</td>
-              </tr>
-              <tr>
-                <td>الطالب 2</td>
-                <td>70/100</td>
-                <td>12/08/22 - 09:00 م</td>
-                <td>متوسط</td>
-                <td class="passDesign">ناجح</td>
-              </tr>
-              <tr>
-                <td>الطالب 3</td>
-                <td>30/100</td>
-                <td>12/10/22 - 12:45 م</td>
-                <td>ضعيف</td>
-                <td class="failDesign">راسب</td>
-              </tr>
-              <tr>
-                <td>الطالب 4</td>
-                <td>80/100</td>
-                <td>23/10/22 - 10:00 م</td>
-                <td>ممتاز</td>
-                <td class="passDesign">ناجح</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
       <div class="rightBar">
         <div class="rightBarHeader">
-          <p>لوحة الإعلانات</p>
+          <p data-translate="278">لوحة الإعلانات</p>
         </div>
         <div id="notificationWindow" class="notificationWindow">
           <!-- محتوى الإعلانات هنا -->
@@ -432,6 +440,75 @@
             errorMessage.textContent = "❌ حدث خطأ أثناء الاتصال بالخادم.";
             errorMessage.classList.remove("hidden");
             studentTable.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const sectionButtons = {
+          dashboardButton: "dashboardSection",
+          overviewButton: "overviewSection",
+          studentButton: "studentSection",
+          teacherButton: "teacherSection",
+          resultsButton: "resultsSection",
+          announcementsButton: "announcements-section",
+        };
+
+        const buttons = document.querySelectorAll(".selectors");
+
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // إزالة الكلاس النشط من الكل
+            buttons.forEach((b) => b.classList.remove("activeBar"));
+            btn.classList.add("activeBar");
+
+            // إخفاء كل الأقسام
+            Object.values(sectionButtons).forEach((id) => {
+              const section = document.getElementById(id);
+              if (section) section.style.display = "none";
+            });
+
+            // إظهار القسم المحدد
+            const targetId = sectionButtons[btn.id];
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) targetSection.style.display = "block";
+          });
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = {
+          dashboardButton: "dashboardSection",
+          overviewButton: "overviewSection",
+          studentButton: "studentSection",
+          teacherButton: "teacherSection",
+          resultsButton: "resultsSection",
+          announcementsButton: "announcements-section",
+          announcementsButton1111111111111111111111111: "seminarsSection",
+        };
+
+        Object.keys(sections).forEach((btnId) => {
+          const btn = document.getElementById(btnId);
+          if (btn) {
+            btn.addEventListener("click", function () {
+              // إخفاء كل الأقسام
+              Object.values(sections).forEach((sectionId) => {
+                const section = document.getElementById(sectionId);
+                if (section) section.classList.add("hidden");
+              });
+
+              // إظهار القسم المطلوب فقط
+              const targetSection = document.getElementById(sections[btnId]);
+              if (targetSection) targetSection.classList.remove("hidden");
+
+              // تمييز الزر النشط
+              document
+                .querySelectorAll(".selectors")
+                .forEach((el) => el.classList.remove("activeBar"));
+              btn.classList.add("activeBar");
+            });
           }
         });
       });

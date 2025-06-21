@@ -18,31 +18,31 @@
     ></script>
     <script defer src="static/js/main.js"></script>
 
-    <title>Document</title>
+    <title data-translate="340">حساب</title>
   </head>
-  <body>
+  <body data-page-group="group2">
     <main>
       <aside>
         <ul class="Links">
           <li onclick="Navigate(0)" class="activeLink">
             <i class="fa-solid fa-house"></i>
-            <p>Home</p>
+            <p data-translate="341">الرئسية</p>
           </li>
           <li onclick="Navigate(1)">
             <i class="fa-solid fa-user"></i>
-            <p>About Me</p>
+            <p data-translate="354">عن الطالب</p>
           </li>
           <li onclick="Navigate(2)">
             <i class="fa-solid fa-list"></i>
-            <p>Services</p>
+            <p data-translate="343">خدمات</p>
           </li>
           <li onclick="Navigate(3)">
             <i class="fa-solid fa-images"></i>
-            <p>Gallery</p>
+            <p data-translate="344">مشاريع و أبحاث</p>
           </li>
           <li onclick="Navigate(4)">
             <i class="fa-solid fa-comments"></i>
-            <p>Contact Me</p>
+            <p data-translate="345">اتصل بي</p>
           </li>
         </ul>
       </aside>
@@ -51,226 +51,393 @@
         <div class="SlideContainer swiper-wrapper">
           <!-- Home Slide -->
           <div class="swiper-slide home-slide">
-            <div class="HomeContent">
-              <h1>Hi! I'm <span class="stylized-name">Muzammal</span>,</h1>
-              <h2>A <span class="proffesions">Web Developer</span></h2>
-              <p class="heroline">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-                officia iste tenetur dolor quis officiis quidem sapiente illo
-                nostrum mollitia.
-              </p>
-              <div class="buttonGroup">
-                <button>Hire Me</button>
-                <button>Contact Me</button>
+            <div class="HomeContent enhanced-profile">
+              <h1 data-translate="549">
+                👋 مرحبا, أنا
+                <span class="stylized-name">{{ student.name }}</span>
+              </h1>
+
+              <div class="info-card">
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-envelope"></i>
+                    <span data-translate="398">البريد</span>
+                  </span>
+                  <span class="info-value">{{ student.email }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-graduation-cap"></i>
+                    <span data-translate="348">الدورة</span>
+                  </span>
+                  <span class="info-value">{{ student.class }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-calendar-alt"></i>
+                    <span data-translate="349">السنة</span>
+                  </span>
+                  <span class="info-value">{{ student.year }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-id-badge"></i>
+                    <span data-translate="456">رقم الطالب</span>
+                  </span>
+                  <span class="info-value">{{ student.student_number }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-barcode"></i>
+                    <span data-translate="100">كود مسار</span>
+                  </span>
+                  <span class="info-value">{{ student.code_massar }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-id-card"></i>
+                    <span data-translate="560">بطاقة الوطنية</span>
+                  </span>
+                  <span class="info-value">{{ student.id_card }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-phone"></i>
+                    <span data-translate="363">الهاتف</span>
+                  </span>
+                  <span class="info-value">{{ student.contact }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-birthday-cake"></i>
+                    <span data-translate="352">تاريخ ازدياد</span>
+                  </span>
+                  <span class="info-value">{{ student.dob }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-map-marker-alt"></i>
+                    <span data-translate="397">العنوان</span>
+                  </span>
+                  <span class="info-value">{{ student.address }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-book-open"></i>
+                    <span data-translate="561">جامعة</span>
+                  </span>
+                  <span class="info-value">{{ student.university }}</span>
+                </div>
               </div>
             </div>
+
             <div class="SideImg">
-              <div class="top-right-corner">
-                <hr class="hr1" />
-                <hr class="hr2" />
-              </div>
-              <!-- استبدال الصورة بأيقونة الحساب -->
-              
-              <img
-                id="side-profile-image"
-                src="{{ profile_image }}"
-                style="width: 150px; height: 150px; border-radius: 0"
-                alt="Side Profile"
-              />
-
-              <!-- قائمة تحميل الصورة مع اقتراح صور أخرى -->
-
-              <div class="bottom-left-corner">
-                <hr class="hr1" />
-                <hr class="hr2" />
+              <div class="profile-image-wrapper">
+                <img
+                  id="side-profile-image"
+                  src="{{ student.profile_image }}"
+                  alt="Side Profile"
+                />
               </div>
             </div>
-
-            <p class="slide-help">
-              Scroll for next slide
-              <i class="fa-solid fa-chevron-right fa-shake"></i>
-            </p>
           </div>
 
           <!-- About Me Slide -->
           <div class="swiper-slide">
             <div class="about-us">
-              <h1 class="heading">About Me</h1>
+              <h1 class="heading" data-translate="354">عن الطالب</h1>
               <h3 class="sub-heading">
-                I'm Muzammal, <span class="proffesions">A Web Developer</span>
+                <span data-translate="355">أنا</span>
+
+                <span class="proffesions">{{ student.second_name }}</span>
+                <span data-translate="356">طالب جامعي في شعبة الجغرافيا</span>
               </h3>
-              <p class="aboutme-deatils">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-                iure, iste debitis unde maiores earum, ipsam quaerat quo magni
-                sunt nisi at ullam nostrum pariatur soluta mollitia omnis
-                consectetur qui similique doloribus vitae sit est in modi.
-                Officia libero, animi repellendus debitis labore ipsa
-                exercitationem ut ex. Natus ullam officiis qui fuga optio
-                incidunt, ipsum atque ducimus quas ad eveniet nulla sit
-                consectetur velit inventore possimus quae provident, repudiandae
-                eaque sed quos mollitia omnis error. Hic animi porro asperiores
-                ratione voluptatibus commodi, architecto officia nobis ducimus
-                sint, placeat enim? Ab obcaecati ad provident et possimus. Ullam
-                ipsa laborum sint autem!
+              <p class="aboutme-deatils" data-translate="562">
+                كطالب في شعبة الجغرافيا، أُعنى بدراسة الظواهر الطبيعية والبشرية
+                لفهم العلاقات المكانية وتحليل توزيعها على سطح الأرض. أمتلك شغفًا
+                باستكشاف الخرائط، وتحليل البيانات الجغرافية، وفهم تأثير الإنسان
+                على البيئة. أطمح إلى المساهمة في تطوير التخطيط الحضري، وحماية
+                الموارد الطبيعية، والمشاركة في بناء مستقبل أكثر استدامة باستخدام
+                المعرفة الجغرافية
               </p>
 
               <div class="about-me-divison">
                 <div class="about-me-table">
                   <ul>
-                    <li><span>Experience:</span> 5+ years</li>
-                    <li><span>Country:</span> Pakistan</li>
-                    <li><span>Avability:</span> 24/7</li>
-                    <li><span>Satisfied Clients:</span> 200+</li>
-                    <li><span>Age:</span> 20</li>
-                    <li><span>Phone:</span> 123-456-7890</li>
-                    <li><span>Language Used:</span> HTML</li>
-                    <li><span>Degree:</span> CS</li>
+                    <li>
+                      <span data-translate="563">الكلية: </span>{{
+                      student.university }}
+                    </li>
+                    <li>
+                      <span data-translate="564">الخبرة:</span>{{
+                      student.university }}
+                    </li>
+                    <li>
+                      <span data-translate="359">المستوى الدراسي: </span> السنة
+                      الثالثة
+                    </li>
+                    <li>
+                      <span data-translate="361">التخصص: </span>{{
+                      student.specialization }}
+                    </li>
+                    <li><span data-translate="362">العمر:</span> 20</li>
+                    <li>
+                      <span data-translate="363">الهاتف:</span> 123-456-7890
+                    </li>
                   </ul>
-                  <div class="buttonGroup">
-                    <button>Hire Me</button>
-                    <button>Contact Me</button>
-                  </div>
                 </div>
 
                 <div class="skill-bar">
                   <ul>
+                    {% for semester, data in stats.semester_scores.items() %}
                     <li>
-                      <p>HTML</p>
+                      <p>{{ loop.index }} - {{ semester.replace('_', ' ') }}</p>
                       <div class="bar">
-                        <div class="active-bar" style="width: 99%"></div>
+                        {% if data.percent == 0 %}
+                        <!-- حالة عدم وجود بيانات -->
+                        <div
+                          data-translate="366"
+                          class="active-bar"
+                          style="
+                            width: 100%;
+                            background-color: orange;
+                            text-align: center;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 30px;
+                          "
+                        >
+                          لم تصل بعد لهذا الفصل
+                        </div>
+                        {% else %}
+                        <div
+                          class="active-bar"
+                          style="width: {{ data.percent }}%;
+                   background: linear-gradient(to right, #00c6ff, #0072ff);"
+                        ></div>
+                        {% endif %}
                       </div>
+
+                      {% if data.percent == 0 %}
+                      <!-- لا نعرض أي نص نجاح أو فشل في حالة عدم وجود بيانات -->
+                      {% elif data.percent == 100 %}
+                      <p
+                        style="color: green; font-weight: bold; margin-top: 5px"
+                        data-translate="565"
+                      >
+                        ✅ مستوفي - المعدل: {{ data.avg }}
+                      </p>
+                      {% else %}
+                      <p
+                        style="color: red; font-weight: bold; margin-top: 5px"
+                        data-translate="566"
+                      >
+                        ❌ غير مستوفي - المعدل: {{ data.avg }}
+                      </p>
+                      {% endif %}
                     </li>
-                    <li>
-                      <p>CSS</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 80%"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>JavaScript</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 85%"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Python</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 50%"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Django</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 60%"></div>
-                      </div>
-                    </li>
+                    {% endfor %}
                   </ul>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide services">
+            <h1 class="heading" data-translate="369">خدماتي الأكاديمية</h1>
+
+            <div class="service">
+              <a href="/withdraw_bac" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-file-arrow-down"></i>
+                </div>
+                <h2 data-translate="370">طلب سحب البكالوريا</h2>
+                <p data-translate="567">
+                  تقديم طلب رسمي لسحب شهادة البكالوريا من الجهات المختصة بطريقة
+                  مبسطة وسريعة
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request_points_statement" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <h2 data-translate="372">طلب بيان النقط</h2>
+                <p data-translate="373">
+                  تقديم طلب للحصول على بيان مفصل بالنقاط والدرجات للفصول
+                  والسنوات الدراسية
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request_data_audit" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-search"></i>
+                </div>
+                <h2 data-translate="374">طلب تدقيق المعطيات</h2>
+                <p data-translate="375">
+                  مراجعة وتدقيق المعلومات والبيانات الشخصية والأكاديمية للتأكد
+                  من صحتها
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/regrade_request" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                <h2 data-translate="376">طلب إعادة تصحيح الامتحان</h2>
+                <p data-translate="377">
+                  تقديم طلب لإعادة تصحيح أوراق الامتحان بناءً على مراجعة دقيقة
+                  لضمان العدالة
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+                <h2 data-translate="378">طلب آخر</h2>
+                <p data-translate="379">
+                  تقديم أي طلبات أكاديمية أخرى غير مدرجة ضمن الخدمات السابقة
+                  بطريقة سهلة ومباشرة
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-comments"></i>
+                </div>
+                <h2 data-translate="380">تقديم شكاية</h2>
+                <p data-translate="381">
+                  إمكانية تقديم شكوى رسمية حول أي مسائل أو مشاكل أكاديمية لضمان
+                  الحقوق
+                </p>
+              </a>
             </div>
           </div>
 
           <!-- Services Slide -->
           <div class="swiper-slide services">
-            <h1 class="heading">Services</h1>
+            <h1 class="heading" data-translate="382">
+              مشاريع وأبحاث جغرافية متقدمة
+            </h1>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-pen-ruler"></i>
-              </div>
-              <h2>Web Design</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/mawarid" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-water"></i>
+                </div>
+                <h2 data-translate="383">دراسات الموارد المائية</h2>
+                <p data-translate="384">
+                  إجراء أبحاث تحليلية للموارد المائية الطبيعية وتأثيرها على
+                  البيئة والتنمية المستدامة.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon"><i class="fa-solid fa-globe"></i></div>
-              <h2>Web Development</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/vegetation_studies" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-tree"></i>
+                </div>
+                <h2 data-translate="385">دراسات الغطاء النباتي</h2>
+                <p data-translate="386">
+                  تحليل التغيرات في الغطاء النباتي باستخدام تقنيات الاستشعار عن
+                  بُعد ونماذج النظم البيئية.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </div>
-              <h2>SEO</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/environmental_planning" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-city"></i>
+                </div>
+                <h2 data-translate="387">التخطيط البيئي</h2>
+                <p data-translate="388">
+                  وضع استراتيجيات للتخطيط البيئي المستدام بما يتناسب مع خصائص
+                  المناطق الحضرية والريفية.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon"><i class="fa-solid fa-image"></i></div>
-              <h2>Graphic Designer</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/transportation" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-route"></i>
+                </div>
+                <h2 data-translate="389">دراسة النقل والمواصلات</h2>
+                <p data-translate="390">
+                  تحليل أنظمة النقل وتخطيط شبكات المواصلات لتحسين الحركة وتقليل
+                  الأثر البيئي.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-              </div>
-              <h2>Software Developer</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/climate_change" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-temperature-half"></i>
+                </div>
+                <h2 data-translate="391">تغير المناخ وآثاره</h2>
+                <p data-translate="392">
+                  دراسة أسباب تغير المناخ وتأثيراته على الأنظمة البيئية
+                  والبشرية.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-database"></i>
-              </div>
-              <h2>Database Admin</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/natural_resources" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-water"></i>
+                </div>
+                <h2 data-translate="393">الجيومورفولوجيا</h2>
+                <p data-translate="394">
+                  دراسة كيفية استغلال الموارد الطبيعية والمحافظة عليها بشكل
+                  مستدام.
+                </p>
+              </a>
             </div>
           </div>
 
           <!-- Gallery Slide -->
-          <div class="swiper-slide gallery">
-            <h1 class="heading">Gallery</h1>
-            <div class="project">
-              <img src="https://picsum.photos/200/300?random-1" alt="" />
-            </div>
-            <div class="project">
-              <img src="https://picsum.photos/200/300?random-2" alt="" />
-            </div>
-            <div class="project">
-              <img src="https://picsum.photos/200/300?random-3" alt="" />
-            </div>
-          </div>
 
           <!-- Contact Slide -->
           <div class="swiper-slide contactMe">
-            <h1 class="heading">Contact Me</h1>
+            <h1 class="heading" data-translate="395">اتصل بي</h1>
             <div class="contactinfo">
               <i class="fa-solid fa-phone"></i>
-              <h3>Mobile No</h3>
+              <h3 data-translate="396">رقم الهاتف</h3>
               <p>123-456-7890</p>
             </div>
             <div class="contactinfo">
               <i class="fa-solid fa-location-dot"></i>
-              <h3>Location</h3>
+              <h3 data-translate="397">العنوان</h3>
               <p>Somewhere On Earth</p>
             </div>
             <div class="contactinfo">
               <i class="fa-regular fa-envelope"></i>
-              <h3>Email</h3>
+              <h3 data-translate="398">البريد</h3>
               <p>abc123@gmail.com</p>
             </div>
             <div class="contactinfo">
               <i class="fa-solid fa-globe"></i>
-              <h3>Website</h3>
+              <h3 data-translate="399">الموقع</h3>
               <p>www.abc123.com</p>
             </div>
 
             <form>
-              <h2>Send Me A Message</h2>
+              <h2 data-translate="400">أرسل لي رسالة</h2>
               <div class="SocialLinks">
                 <i class="fa-brands fa-codepen"></i>
                 <i class="fa-brands fa-instagram"></i>
@@ -283,15 +450,80 @@
                 rows="10"
                 placeholder="Type your Message Here..."
               ></textarea>
-              <button class="primary">Send</button>
+              <button class="primary" data-translate="401">إرسال</button>
             </form>
-
-            <footer>
-              <li>Copyright © 2023 Muzammal.</li>
-            </footer>
           </div>
         </div>
       </div>
     </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
+        let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
+
+        // ضبط اللغة عند تحميل الصفحة
+        fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() =>
+          loadTranslations(savedLang)
+        );
+
+        function loadTranslations(lang) {
+          fetch(`/get_translations/${lang}`)
+            .then((response) => response.json())
+            .then((data) => updateTranslations(data.translations));
+        }
+
+        window.changeLanguage = function (lang) {
+          localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
+
+          fetch(`/change_language/${lang}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                updateTranslations(data.translations);
+              }
+            });
+
+          // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
+          fetch(`/set_language/${lang}`, { method: "POST" });
+
+          // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
+          localStorage.setItem(
+            "language_update",
+            JSON.stringify({ group: pageGroup, lang: lang })
+          );
+        };
+
+        function updateTranslations(translations) {
+          document.querySelectorAll("[data-translate]").forEach((element) => {
+            let key = element.getAttribute("data-translate");
+            if (translations[key]) {
+              if (
+                element.tagName === "INPUT" ||
+                element.tagName === "TEXTAREA"
+              ) {
+                element.setAttribute("placeholder", translations[key]);
+              } else if (element.tagName === "OPTION") {
+                element.textContent = translations[key];
+              } else {
+                element.textContent = translations[key];
+              }
+            }
+          });
+        }
+
+        // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
+        window.addEventListener("storage", function (event) {
+          if (event.key === "language_update") {
+            let data = JSON.parse(event.newValue);
+            if (data.group === pageGroup) {
+              loadTranslations(data.lang);
+            }
+          }
+        });
+      });
+    </script>
   </body>
 </html>

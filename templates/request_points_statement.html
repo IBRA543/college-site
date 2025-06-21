@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>طلب بيان النقاط</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap");
+
+      /* عام */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0 0 160px 0; /* padding bottom to avoid overlap with fixed card */
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(135deg, #1abc9c, #16a085);
+        min-height: 100vh;
+        color: #222;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+        flex-wrap: wrap;
+        transition: background 0.7s ease;
+      }
+
+      /* الحاوية */
+      .container {
+        background: linear-gradient(145deg, #ffffff, #dff9fb);
+        border-radius: 32px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07),
+          0 20px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 480px;
+        padding: 45px 40px 60px 40px;
+        text-align: center;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.4s ease;
+      }
+      .container:hover {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1),
+          0 40px 70px rgba(0, 0, 0, 0.15);
+      }
+
+      /* العنوان */
+      h2 {
+        margin-bottom: 45px;
+        font-weight: 700;
+        font-size: 40px;
+        color: #2c3e50;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      /* التسميات */
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 700;
+        color: #34495e;
+        font-size: 18px;
+        text-align: right;
+      }
+
+      /* الحقول النصية */
+      input[type="text"],
+      input[type="tel"],
+      textarea {
+        width: 100%;
+        padding: 18px 22px;
+        margin-bottom: 28px;
+        border: none;
+        border-radius: 20px;
+        font-size: 18px;
+        font-weight: 500;
+        font-family: "Cairo", sans-serif;
+        color: #34495e;
+        background: linear-gradient(145deg, #f0f8ff, #d1ecf1);
+        box-shadow: inset 4px 4px 8px #c1d8e8, inset -4px -4px 8px #ffffff;
+        text-align: right;
+        transition: box-shadow 0.3s ease, background 0.3s ease;
+        user-select: text;
+      }
+      input[type="text"]:focus,
+      input[type="tel"]:focus,
+      textarea:focus {
+        outline: none;
+        background: linear-gradient(145deg, #a4d7f5, #75c2f5);
+        box-shadow: 0 0 12px 3px #3498db, inset 4px 4px 8px #6bb8f7,
+          inset -4px -4px 8px #a1d3fc;
+        color: #1c2833;
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      /* قائمة السنوات */
+      .years-checkboxes {
+        background: #ecf0f1;
+        border-radius: 24px;
+        padding: 18px 25px;
+        margin-bottom: 28px;
+        max-height: 180px;
+        overflow-y: auto;
+        box-shadow: inset 3px 3px 6px #cfd4d9, inset -3px -3px 6px #ffffff;
+        text-align: right;
+        user-select: none;
+      }
+      .years-checkboxes label {
+        display: inline-flex;
+        align-items: center;
+        margin: 10px 18px 10px 0;
+        cursor: pointer;
+        font-weight: 600;
+        color: #34495e;
+        font-size: 17px;
+      }
+      .years-checkboxes input[type="checkbox"] {
+        margin-left: 10px;
+        width: 22px;
+        height: 22px;
+        accent-color: #16a085;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: box-shadow 0.3s ease;
+      }
+      .years-checkboxes input[type="checkbox"]:focus {
+        outline-offset: 3px;
+        outline: 3px solid #16a085;
+      }
+
+      /* زر الإرسال */
+      button {
+        width: 100%;
+        background: linear-gradient(135deg, #16a085, #1abc9c);
+        color: white;
+        border: none;
+        padding: 20px 0;
+        font-size: 24px;
+        font-weight: 900;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(22, 160, 133, 0.75);
+        transition: background 0.3s ease, transform 0.2s ease,
+          box-shadow 0.3s ease;
+        letter-spacing: 1.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        user-select: none;
+      }
+      button:hover {
+        background: linear-gradient(135deg, #1abc9c, #16a085);
+        transform: scale(1.1);
+        box-shadow: 0 14px 40px rgba(26, 188, 156, 0.9);
+      }
+
+      /* رسائل الخطأ */
+      .error-message {
+        color: #e74c3c;
+        font-weight: 800;
+        font-size: 15px;
+        display: none;
+        letter-spacing: 0.8px;
+        margin-top: -18px;
+        margin-bottom: 24px;
+        user-select: none;
+        text-shadow: 0 0 3px #e74c3c88;
+      }
+      .error-message.show {
+        display: block;
+        animation: shake 0.35s ease;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-8px);
+        }
+        40%,
+        80% {
+          transform: translateX(8px);
+        }
+      }
+
+      /* رسالة النجاح */
+      .success-message {
+        margin-top: 35px;
+        padding: 22px 20px;
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        color: white;
+        border-radius: 30px;
+        font-weight: 900;
+        text-align: center;
+        box-shadow: 0 0 25px #27ae60cc;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(25px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        letter-spacing: 0.7px;
+        user-select: none;
+        font-size: 19px;
+        text-shadow: 0 0 8px #27ae60cc;
+      }
+      .success-message.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      /* بطاقة عرض البيانات ثابتة أسفل الصفحة */
+      .card {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(50%);
+        background: linear-gradient(135deg, #0984e3, #74b9ff);
+        border-radius: 28px;
+        width: 420px;
+        max-width: 90vw;
+        padding: 35px 30px;
+        color: white;
+        box-shadow: 0 20px 45px rgba(9, 132, 227, 0.85);
+        font-family: "Cairo", sans-serif;
+        text-align: right;
+        direction: rtl;
+        overflow: hidden;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        user-select: none;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .card.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(50%) translateY(0);
+      }
+      .card h3 {
+        font-weight: 800;
+        margin-bottom: 18px;
+        font-size: 28px;
+        letter-spacing: 1.5px;
+        text-shadow: 1px 1px 4px #0d6efd88;
+      }
+      .card p {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 1.6;
+        text-shadow: 0 0 3px #74b9ffcc;
+        margin: 8px 0;
+      }
+      .card .highlight {
+        font-weight: 900;
+        color: #ffeaa7;
+        text-shadow: 0 0 7px #ffeaa7cc;
+      }
+      /* رمز إغلاق البطاقة */
+      .card .close-btn {
+        position: absolute;
+        top: 14px;
+        left: 20px;
+        background: #d63031;
+        color: white;
+        font-weight: 900;
+        font-size: 24px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        line-height: 38px;
+        text-align: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px #d6303155;
+        transition: background 0.3s ease;
+        user-select: none;
+      }
+      .card .close-btn:hover {
+        background: #e17055;
+      }
+
+      /* استجابة الهواتف */
+      @media (max-width: 480px) {
+        .container {
+          padding: 30px 20px 50px 20px;
+          max-width: 95vw;
+          font-size: 16px;
+        }
+        h2 {
+          font-size: 28px;
+          margin-bottom: 30px;
+        }
+        button {
+          font-size: 20px;
+          padding: 15px 0;
+        }
+        .card {
+          width: 90vw;
+          padding: 25px 20px;
+          font-size: 16px;
+        }
+        .card h3 {
+          font-size: 22px;
+        }
+        .card p {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" role="main" aria-label="نموذج طلب بيان النقاط">
+      <h2>طلب بيان النقاط</h2>
+      <form id="pointsForm" novalidate>
+        <label for="studentName">اسم الطالب:</label>
+        <input
+          type="text"
+          id="studentName"
+          name="studentName"
+          placeholder="أدخل اسم الطالب"
+          autocomplete="name"
+          required
+          aria-required="true"
+          aria-describedby="nameError"
+          dir="rtl"
+        />
+        <span class="error-message" id="nameError"
+          >الرجاء إدخال الاسم بشكل صحيح.</span
+        >
+        <label for="studentNumber">رقم الطالب:</label>
+        <input
+          type="text"
+          id="studentNumber"
+          name="studentNumber"
+          placeholder="أدخل رقم الطالب"
+          autocomplete="off"
+          required
+          aria-required="true"
+          dir="rtl"
+        />
+
+        <label for="idCard">رقم بطاقة التعريف:</label>
+        <input
+          type="text"
+          id="idCard"
+          name="idCard"
+          placeholder="أدخل رقم بطاقة التعريف"
+          autocomplete="off"
+          required
+          aria-required="true"
+          dir="rtl"
+        />
+
+        <label for="codeMassar">الرمز المسار:</label>
+        <input
+          type="text"
+          id="codeMassar"
+          name="codeMassar"
+          placeholder="أدخل الرمز المسار"
+          autocomplete="off"
+          required
+          aria-required="true"
+          dir="rtl"
+        />
+
+        <label for="points">النقاط:</label>
+        <input
+          type="text"
+          id="points"
+          name="points"
+          placeholder="أدخل النقاط"
+          autocomplete="off"
+          dir="rtl"
+        />
+
+        <label for="subject">المادة:</label>
+        <input
+          type="text"
+          id="subject"
+          name="subject"
+          placeholder="أدخل اسم المادة"
+          autocomplete="off"
+          dir="rtl"
+        />
+
+        <label for="phone">رقم الهاتف:</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="05xxxxxxxx"
+          pattern="05[0-9]{8}"
+          autocomplete="tel"
+          required
+          aria-required="true"
+          aria-describedby="phoneError"
+          dir="rtl"
+        />
+        <span class="error-message" id="phoneError"
+          >الرجاء إدخال رقم هاتف صحيح يبدأ بـ 05 ويتكون من 10 أرقام.</span
+        >
+
+        <label>السنة الدراسية:</label>
+        <div
+          class="years-checkboxes"
+          role="group"
+          aria-labelledby="yearGroupLabel"
+          tabindex="0"
+        >
+          <label
+            ><input type="checkbox" name="year" value="السنة الأولى" /> السنة
+            الأولى</label
+          >
+          <label
+            ><input type="checkbox" name="year" value="السنة الثانية" /> السنة
+            الثانية</label
+          >
+          <label
+            ><input type="checkbox" name="year" value="السنة الثالثة" /> السنة
+            الثالثة</label
+          >
+          <label
+            ><input type="checkbox" name="year" value="السنة الرابعة" /> السنة
+            الرابعة</label
+          >
+          <label
+            ><input type="checkbox" name="year" value="السنة الخامسة" /> السنة
+            الخامسة</label
+          >
+          <label
+            ><input type="checkbox" name="year" value="السنة السادسة" /> السنة
+            السادسة</label
+          >
+        </div>
+
+        <label for="additionalNotes">ملاحظات إضافية:</label>
+        <textarea
+          id="additionalNotes"
+          name="additionalNotes"
+          rows="3"
+          placeholder="اكتب ملاحظات أو طلبات خاصة (اختياري)"
+          aria-describedby="notesHelp"
+          dir="rtl"
+        ></textarea>
+
+        <button type="submit" aria-label="إرسال طلب بيان النقاط">
+          إرسال الطلب
+        </button>
+
+        <div
+          class="success-message"
+          role="alert"
+          aria-live="polite"
+          id="successMessage"
+        >
+          تم إرسال الطلب بنجاح! شكرًا لك.
+        </div>
+      </form>
+    </div>
+
+    <!-- بطاقة عرض البيانات -->
+    <div
+      class="card"
+      role="region"
+      aria-live="polite"
+      aria-label="بيانات الطلب المرسلة"
+      id="dataCard"
+    >
+      <span
+        class="close-btn"
+        role="button"
+        aria-label="إغلاق بطاقة عرض البيانات"
+        tabindex="0"
+        id="closeCardBtn"
+        >&times;</span
+      >
+      <h3>تفاصيل الطلب</h3>
+      <p>
+        <strong>الاسم:</strong> <span id="cardName" class="highlight"></span>
+      </p>
+      <p>
+        <strong>رقم الهاتف:</strong>
+        <span id="cardPhone" class="highlight"></span>
+      </p>
+      <p>
+        <strong>السنوات المختارة:</strong>
+        <span id="cardYears" class="highlight"></span>
+      </p>
+      <p>
+        <strong>ملاحظات إضافية:</strong>
+        <span id="cardNotes" class="highlight"></span>
+      </p>
+    </div>
+
+    <script>
+      const form = document.getElementById("pointsForm");
+      const nameInput = document.getElementById("studentName");
+      const phoneInput = document.getElementById("phone");
+      const yearsCheckboxes = document.querySelectorAll('input[name="year"]');
+      const notesInput = document.getElementById("additionalNotes");
+      const successMessage = document.getElementById("successMessage");
+
+      const nameError = document.getElementById("nameError");
+      const phoneError = document.getElementById("phoneError");
+
+      const dataCard = document.getElementById("dataCard");
+      const cardName = document.getElementById("cardName");
+      const cardPhone = document.getElementById("cardPhone");
+      const cardYears = document.getElementById("cardYears");
+      const cardNotes = document.getElementById("cardNotes");
+      const closeCardBtn = document.getElementById("closeCardBtn");
+
+      // تحقق من صحة الاسم
+      function validateName() {
+        const name = nameInput.value.trim();
+        if (name.length < 3 || !/^[\u0600-\u06FF\s]+$/.test(name)) {
+          nameError.classList.add("show");
+          return false;
+        }
+        nameError.classList.remove("show");
+        return true;
+      }
+
+      // تحقق من صحة رقم الهاتف
+      function validatePhone() {
+        const phone = phoneInput.value.trim();
+        const phonePattern = /^05[0-9]{8}$/;
+        if (!phonePattern.test(phone)) {
+          phoneError.classList.add("show");
+          return false;
+        }
+        phoneError.classList.remove("show");
+        return true;
+      }
+
+      // جمع السنوات المختارة
+      function getSelectedYears() {
+        let selected = [];
+        yearsCheckboxes.forEach((cb) => {
+          if (cb.checked) selected.push(cb.value);
+        });
+        return selected;
+      }
+
+      // عرض بطاقة البيانات
+      function showCard(data) {
+        cardName.textContent = data.name;
+        cardPhone.textContent = data.phone;
+        cardYears.textContent = data.years.length
+          ? data.years.join("، ")
+          : "لم يتم اختيار سنة";
+        cardNotes.textContent = data.notes.trim()
+          ? data.notes.trim()
+          : "لا توجد ملاحظات";
+
+        dataCard.classList.add("show");
+      }
+
+      // إخفاء البطاقة
+      closeCardBtn.addEventListener("click", () => {
+        dataCard.classList.remove("show");
+      });
+      closeCardBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          dataCard.classList.remove("show");
+        }
+      });
+
+      // أحداث التحقق الفوري
+      nameInput.addEventListener("input", validateName);
+      phoneInput.addEventListener("input", validatePhone);
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const isNameValid = validateName();
+        const isPhoneValid = validatePhone();
+        if (!isNameValid || !isPhoneValid) {
+          successMessage.classList.remove("show");
+          return;
+        }
+
+        // إعداد البيانات
+        const formData = {
+          name: nameInput.value.trim(),
+          phone: phoneInput.value.trim(),
+          years: getSelectedYears(),
+          notes: notesInput.value,
+        };
+
+        // عرض رسالة النجاح
+        successMessage.classList.add("show");
+
+        // عرض بطاقة البيانات
+        showCard(formData);
+
+        // إعادة تعيين النموذج بعد ثانيتين
+        setTimeout(() => {
+          form.reset();
+          successMessage.classList.remove("show");
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>

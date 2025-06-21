@@ -225,3 +225,13 @@ footer {
 footer li {
   list-style: none;
 }
+
+#fileInput {
+  display: block !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 40px !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+}

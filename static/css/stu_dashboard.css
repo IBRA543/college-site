@@ -64,6 +64,7 @@ h1:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .btn i {

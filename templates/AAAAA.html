@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>صفحة الأزرار المتقدمة</title>
+    <title data-translate="140">صفحة الدروس</title>
     <style>
       body {
         height: 100vh;
@@ -63,6 +63,20 @@
       .overlay.active {
         display: block;
         opacity: 1;
+      }
+
+      .buttons-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        width: 80%;
+        max-width: 800px;
+        margin: 40px auto 0 auto;
+        padding: 20px;
+        border: 1px solid #ff2770;
+        border-radius: 15px;
+        background-color: #2a2a3b;
+        box-shadow: 0 0 20px rgba(255, 39, 112, 0.3);
       }
 
       button {
@@ -136,25 +150,40 @@
   </head>
 
   <body>
-    <button onclick="showYearPopup()">اختر السنة</button>
-    <button onclick="showYearPopup()">المراجع</button>
-    <button onclick="showYearPopup()">الخرائط</button>
-    <button onclick="showYearPopup()">نماذج إمتحانات</button>
+    <div class="buttons-wrapper">
+      <button data-translate="475" onclick="showYearPopup('الدروس')">
+        الدروس
+      </button>
+      <button data-translate="142" onclick="showYearPopup('المراجع')">
+        المراجع
+      </button>
+      <button data-translate="143" onclick="showYearPopup('الخرائط')">
+        الخرائط
+      </button>
+      <button data-translate="144" onclick="showYearPopup('نماذج امتحانات')">
+        نماذج إمتحانات
+      </button>
+      <button data-translate="145" onclick="showYearPopup('نماذج امتحانات')">
+        ملخصات
+      </button>
+      <button data-translate="147" onclick="showYearPopup('نماذج امتحانات')">
+        اخر..
+      </button>
+    </div>
 
     <div class="container" id="semesters-container"></div>
 
     <div class="overlay" id="overlay" onclick="closePopup()"></div>
 
-    <!-- نافذة اختيار السنة -->
+    <!-- نافذة اختيار السنة موحدة -->
     <div class="popup" id="year-popup">
-      <h3>اختر السنة الدراسية</h3>
+      <h3 data-translate="148">اختر السنة الدراسية</h3>
       <button onclick="selectYear(2023)">2023</button>
       <button onclick="selectYear(2024)">2024</button>
       <button onclick="selectYear(2025)">2025</button>
-      <button onclick="closePopup()">إغلاق</button>
+      <button data-translate="447" onclick="closePopup()">إغلاق</button>
     </div>
 
-    <!-- حاوية النوافذ -->
     <div id="popups-container"></div>
 
     <script>
@@ -593,7 +622,34 @@
         },
       };
 
-      function showYearPopup() {
+      let selectedType = "الدروس"; // القيمة الافتراضية
+
+      function showYearPopup(type = "الدروس") {
+        selectedType = type;
+        document.getElementById("year-popup").classList.add("active");
+        document.getElementById("overlay").classList.add("active");
+      }
+
+      let selectedType1 = "المراجع"; // القيمة الافتراضية
+
+      function showYearPopup1(type = "المراجع") {
+        selectedType = type;
+        document.getElementById("year-popup").classList.add("active");
+        document.getElementById("overlay").classList.add("active");
+      }
+
+      let selectedType2 = "الخرائط"; // القيمة الافتراضية
+
+      function showYearPopup2(type = "الخرائط") {
+        selectedType = type;
+        document.getElementById("year-popup").classList.add("active");
+        document.getElementById("overlay").classList.add("active");
+      }
+
+      let selectedType3 = "نماذج امتحانات"; // القيمة الافتراضية
+
+      function showYearPopup3(type = "نماذج امتحانات") {
+        selectedType = type;
         document.getElementById("year-popup").classList.add("active");
         document.getElementById("overlay").classList.add("active");
       }
@@ -611,6 +667,16 @@
         const popupsContainer = document.getElementById("popups-container");
         semestersContainer.innerHTML = "";
         popupsContainer.innerHTML = "";
+
+        const title = document.createElement("h2");
+        title.textContent = `${selectedType} - ${selectedYear}`;
+        title.style.textAlign = "center";
+        title.style.width = "100%";
+        title.style.marginBottom = "20px";
+        title.style.color = "#ff2770";
+        title.style.fontSize = "28px";
+
+        semestersContainer.appendChild(title);
 
         for (let i = 1; i <= 6; i++) {
           const button = document.createElement("button");
@@ -687,18 +753,1271 @@
 
         console.log(`عرض النافذة للفصل: ${semester} في السنة: ${selectedYear}`);
 
-        if (lessonsData[selectedYear] && lessonsData[selectedYear][semester]) {
-          popupContent.innerHTML = ""; // مسح المحتوى السابق
-          lessonsData[selectedYear][semester].forEach((lesson) => {
-            console.log(`عرض مادة: ${lesson.subject} للأستاذ: ${lesson.url}`);
+        function createButton(text, email, subject) {
+          const btn = document.createElement("button");
+          btn.textContent = text;
+          btn.onclick = () => fetchFiles(email, subject);
+          return btn;
+        }
 
-            const lessonButton = document.createElement("button");
-            lessonButton.textContent = lesson.text;
-            lessonButton.onclick = () => fetchFiles(lesson.url, lesson.subject);
-            popupContent.appendChild(lessonButton);
-          });
+        if (selectedType === "المراجع") {
+          popupContent.innerHTML = "";
+
+          if (selectedYear === 2023) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "-----------",
+                    "chemistry.teacher@example.com",
+                    "chemistry"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "physics.teacher@example.com",
+                    "physics"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "chemistry.teacher@example.com",
+                    "chemistry"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "-----------",
+                    "physics.teacher@example.com",
+                    "physics"
+                  )
+                );
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "science.teacher@example.com",
+                    "science"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton("--------", "math.teacher@example.com", "math")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 5:
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "science2.teacher@example.com",
+                    "science2"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 6:
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "computer.teacher@example.com",
+                    "computer"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "education.teacher@example.com",
+                    "education"
+                  )
+                );
+                break;
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else if (selectedYear === 2024) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة و تحليل الخرائط الطبوغرافية",
+                    "bansalem_rj_usmba_ac_ma",
+                    "references"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل إلى علم الإجتماع",
+                    "bouzkraoui.dr@usmba.ac.ma",
+                    "sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية السكان والديموغرافيا",
+                    "magda.sb@usmba.ac.ma",
+                    "géographie populations"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفولوجيا عامة",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب الوسيط",
+                    "raja.bh@usmba.ac.ma",
+                    "histoire moyen maroc"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton("المناخ", "muhammed.hn@usmba.ac.ma", "climat")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "الإتجاهات الكلاسيكية الحديثة في علم الإجتماع",
+                    "hassan.am@usmba.ac.ma",
+                    "sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المغرب العامة",
+                    "bansalem_rj_usmba_ac_ma",
+                    "references"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الأرياف",
+                    "muhammad.zr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب المعاصر والراهن",
+                    "tarek.mj@usmba.ac.ma",
+                    "histoire contemporaine maroc"
+                  )
+                );
+
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+
+                break;
+
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else if (selectedYear === 2025) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة و تحليل الخرائط الطبوغرافية",
+                    "bansalem.rj@usmba.ac.ma",
+                    "topographiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل إلى علم الإجتماع",
+                    "wasila.bn@usmba.ac.ma",
+                    "introduction sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية السكان والديموغرافيا",
+                    "idris.zh@usmba.ac.ma",
+                    "géographie populations"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفولوجيا عامة",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب الوسيط",
+                    "tarek.mj@usmba.ac.ma",
+                    "histoire moyen maroc"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton("المناخ", "muhammed.hn@usmba.ac.ma", "climat")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "الإتجاهات الكلاسيكية الحديثة في علم الإجتماع",
+                    "wasila.bn@usmba.ac.ma",
+                    "tendances classiques sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المغرب العامة",
+                    "bansalem.rj@usmba.ac.ma",
+                    "géographie maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الأرياف",
+                    "muhammad.zr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب المعاصر والراهن",
+                    "hisham.mr@usmba.ac.ma",
+                    "histoire contemporaine maroc"
+                  )
+                );
+
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton(
+                    "مناخ دينامي",
+                    "muhammed.hn@usmba.ac.ma",
+                    "climat dynamique"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفلوجيا البنيوية",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie structurale"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة وتحليل الخرائط الجيولوجية والجيومرفوفوجية",
+                    "souad.bn@usmba.ac.ma",
+                    "cartes géologiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المدن",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie ville"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الريفي",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton(
+                    "الخرائط والسيميولوجيا",
+                    "muhammed.hm@usmba.ac.ma",
+                    "cartes sémologies"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "النظم البيئية والتربة والنبات",
+                    "abdulsalam.sa@usmba.ac.ma",
+                    "écosystemes"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية البحر المتوسط وإفريقيا جنوب الصحراء",
+                    "abdulsalam.sa@usmba.ac.ma",
+                    "géographie méditerranée"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الطاقة",
+                    "muhammed.hn@usmba.ac.ma",
+                    "géographie énergétique"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الحضري",
+                    "bushra.sb@usmba.ac.ma",
+                    "dynamique champ"
+                  )
+                );
+
+                break;
+
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else {
+            // سنة أخرى - المحتوى العادي
+            if (
+              lessonsData[selectedYear] &&
+              lessonsData[selectedYear][semester]
+            ) {
+              lessonsData[selectedYear][semester].forEach((lesson) => {
+                const lessonButton = createButton(
+                  lesson.text,
+                  lesson.url,
+                  lesson.subject
+                );
+                popupContent.appendChild(lessonButton);
+              });
+            } else {
+              popupContent.innerHTML = "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          }
+        } else if (selectedType === "نماذج امتحانات") {
+          popupContent.innerHTML = "";
+
+          if (selectedYear === 2023) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "-----------",
+                    "chemistry.teacher@example.com",
+                    "chemistry"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "physics.teacher@example.com",
+                    "physics"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "chemistry.teacher@example.com",
+                    "chemistry"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "-----------",
+                    "physics.teacher@example.com",
+                    "physics"
+                  )
+                );
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "science.teacher@example.com",
+                    "science"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton("--------", "math.teacher@example.com", "math")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 5:
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "science2.teacher@example.com",
+                    "science2"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 6:
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "computer.teacher@example.com",
+                    "computer"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "education.teacher@example.com",
+                    "education"
+                  )
+                );
+                break;
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else if (selectedYear === 2024) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة و تحليل الخرائط الطبوغرافية",
+                    "bansalem.rj@usmba.ac.ma",
+                    "cartes topographiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل إلى علم الإجتماع",
+                    "bouzkraoui.dr@usmba.ac.ma",
+                    "sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية السكان والديموغرافيا",
+                    "magda.sb@usmba.ac.ma",
+                    "géographie populations"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفولوجيا عامة",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب الوسيط",
+                    "raja.bh@usmba.ac.ma",
+                    "histoire moyen maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "المهارات الحياتية والذاتية",
+                    "souad.bn@usmba.ac.ma",
+                    "-------"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الفرنسية",
+                    "muhammed.am@usmba.ac.ma",
+                    "francais (S1)"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الإنجليزية",
+                    "fatima-zahra.ms@usmba.ac.ma",
+                    "english (S1)"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton("المناخ", "muhammed.hn@usmba.ac.ma", "climat")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "الإتجاهات الكلاسيكية الحديثة في علم الإجتماع",
+                    "hassan.am@usmba.ac.ma",
+                    "sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المغرب العامة",
+                    "bansalem.rj@usmba.ac.ma",
+                    "géographie maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الأرياف",
+                    "muhammad.zr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب المعاصر والراهن",
+                    "tarek.mj@usmba.ac.ma",
+                    "histoire contemporaine maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "المهارات الحياتية والذاتية",
+                    "muhammed.fs@usmba.ac.ma",
+                    "الجغرافيا"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الفرنسية",
+                    "muhammed.am@usmba.ac.ma",
+                    "francais (S2)"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الإنجليزية",
+                    "fatima-zahra.ms@usmba.ac.ma",
+                    "english (S2)"
+                  )
+                );
+
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+
+                break;
+
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else if (selectedYear === 2025) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة و تحليل الخرائط الطبوغرافية",
+                    "bansalem.rj@usmba.ac.ma",
+                    "topographiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل إلى علم الإجتماع",
+                    "wasila.bn@usmba.ac.ma",
+                    "introduction sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية السكان والديموغرافيا",
+                    "idris.zh@usmba.ac.ma",
+                    "géographie populations"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفولوجيا عامة",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب الوسيط",
+                    "tarek.mj@usmba.ac.ma",
+                    "histoire moyen maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "المهارات الحياتية والذاتية",
+                    "souad.bn@usmba.ac.ma",
+                    "--------"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الفرنسية",
+                    "muhammed.am@usmba.ac.ma",
+                    "francais(S1)"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الإنجليزية",
+                    "fatima-zahra.ms@usmba.ac.ma",
+                    "english (S1)"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton("المناخ", "muhammed.hn@usmba.ac.ma", "climat")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "الإتجاهات الكلاسيكية الحديثة في علم الإجتماع",
+                    "wasila.bn@usmba.ac.ma",
+                    "tendances classiques sociologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المغرب العامة",
+                    "bansalem.rj@usmba.ac.ma",
+                    "géographie maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الأرياف",
+                    "muhammad.zr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب المعاصر والراهن",
+                    "hisham.mr@usmba.ac.ma",
+                    "histoire contemporaine maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "المهارات الحياتية والرقمية",
+                    "muhammed.fs@usmba.ac.ma",
+                    "compétences numériques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الفرنسية",
+                    "ali.ch@usmba.ac.ma",
+                    "francais(S2)"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الإنجليزية",
+                    "zainab.fr@usmba.ac.ma",
+                    "english (S2)"
+                  )
+                );
+
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton(
+                    "مناخ دينامي",
+                    "muhammed.hn@usmba.ac.ma",
+                    "climat dynamique"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفلوجيا البنيوية",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie structurale"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة وتحليل الخرائط الجيولوجية والجيومرفوفوجية",
+                    "souad.bn@usmba.ac.ma",
+                    "cartes géologiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المدن",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie ville"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الريفي",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "المهارات الفنية والثقافية",
+                    "ali.wh@usmba.ac.ma",
+                    "compétences artistiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الفرنسية",
+                    "ali.ch@usmba.ac.ma",
+                    "francais (S3)"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الإنجليزية",
+                    "ali.al-baqali@usmba.ac.ma",
+                    "english (S3)"
+                  )
+                );
+
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton(
+                    "الخرائط والسيميولوجيا",
+                    "muhammed.hm@usmba.ac.ma",
+                    "cartes sémologies"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "النظم البيئية والتربة والنبات",
+                    "abdulsalam.sa@usmba.ac.ma",
+                    "écosystemes"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية البحر المتوسط وإفريقيا جنوب الصحراء",
+                    "abdulsalam.sa@usmba.ac.ma",
+                    "géographie méditerranée"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الطاقة",
+                    "muhammed.hn@usmba.ac.ma",
+                    "géographie énergétique"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الحضري",
+                    "bushra.sb@usmba.ac.ma",
+                    "dynamique champ"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الريفي",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "المهارات الهياتية والذاتية",
+                    "muhammed.by@usmba.ac.ma",
+                    "compétences personnelles"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الفرنسية",
+                    "ali.ch@usmba.ac.ma",
+                    "francais (S4)"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "اللغة الإنجليزية",
+                    "nawar.af@usmba.ac.ma",
+                    "english (S4)"
+                  )
+                );
+
+                break;
+              // أكمل باقي الحالات حسب الحاجة
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد نماذج امتحانات لهذا الفصل.</p>";
+            }
+          } else {
+            popupContent.innerHTML =
+              "<p>لا توجد نماذج امتحانات لهذا الفصل.</p>";
+          }
+        } else if (selectedType === "الخرائط") {
+          popupContent.innerHTML = "";
+
+          if (selectedYear === 2023) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "-----------",
+                    "chemistry.teacher@example.com",
+                    "chemistry"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "physics.teacher@example.com",
+                    "physics"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "chemistry.teacher@example.com",
+                    "chemistry"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "-----------",
+                    "physics.teacher@example.com",
+                    "physics"
+                  )
+                );
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "science.teacher@example.com",
+                    "science"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton("--------", "math.teacher@example.com", "math")
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 5:
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "science2.teacher@example.com",
+                    "science2"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "philosophy.teacher@example.com",
+                    "philosophy"
+                  )
+                );
+                break;
+              case 6:
+                popupContent.appendChild(
+                  createButton(
+                    "---------",
+                    "computer.teacher@example.com",
+                    "computer"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "--------",
+                    "education.teacher@example.com",
+                    "education"
+                  )
+                );
+                break;
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else if (selectedYear === 2024) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة و تحليل الخرائط الطبوغرافية",
+                    "bansalem.rj@usmba.ac.ma",
+                    "cartes topographiques"
+                  )
+                );
+
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية السكان والديموغرافيا",
+                    "magda.sb@usmba.ac.ma",
+                    "géographie populations"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفولوجيا عامة",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب الوسيط",
+                    "raja.bh@usmba.ac.ma",
+                    "histoire moyen maroc"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton("المناخ", "muhammed.hn@usmba.ac.ma", "climat")
+                );
+
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المغرب العامة",
+                    "bansalem.rj@usmba.ac.ma",
+                    "géographie maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الأرياف",
+                    "muhammad.zr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب المعاصر والراهن",
+                    "tarek.mj@usmba.ac.ma",
+                    "histoire contemporaine maroc"
+                  )
+                );
+
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+                popupContent.appendChild(
+                  createButton("--------", "geo.teacher@example.com", "geo")
+                );
+
+                break;
+
+              default:
+                popupContent.innerHTML =
+                  "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+            }
+          } else if (selectedYear === 2025) {
+            switch (semester) {
+              case 1:
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة و تحليل الخرائط الطبوغرافية",
+                    "bansalem.rj@usmba.ac.ma",
+                    "topographiques"
+                  )
+                );
+
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية السكان والديموغرافيا",
+                    "idris.zh@usmba.ac.ma",
+                    "géographie populations"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفولوجيا عامة",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب الوسيط",
+                    "tarek.mj@usmba.ac.ma",
+                    "histoire moyen maroc"
+                  )
+                );
+                break;
+              case 2:
+                popupContent.appendChild(
+                  createButton("المناخ", "muhammed.hn@usmba.ac.ma", "climat")
+                );
+
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المغرب العامة",
+                    "bansalem.rj@usmba.ac.ma",
+                    "géographie maroc"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الأرياف",
+                    "muhammad.zr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "مدخل لدراسة تاريخ المغرب المعاصر والراهن",
+                    "hisham.mr@usmba.ac.ma",
+                    "histoire contemporaine maroc"
+                  )
+                );
+
+                break;
+              case 3:
+                popupContent.appendChild(
+                  createButton(
+                    "مناخ دينامي",
+                    "muhammed.hn@usmba.ac.ma",
+                    "climat dynamique"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جيومورفلوجيا البنيوية",
+                    "souad.bn@usmba.ac.ma",
+                    "géomorphologie structurale"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "قراءة وتحليل الخرائط الجيولوجية والجيومرفوفوجية",
+                    "souad.bn@usmba.ac.ma",
+                    "cartes géologiques"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية المدن",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie ville"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الريفي",
+                    "sabah.sr@usmba.ac.ma",
+                    "géographie pays"
+                  )
+                );
+
+                break;
+              case 4:
+                popupContent.appendChild(
+                  createButton(
+                    "الخرائط والسيميولوجيا",
+                    "muhammed.hm@usmba.ac.ma",
+                    "cartes sémologies"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "النظم البيئية والتربة والنبات",
+                    "abdulsalam.sa@usmba.ac.ma",
+                    "écosystemes"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية البحر المتوسط وإفريقيا جنوب الصحراء",
+                    "abdulsalam.sa@usmba.ac.ma",
+                    "géographie méditerranée"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "جغرافية الطاقة",
+                    "muhammed.hn@usmba.ac.ma",
+                    "géographie énergétique"
+                  )
+                );
+                popupContent.appendChild(
+                  createButton(
+                    "دينامية المجال الحضري",
+                    "bushra.sb@usmba.ac.ma",
+                    "dynamique champ"
+                  )
+                );
+
+                break;
+              // أكمل باقي الحالات حسب الحاجة
+              default:
+                popupContent.innerHTML = "<p>لا توجد خرائط لهذا الفصل.</p>";
+            }
+          } else {
+            popupContent.innerHTML = "<p>لا توجد خرائط لهذا الفصل.</p>";
+          }
         } else {
-          popupContent.innerHTML = "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+          // النوع غير المراجع، نماذج امتحانات، أو الخرائط => عرض المحتويات العادية
+          if (
+            lessonsData[selectedYear] &&
+            lessonsData[selectedYear][semester]
+          ) {
+            popupContent.innerHTML = "";
+            lessonsData[selectedYear][semester].forEach((lesson) => {
+              const lessonButton = createButton(
+                lesson.text,
+                lesson.url,
+                lesson.subject
+              );
+              popupContent.appendChild(lessonButton);
+            });
+          } else {
+            popupContent.innerHTML = "<p>لا توجد مواد متاحة لهذا الفصل.</p>";
+          }
         }
 
         popup.classList.add("active");

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>رفع ونشر المراجع والملفات</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap");
+
+      body {
+        font-family: "Cairo", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .upload-container {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 40px 30px;
+        border-radius: 20px;
+        max-width: 500px;
+        width: 90%;
+        color: #fff;
+        text-align: center;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 1.2s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        color: #00ffc6;
+      }
+
+      select,
+      input[type="file"],
+      .submit-btn {
+        width: 100%;
+        margin: 15px 0;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: "Cairo", sans-serif;
+      }
+
+      select {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        appearance: none;
+      }
+
+      .file-input-wrapper {
+        position: relative;
+      }
+
+      .custom-file-label {
+        display: block;
+        background: #00ffc6;
+        color: #003c3c;
+        padding: 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .custom-file-label:hover {
+        background: #00dab2;
+      }
+
+      #file-name {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #c9f7f5;
+      }
+
+      .loading-bar {
+        display: none;
+        height: 6px;
+        background: linear-gradient(to right, #00ffc6, #007cf0);
+        margin: 10px 0;
+        border-radius: 5px;
+        animation: loading 2s infinite linear;
+      }
+
+      @keyframes loading {
+        0% {
+          width: 0%;
+        }
+        50% {
+          width: 80%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      .submit-btn {
+        background: #007cf0;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background: #005bb5;
+      }
+
+      .btn-back {
+        display: inline-block;
+        margin-top: 20px;
+        color: #00ffc6;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .btn-back:hover {
+        color: #fff;
+      }
+      .select-wrapper {
+        position: relative;
+        margin: 15px 0;
+      }
+
+      .select-wrapper select {
+        padding: 12px 16px;
+        font-size: 1rem;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        background-color: #fff;
+        transition: border-color 0.3s ease;
+      }
+
+      .select-wrapper select:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      .year-btn,
+      .semester-btn {
+        margin: 5px;
+        padding: 10px 20px;
+        background: #f0f0f0;
+        border: 2px solid #007bff;
+        border-radius: 12px;
+        color: #007bff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .year-btn:hover,
+      .semester-btn:hover {
+        background: #007bff;
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      .year-btn.active,
+      .semester-btn.active {
+        background: #007bff;
+        color: #fff;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-content {
+        background: white;
+        position: relative;
+        padding: 30px;
+        max-width: 400px;
+        margin: 15% auto;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-content h3 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .modal-content button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        background-color: #4285f4;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .modal-content button:hover {
+        background-color: #3367d6;
+      }
+      .close-modal {
+        position: absolute;
+        top: 10px;
+        left: 15px; /* بدل right إلى left */
+        background: transparent;
+        border: none;
+        font-size: 28px; /* حجم أكبر شوي */
+        font-weight: bold;
+        color: #d9534f; /* لون أحمر جميل */
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.2s ease;
+      }
+
+      .close-modal:hover {
+        color: #b52b27; /* ظل أغمق للون الأحمر */
+        transform: scale(1.2); /* يكبر شوي لما تمرر الماوس */
+      }
+    </style>
+  </head>
+  <body data-page-group="group1">
+    <div
+      class="upload-container"
+      role="main"
+      aria-label="نموذج رفع ملفات المراجع والنماذج"
+    >
+      <div
+        id="error-message"
+        role="alert"
+        style="color: red; font-weight: bold; margin: 10px 0; display: none"
+      ></div>
+
+      {% with messages = get_flashed_messages(with_categories=false) %} {% if
+      messages %}
+      <div
+        style="
+          background-color: #dff0d8;
+          color: #3c763d;
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 10px;
+        "
+      >
+        {% for message in messages %}
+        <div>{{ message|safe }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
+      <h2><i class="fas fa-upload"></i> رفع ونشر المراجع والملفات</h2>
+      <div
+        id="selection-summary"
+        style="margin: 15px 0; font-weight: bold; color: #007bff"
+      >
+        <i class="fas fa-info-circle"></i> لم يتم اختيار سنة أو دورة أو نوع
+        النشر بعد.
+      </div>
+
+      <form
+        id="upload-form"
+        action="/upload"
+        method="POST"
+        enctype="multipart/form-data"
+        aria-describedby="desc-upload"
+      >
+        <input type="hidden" id="selected-year" name="selected_year" value="" />
+        <input
+          type="hidden"
+          id="selected-semester"
+          name="selected_semester"
+          value=""
+        />
+        <input type="hidden" id="selected-path" name="selected_path" value="" />
+
+        <div id="desc-upload" class="sr-only">
+          يمكنك رفع ملفات المراجع، نماذج الامتحانات، الخرائط، أو الصور. الصيغ
+          المقبولة: PDF، Word، صور JPG، PNG، إلخ.
+        </div>
+
+        <div class="select-wrapper">
+          <select
+            id="publish-type"
+            name="publish_type"
+            required
+            aria-label="اختر نوع النشر"
+          >
+            <option value="" disabled selected>-- اختر نوع النشر --</option>
+            <option value="مراجع">نشر مراجع</option>
+            <option value="خرائط">نشر خرائط</option>
+            <option value="نماذج الامتحانات">نشر نماذج الامتحانات</option>
+            <option value="آخر">نشر آخر</option>
+          </select>
+        </div>
+
+        <div class="file-input-wrapper">
+          <input
+            type="file"
+            id="file-upload"
+            name="file"
+            accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov,.wmv,.png,.jpg,.jpeg,.gif,.svg"
+            required
+            hidden
+          />
+          <label for="file-upload" class="custom-file-label">
+            <i class="fas fa-file-upload"></i> اختر ملف للرفع
+          </label>
+          <div id="file-name" aria-live="polite"></div>
+        </div>
+
+        <div class="loading-bar" id="loading-bar" aria-hidden="true"></div>
+
+        <button type="submit" class="submit-btn" aria-live="polite">
+          <i class="fas fa-paper-plane"></i> رفع الملف
+        </button>
+      </form>
+
+      <a
+        href="{{ url_for('student') }}"
+        class="btn-back"
+        aria-label="العودة إلى إدخال النقط"
+      >
+        <i class="fas fa-arrow-left"></i> العودة
+      </a>
+    </div>
+
+    <!-- نافذة اختيار السنة -->
+    <div id="year-modal" class="modal">
+      <div class="modal-content">
+        <button class="close-modal" aria-label="إغلاق النافذة">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <h3>اختر السنة</h3>
+        <button class="year-btn" data-year="1">السنة الأولى</button>
+        <button class="year-btn" data-year="2">السنة الثانية</button>
+        <button class="year-btn" data-year="3">السنة الثالثة</button>
+      </div>
+    </div>
+    <!-- نافذة اختيار المسار -->
+    <div id="path-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <button class="close-modal" aria-label="إغلاق النافذة">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <h3>اختر المسار</h3>
+        <button class="path-btn" data-path="البيئة">مسار البيئة</button>
+        <button class="path-btn" data-path="التهيئة">مسار التهيئة</button>
+      </div>
+    </div>
+
+    <!-- نافذة اختيار الدورة -->
+    <div id="semester-modal" class="modal">
+      <div class="modal-content">
+        <button class="close-modal" aria-label="إغلاق النافذة">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <h3>اختر الدورة</h3>
+        <button class="semester-btn" data-semester="1">الدورة الأولى</button>
+        <button class="semester-btn" data-semester="2">الدورة الثانية</button>
+      </div>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById("file-upload");
+      const fileNameDisplay = document.getElementById("file-name");
+      const loadingBar = document.getElementById("loading-bar");
+      const form = document.getElementById("upload-form");
+      const submitBtn = form.querySelector(".submit-btn");
+
+      const yearModal = document.getElementById("year-modal");
+      const semesterModal = document.getElementById("semester-modal");
+      const pathModal = document.getElementById("path-modal");
+      const publishTypeSelect = document.getElementById("publish-type");
+
+      const selectedYear = document.getElementById("selected-year");
+      const selectedSemester = document.getElementById("selected-semester");
+      const selectedPathInput = document.getElementById("selected-path");
+      const summary = document.getElementById("selection-summary");
+
+      let selectedPath = "";
+      let selectedPublishType = "";
+
+      // تحديث ملخص الاختيارات
+      function updateSummary() {
+        const yearLabels = ["", "الأولى", "الثانية", "الثالثة"];
+        const yearText = selectedYear.value
+          ? `السنة ${yearLabels[parseInt(selectedYear.value)]}`
+          : "";
+        const pathText = selectedPath ? `، المسار: ${selectedPath}` : "";
+        const semesterText = selectedSemester.value
+          ? `، الدورة ${selectedSemester.value === "1" ? "الأولى" : "الثانية"}`
+          : "";
+        const publishText = selectedPublishType
+          ? `، نوع النشر: ${selectedPublishType}`
+          : "";
+
+        if (yearText || semesterText || selectedPublishType) {
+          summary.innerHTML = `<i class="fas fa-check-circle"></i> تم اختيار: ${yearText}${pathText}${semesterText}${publishText}`;
+          summary.style.color = "#28a745";
+        } else {
+          summary.innerHTML = `<i class="fas fa-info-circle"></i> لم يتم اختيار سنة أو دورة أو نوع النشر بعد.`;
+          summary.style.color = "#007bff";
+        }
+      }
+
+      function showModal(modalToShow) {
+        [yearModal, pathModal, semesterModal].forEach((modal) => {
+          if (modal === modalToShow) {
+            modal.style.display = "block";
+          } else {
+            modal.style.display = "none";
+          }
+        });
+      }
+
+      // عند تغيير نوع النشر
+      publishTypeSelect.addEventListener("change", () => {
+        selectedPublishType = publishTypeSelect.value;
+        if (selectedPublishType) {
+          showModal(yearModal);
+          updateSummary();
+        }
+      });
+
+      // عند اختيار السنة
+      document.querySelectorAll(".year-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const year = btn.dataset.year;
+          selectedYear.value = year;
+
+          if (year === "3") {
+            showModal(pathModal);
+          } else {
+            selectedPath = "";
+            selectedPathInput.value = "";
+            showModal(semesterModal);
+          }
+          updateSummary();
+        });
+      });
+
+      // عند اختيار المسار
+      document.querySelectorAll(".path-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedPath = btn.dataset.path;
+          selectedPathInput.value = selectedPath;
+          pathModal.style.display = "none";
+          semesterModal.style.display = "block";
+          updateSummary();
+        });
+      });
+
+      // عند اختيار الدورة
+      document.querySelectorAll(".semester-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const semester = btn.dataset.semester;
+          selectedSemester.value = semester;
+          semesterModal.style.display = "none";
+          updateSummary();
+        });
+      });
+
+      // عرض اسم الملف عند اختياره
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        fileNameDisplay.textContent = file
+          ? `📁 تم اختيار الملف: ${file.name}`
+          : "";
+      });
+      document.querySelectorAll(".close-modal").forEach((button) => {
+        button.addEventListener("click", () => {
+          // إخفاء النافذة الأب (modal)
+          button.closest(".modal").style.display = "none";
+        });
+      });
+
+      // عند رفع الملف
+      form.addEventListener("submit", (e) => {
+        // مزامنة القيم من الواجهات إلى الحقول المخفية
+        const yearInput = document.getElementById("selected-year");
+        const semesterInput = document.getElementById("selected-semester");
+        const pathInput = document.getElementById("selected-path");
+        const errorMessage = document.getElementById("error-message");
+
+        yearInput.value = selectedYear.value;
+        semesterInput.value = selectedSemester.value;
+        pathInput.value = selectedPath;
+
+        const year = yearInput.value;
+        const semester = semesterInput.value;
+        const path = pathInput.value;
+
+        // تفريغ رسالة الخطأ
+        errorMessage.style.display = "none";
+        errorMessage.textContent = "";
+
+        if (!year || !semester || (year === "3" && !path)) {
+          e.preventDefault(); // إيقاف الإرسال
+          loadingBar.style.display = "none";
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> رفع الملف';
+
+          errorMessage.textContent =
+            "يرجى اختيار السنة، الدورة، والمسار (للسنة الثالثة) قبل رفع الملف.";
+          errorMessage.style.display = "block";
+
+          return;
+        }
+
+        loadingBar.style.display = "block";
+        submitBtn.disabled = true;
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
+        let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
+
+        // ضبط اللغة عند تحميل الصفحة
+        fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() =>
+          loadTranslations(savedLang)
+        );
+
+        function loadTranslations(lang) {
+          fetch(`/get_translations/${lang}`)
+            .then((response) => response.json())
+            .then((data) => updateTranslations(data.translations));
+        }
+
+        window.changeLanguage = function (lang) {
+          localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
+
+          fetch(`/change_language/${lang}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                updateTranslations(data.translations);
+              }
+            });
+
+          // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
+          fetch(`/set_language/${lang}`, { method: "POST" });
+
+          // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
+          localStorage.setItem(
+            "language_update",
+            JSON.stringify({ group: pageGroup, lang: lang })
+          );
+        };
+
+        function updateTranslations(translations) {
+          document.querySelectorAll("[data-translate]").forEach((element) => {
+            let key = element.getAttribute("data-translate");
+            if (translations[key]) {
+              if (
+                element.tagName === "INPUT" ||
+                element.tagName === "TEXTAREA"
+              ) {
+                element.setAttribute("placeholder", translations[key]);
+              } else if (element.tagName === "OPTION") {
+                element.textContent = translations[key];
+              } else {
+                element.textContent = translations[key];
+              }
+            }
+          });
+        }
+
+        // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
+        window.addEventListener("storage", function (event) {
+          if (event.key === "language_update") {
+            let data = JSON.parse(event.newValue);
+            if (data.group === pageGroup) {
+              loadTranslations(data.lang);
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

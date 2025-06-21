@@ -273,10 +273,6 @@ p {
   margin-right: 20px;
 }
 
-.hidden {
-  display: none;
-}
-
 .table th:nth-child(1),
 .table td:nth-child(1) {
   width: 20%;
@@ -448,11 +444,6 @@ p {
   -webkit-text-fill-color: transparent;
   font-weight: 800;
   letter-spacing: 1px;
-}
-
-/* إخفاء القسم */
-.hidden {
-  display: none;
 }
 
 /* إحصائيات بتنسيق راقي */
@@ -759,173 +750,74 @@ tbody tr:hover {
   cursor: pointer;
 }
 
+/* الإعلانات القسم */
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.announcement {
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: right;
+}
+
+.announcement h4 {
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+.announcement p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.btn-back {
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  padding: 10px 20px;
+  transition: background 0.3s ease, transform 0.3s ease;
+  display: block;
+  margin: 20px auto 0;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.btn-back:hover {
+  background: linear-gradient(135deg, #0056b3, #005bbf);
+  transform: scale(1.05);
+}
+
+/* شريط التحميل */
+.loading-bar {
+  width: 100%;
+  height: 5px;
+  background-color: #007bff;
+  animation: loadingAnimation 3s infinite;
+  margin-bottom: 20px;
+}
 .hidden {
   display: none;
 }
 
-/* الإعلانات القسم */
-
-#announcements-section {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-.section-title h2 {
-  font-size: 28px;
-  color: #007bff;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-/* تنسيق النموذج */
-#announcement-form {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-#announcement-form .form-group label {
-  font-size: 16px;
-  color: #333;
-}
-
-#announcement-form .form-group select,
-#announcement-form .form-group textarea {
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 12px;
-  font-size: 14px;
-  width: 100%;
-}
-
-#announcement-form .form-group textarea {
-  resize: vertical;
-}
-
-#announcement-form button {
-  background-color: #007bff;
-  color: white;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#announcement-form button:hover {
-  background-color: #0056b3;
-}
-
-/* زر عرض الإعلانات */
-#show-announcements-btn {
-  background-color: #28a745;
-  color: white;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 20px;
-}
-
-#show-announcements-btn:hover {
-  background-color: #218838;
-}
-
-#show-announcements-btn i {
-  margin-right: 8px;
-}
-
-/* قائمة الإعلانات */
-#announcement-list {
-  display: none;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-#announcement-list h3 {
-  font-size: 24px;
-  color: #17a2b8;
-}
-
-#announcement-list .row {
-  margin-bottom: 20px;
-}
-
-#announcement-list select {
-  font-size: 14px;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-/* تنسيق قائمة الإعلانات */
-#announcements-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.announcement-card {
-  background-color: #f1f1f1;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.announcement-card h4 {
-  font-size: 20px;
-  color: #333;
-}
-
-.announcement-card p {
-  font-size: 14px;
-  color: #555;
-}
-
-.announcement-card .badge {
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-/* وسائل التصفية والفرز */
-#announcement-list .row label {
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-#announcement-list .row select {
-  font-size: 14px;
-  padding: 8px;
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
-/* تأثيرات الأنيميشن */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+@keyframes loadingAnimation {
+  0% {
+    width: 0%;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes appear {
-  to {
-    opacity: 1;
+  50% {
+    width: 50%;
+  }
+
+  100% {
+    width: 100%;
   }
 }

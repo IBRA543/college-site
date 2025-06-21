@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>تغير المناخ وآثاره على المغرب</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        margin: 0;
+        padding: 40px 20px;
+        color: #2c3e50;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .container {
+        background: #fff;
+        max-width: 900px;
+        width: 100%;
+        padding: 40px 50px;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* خلفية زخرفية */
+      .container::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: rgba(46, 204, 113, 0.15);
+        border-radius: 50%;
+        filter: blur(50px);
+        z-index: 0;
+      }
+      .container::after {
+        content: "";
+        position: absolute;
+        bottom: -70px;
+        right: -70px;
+        width: 200px;
+        height: 200px;
+        background: rgba(231, 76, 60, 0.15);
+        border-radius: 50%;
+        filter: blur(70px);
+        z-index: 0;
+      }
+
+      h1,
+      h2 {
+        text-align: center;
+        color: #27ae60;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-top: 50px;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #27ae60;
+        padding-bottom: 10px;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 10px;
+        box-shadow: 0 3px 15px rgba(39, 174, 96, 0.3);
+      }
+
+      p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #34495e;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      ul {
+        list-style: none;
+        padding-right: 0;
+        max-width: 700px;
+        margin: auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      ul li {
+        background: #e9f7ef;
+        margin-bottom: 12px;
+        padding: 15px 20px 15px 50px;
+        font-size: 1.15rem;
+        color: #2c3e50;
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: default;
+      }
+
+      ul li:hover {
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        transform: translateX(-10px);
+        background: #d4edda;
+      }
+
+      /* أيقونة لكل عنصر في القائمة */
+      ul li::before {
+        content: "\f058"; /* رمز صح */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #27ae60;
+        font-size: 1.2rem;
+      }
+
+      /* روابط خارجية في الأسفل */
+      footer {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 1rem;
+        color: #7f8c8d;
+        position: relative;
+        z-index: 1;
+      }
+
+      footer a {
+        color: #27ae60;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      footer a:hover {
+        color: #2ecc71;
+      }
+
+      /* استجابة للشاشات الصغيرة */
+      @media (max-width: 600px) {
+        .container {
+          padding: 30px 20px;
+        }
+        h1 {
+          font-size: 2rem;
+        }
+        h2 {
+          font-size: 1.5rem;
+        }
+        p,
+        ul li {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      class="container"
+      role="main"
+      aria-label="مقال عن تغير المناخ في المغرب"
+    >
+      <h1>تغير المناخ وآثاره على المغرب</h1>
+
+      <p>
+        يشكل تغير المناخ تحدياً بيئياً واجتماعياً واقتصادياً كبيراً على الصعيد
+        العالمي، ويؤثر بشكل مباشر على المغرب بسبب موقعه الجغرافي وتنوع مناظره
+        الطبيعية.
+      </p>
+
+      <h2>أسباب تغير المناخ في المغرب</h2>
+      <ul>
+        <li>زيادة الانبعاثات الغازية الناتجة عن الأنشطة الصناعية والزراعية.</li>
+        <li>إزالة الغابات والتوسع العمراني الذي يقلل من المساحات الخضراء.</li>
+        <li>التغيرات في نمط الهطول المطري وزيادة درجات الحرارة.</li>
+      </ul>
+
+      <h2>الآثار الرئيسية لتغير المناخ في المغرب</h2>
+      <ul>
+        <li>
+          ارتفاع درجات الحرارة بشكل ملحوظ، مما يؤدي إلى موجات حر طويلة وأكثر
+          شدة.
+        </li>
+        <li>
+          تغير في توزيع الأمطار، مما يسبب جفافاً في مناطق عديدة خاصة الجنوب
+          والجنوب الشرقي.
+        </li>
+        <li>
+          انخفاض الموارد المائية وندرتها، مما يهدد الزراعة والأنشطة الاقتصادية
+          المرتبطة بها.
+        </li>
+        <li>زيادة خطر التصحر وتدهور الأراضي الزراعية.</li>
+        <li>تأثير سلبي على التنوع البيولوجي والنظم البيئية المحلية.</li>
+      </ul>
+
+      <h2>جهود المغرب لمواجهة تغير المناخ</h2>
+      <p>
+        يُعد المغرب من الدول الرائدة في مجال مواجهة تغير المناخ عبر عدة مبادرات
+        واستراتيجيات مثل:
+      </p>
+      <ul>
+        <li>
+          الاستثمار في الطاقات المتجددة، مثل مشروع محطة نور للطاقة الشمسية.
+        </li>
+        <li>تبني سياسات لإدارة الموارد المائية بشكل مستدام.</li>
+        <li>تعزيز التشجير والحفاظ على الغابات والمناطق الخضراء.</li>
+        <li>
+          المشاركة الفاعلة في الاتفاقيات الدولية المتعلقة بالمناخ مثل اتفاق
+          باريس.
+        </li>
+      </ul>
+
+      <p>
+        يظل الوعي المجتمعي والتعاون بين القطاعات الحكومية والخاصة والفاعلين
+        المحليين هو المفتاح الأساسي للتكيف مع تغير المناخ وتقليل آثاره السلبية
+        على المغرب.
+      </p>
+
+      <footer>
+        للمزيد من المعلومات، زوروا
+        <a
+          href="https://www.un.org/ar/climatechange"
+          target="_blank"
+          rel="noopener"
+          >موقع الأمم المتحدة للمناخ</a
+        >.
+      </footer>
+    </main>
+  </body>
+</html>

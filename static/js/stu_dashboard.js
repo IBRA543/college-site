@@ -83,6 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
   window.goToAccount = function () {
     window.location.href = "/account";
   };
+  window.goToPassword = function () {
+    window.location.href = "/password";
+  };
+  window.goToCommunication = function () {
+    window.location.href = "/chat";
+  };
 });
 
 function openFileInput() {
@@ -131,6 +137,14 @@ function closeModal() {
 function goToAccount() {
   // توجيه المستخدم إلى صفحة الحساب
   window.location.href = "/account"; // قم بتغيير الرابط إلى صفحة الحساب الخاصة بك
+}
+function goToPassword() {
+  // توجيه المستخدم إلى صفحة الحساب
+  window.location.href = "/password"; // قم بتغيير الرابط إلى صفحة الحساب الخاصة بك
+}
+function goToCommunication() {
+  // توجيه المستخدم إلى صفحة الحساب
+  window.location.href = "/chat"; // قم بتغيير الرابط إلى صفحة الحساب الخاصة بك
 }
 
 function toggleProfileMenu() {
@@ -257,10 +271,20 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-translate]").forEach((element) => {
       let key = element.getAttribute("data-translate");
       if (translations[key]) {
-        element.textContent = translations[key];
+        if (
+          element.tagName === "INPUT" ||
+          element.tagName === "TEXTAREA"
+        ) {
+          element.setAttribute("placeholder", translations[key]);
+        } else if (element.tagName === "OPTION") {
+          element.textContent = translations[key];
+        } else {
+          element.textContent = translations[key];
+        }
       }
     });
   }
+  
 
   // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
   window.addEventListener("storage", function (event) {

@@ -11,592 +11,38 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bonbon&display=swap"
-    />
-
+    <link rel="stylesheet" href="static/css/style2.css" />
     <script
       defer
       src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"
     ></script>
+    <script defer src="static/js/main.js"></script>
 
-    <title>Document</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Bonbon&display=swap");
-      * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-      body {
-        height: 100vh;
-      }
-      main {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        font-family: Poppins;
-      }
-      aside {
-        width: 280px;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        font-size: 1.1em;
-        background-color: #212529;
-        backdrop-filter: blur(20px);
-      }
-      .Links {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-      }
-
-      aside li {
-        list-style-type: none;
-        display: flex;
-        padding: 20px;
-        gap: 10px;
-        color: white;
-        align-items: center;
-        cursor: pointer;
-        position: relative;
-        transition-duration: 0.2s;
-      }
-      aside li:hover {
-        color: #80ed99;
-      }
-      I aside li::after {
-        position: absolute;
-        width: 100%;
-        left: 0px;
-        height: 1px;
-        background: linear-gradient(
-          to left,
-          transparent,
-          ffffff24,
-          transparent
-        );
-        content: "";
-        bottom: 0px;
-      }
-      aside li i {
-        font-size: 1.3rem;
-      }
-      .activeLink {
-        color: 1 #80ed99;
-      }
-      .mySwiper {
-        flex: 1;
-        height: 100%;
-      }
-
-      .home-slide {
-        color: white;
-        display: flex;
-        background-color: #343a40;
-      }
-      .HomeContent {
-        margin: auto 8px;
-        flex: 1;
-        height: auto;
-        padding: 100px;
-        user-select: none;
-      }
-
-      .SideImg {
-        width: 30%;
-        margin: auto 10px;
-        margin-right: 100px;
-        position: relative;
-      }
-      .SideImg img {
-        width: 100%;
-        border-radius: 10px;
-      }
-
-      #side-profile-image {
-        width: 150px;
-        height: 150px;
-        border-radius: 10px;
-        object-fit: cover;
-        display: block; /* تأكد أن الصورة ليست inline */
-      }
-
-      .SideImg .top-right-corner,
-      .bottom-left-corner {
-        position: absolute;
-      }
-      .bottom-left-corner {
-        left: -60px; /* كان -50px، قربته إلى -10px */
-        bottom: -40px; /* كان -50px */
-        rotate: -90deg;
-      }
-      .top-right-corner {
-        right: 80px;
-        top: -40px;
-        rotate: 90deg;
-      }
-      .hr1 {
-        width: 150px;
-        height: 10px;
-        border: none;
-        background: #88ed99;
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-      }
-      .hr2 {
-        width: 10px;
-        height: 120px;
-        border-bottom-left-radius: 3px;
-        background: #88ed99;
-        border: none;
-        border-bottom-right-radius: 3px;
-      }
-      .HomeContent h1 {
-        font-size: 3em;
-        font-weight: 700;
-        margin-bottom: 10px;
-      }
-      .HomeContent h2 {
-        font-size: 2.3em;
-        margin-bottom: 10px;
-        font-weight: 600;
-      }
-      .HomeContent h1.stylized-name {
-        font-weight: 700;
-        color: #80ed99;
-      }
-      .proffesions {
-        color: #85f69f;
-      }
-      .HomeContent .heroline {
-        font-size: 1.5rem;
-        font-weight: 300;
-        padding-right: 50px;
-      }
-
-      .buttonGroup {
-        display: flex;
-        padding: 10px 0px;
-        margin-top: 10px;
-      }
-
-      .buttonGroup button,
-      .primary {
-        padding: 10px 20px;
-        border: none;
-        outline: none;
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin: 5px;
-        cursor: pointer;
-        background-color: #1d8637;
-        color: white;
-        border-radius: 5px;
-      }
-      .slide-help {
-        position: absolute;
-        bottom: 10px;
-        width: 100%;
-        text-align: center;
-        font-weight: 400;
-        z-index: 100;
-        left: 0%;
-        width: 100%;
-        box-sizing: border-box;
-        font-size: 1.2rem;
-      }
-      .mySwiper {
-        width: 80v;
-        height: 100vh;
-        overflow: hidden;
-        background-color: #343a40;
-      }
-
-      .swiper-slide {
-        width: 100%;
-        background-color: #343a40;
-        height: 100%;
-      }
-      .about-us {
-        width: 100%;
-        height: 100%;
-        padding: 100px;
-        color: white;
-      }
-      .heading {
-        padding: 20px 10px;
-        font-size: 2.5rem;
-        color: #80ed99;
-      }
-      .about-us h3 {
-        padding: 10px;
-      }
-      .about-us h3 {
-        padding: 10px;
-      }
-      .aboutme-deatils {
-        padding: 20px;
-        font-weight: 300;
-      }
-
-      .about-me-divison {
-        display: flex;
-      }
-      .about-me-table {
-        width: 60%;
-        display: grid;
-        grid-template-columns: repeat (2, 50%);
-      }
-      .about-me-table li {
-        padding: 20px;
-        position: relative;
-      }
-      .about-me-table li::after {
-        position: absolute;
-        width: 100%;
-        left: 0px;
-        height: 1px;
-        background: linear-gradient(to left, trapsparent, ffffff, transparent);
-        content: "";
-        bottom: 0px;
-      }
-      .about-me-table span {
-        color: #80ed99;
-        font-weight: bold;
-        margin-right: 5px;
-      }
-
-      .about-me-table .buttonGroup {
-        grid-column: 1 / span 2;
-        justify-content: center;
-        padding: 50px;
-        flex: 1;
-      }
-      .skill-bar {
-        width: calc(40% - 20px);
-      }
-      .skill-bar li {
-        width: 100%;
-        padding: 10px;
-      }
-      .skill-bar p {
-        color: #80ed99;
-        font-weight: bold;
-        margin: 10px;
-      }
-
-      .skill-bar .bar {
-        width: 100%;
-        height: 15px;
-        background-color: #272c30;
-        border-radius: 20px;
-      }
-      .active-bar {
-        background-color: #80ed99;
-        height: 100%;
-        width: auto;
-        border-radius: 20px;
-      }
-
-      .services {
-        color: white;
-        display: grid;
-        grid-template-columns: repeat (3, calc(34% 10px));
-        grid-template-rows: 100px calc(50% 50px) calc(50% - 50px);
-        padding: 100px;
-        box-sizing: border-box;
-      }
-      .services .heading {
-        grid-column: 1 / span 3;
-      }
-
-      .services .service {
-        display: flex;
-        text-align: center;
-        justify-content: center;
-        padding: 15px;
-        background-color: rgba(0, 0, 0, 0.437);
-        border-radius: 5px;
-        margin: 20px;
-        backdrop-filter: blur (10px);
-        flex-direction: column;
-        transition-duration: 0.25s;
-      }
-      .services.service i {
-        font-size: 3rem;
-        color: #80ed99;
-      }
-      .services.service.service-icon {
-        padding: 0px 50px;
-        border-radius: 5px;
-        margin: 20px auto;
-      }
-      .service h2 {
-        color: #88ed99;
-      }
-      .service:hover {
-        background-color: #88ed99;
-        color: #176d2d;
-      }
-      .service:hover h2,
-      .service:hover i {
-        color: #176d2d;
-      }
-      .gallery {
-        display: grid;
-        grid-template-columns: repeat(3, 33%);
-        padding: 100px;
-        grid-template-rows: 100px calc(50% 50px) calc(50% - 50px);
-      }
-      .gallery h1,
-      .gallery h2 {
-        grid-column: 1 / span 3;
-      }
-      .gallery h2 {
-        color: white;
-        font-weight: 600;
-        font-size: 1.5rem;
-        padding: 20px 10px;
-      }
-      .gallery .project {
-        margin: 25px 20px;
-        margin-top: 0px;
-        background: #212529;
-        padding: 5px;
-        border-radius: 20px;
-      }
-      .gallery .project img {
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        object-fit: cover;
-        border: none;
-      }
-      .contactMe {
-        transform: scale(0.85); /* يقلل الحجم بنسبة 85% */
-        transform-origin: top center; /* يحافظ على التوسيط */
-        max-height: 100vh; /* لا يتجاوز ارتفاع الشاشة */
-        overflow: auto; /* إظهار التمرير إذا لزم */
-      }
-      /* -------------------- عنوان قسم التواصل -------------------- */
-      .contactMe h1 {
-        grid-column: 1 / span 3;
-        font-size: 2.5rem;
-        padding: 30px;
-      }
-
-      /* مكان وضع النموذج داخل الشبكة */
-      /* تصغير المسافات الداخلية */
-      .contactMe,
-      .contactMe form {
-        padding: 10px;
-        gap: 10px;
-      }
-
-      /* تصغير حجم الخط قليلاً */
-      .contactMe h3,
-      .contactMe p,
-      .contactMe form input,
-      .contactMe form textarea,
-      .contactMe button {
-        font-size: 90%;
-      }
-
-      /* -------------------- معلومات التواصل (أيقونات/نص) -------------------- */
-      .contactinfo {
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-        color: white;
-        justify-content: center;
-        text-align: center;
-      }
-
-      /* أيقونات معلومات التواصل */
-      .contactinfo i {
-        padding: 10px;
-        font-size: 2.5rem;
-        color: #80ed99;
-        margin: 20px auto;
-      }
-
-      /* -------------------- تصميم نموذج التواصل -------------------- */
-      .contactMe form {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        width: 100%;
-        padding: 20px;
-        height: fit-content;
-        color: white;
-      }
-
-      /* عنوان داخلي للنموذج */
-      .contactMe form h2 {
-        grid-column: 1 / span 2;
-        padding: 20px;
-        display: flex;
-      }
-
-      .SocialLinks {
-        grid-column: 1 / -1;
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        background-color: #212529;
-        padding: 10px;
-        border-radius: 30px;
-        margin-bottom: 10px;
-      }
-
-      .SocialLinks i {
-        padding: 10px;
-        border-radius: 50%;
-        font-size: 1.2rem;
-        transition: 0.25s ease-in-out;
-      }
-      .SocialLinks i:hover {
-        background-color: #176d2d;
-      }
-
-      /* أيقونة SVG بجانب النص */
-      .icon-svg {
-        width: 20px;
-        height: 20px;
-        margin-right: 8px;
-        vertical-align: middle;
-      }
-
-      /* مدخلات النموذج */
-      .contactMe form input {
-        padding: 15px;
-        border-radius: 10px;
-        margin: 20px;
-        font-size: 1.1rem;
-        border: none;
-        color: white;
-        background-color: #212529;
-      }
-
-      /* إخفاء شريط التمرير في السلايدر */
-      .swiper-css-mode > .swiper-wrapper {
-        scrollbar-width: none; /* لا تدعمها Safari */
-      }
-
-      .swiper-css-mode > .swiper-wrapper::-webkit-scrollbar {
-        display: none; /* دعم Safari */
-      }
-
-      /* تأثير التركيز على مدخلات النموذج */
-      .contactMe form input:focus {
-        border: 1px solid #80ed99;
-        outline: none;
-      }
-
-      /* حقل النص في النموذج */
-      .contactMe form textarea {
-        width: calc(100% - 40px);
-        grid-column: 1 / span 2;
-        margin: 20px;
-        padding: 20px;
-        font-size: 1.1rem;
-        border-radius: 10px;
-        resize: none;
-        border: none;
-        color: white;
-        background-color: #212529;
-      }
-
-      /* تأثير التركيز على حقل النص */
-      .contactMe form textarea:focus {
-        border: 1px solid #80ed99;
-      }
-
-      /* زر الإرسال في النموذج */
-      .contactMe button {
-        grid-column: 1 / -1;
-        padding: 10px 20px;
-        background-color: #80ed99;
-        border: none;
-        border-radius: 10px;
-        color: #000;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s ease;
-      }
-      .contactMe button:hover {
-        background-color: #61c87a;
-      }
-
-      /* -------------------- الفوتر -------------------- */
-      footer {
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
-        text-align: center;
-        color: white;
-        width: 100%;
-        font-weight: 200;
-        font-size: 0.8rem;
-      }
-
-      footer li {
-        padding: 10px;
-      }
-
-      /* -------------------- روابط التواصل الإجتماعي -------------------- */
-      form h2 .SocialLinks {
-        padding: 5px;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: 10px;
-        background-color: #212529;
-        border-radius: 30px;
-      }
-
-      /* تصميم أيقونات الروابط */
-      form h2 .SocialLinks i {
-        padding: 10px;
-        border-radius: 50%;
-        transition-duration: 0.25s;
-      }
-
-      /* تأثير التحويم على أيقونات التواصل */
-      form h2 .SocialLinks i:hover {
-        background-color: #176d2d;
-      }
-
-      /* -------------------- التمرير داخل قسم "عنّا" -------------------- */
-      .about-us {
-        overflow: auto;
-      }
-    </style>
+    <title data-translate="340">حساب</title>
   </head>
-  <body>
+  <body data-page-group="group2">
     <main>
       <aside>
         <ul class="Links">
           <li onclick="Navigate(0)" class="activeLink">
             <i class="fa-solid fa-house"></i>
-            <p>Home</p>
+            <p data-translate="341">الرئسية</p>
           </li>
           <li onclick="Navigate(1)">
             <i class="fa-solid fa-user"></i>
-            <p>About Me</p>
+            <p data-translate="354">عن الطالب</p>
           </li>
           <li onclick="Navigate(2)">
             <i class="fa-solid fa-list"></i>
-            <p>Services</p>
+            <p data-translate="343">خدمات</p>
           </li>
           <li onclick="Navigate(3)">
             <i class="fa-solid fa-images"></i>
-            <p>Gallery</p>
+            <p data-translate="344">مشاريع و أبحاث</p>
           </li>
           <li onclick="Navigate(4)">
             <i class="fa-solid fa-comments"></i>
-            <p>Contact Me</p>
+            <p data-translate="345">اتصل بي</p>
           </li>
         </ul>
       </aside>
@@ -605,226 +51,393 @@
         <div class="SlideContainer swiper-wrapper">
           <!-- Home Slide -->
           <div class="swiper-slide home-slide">
-            <div class="HomeContent">
-              <h1>Hi! I'm <span class="stylized-name">Muzammal</span>,</h1>
-              <h2>A <span class="proffesions">Web Developer</span></h2>
-              <p class="heroline">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-                officia iste tenetur dolor quis officiis quidem sapiente illo
-                nostrum mollitia.
-              </p>
-              <div class="buttonGroup">
-                <button>Hire Me</button>
-                <button>Contact Me</button>
+            <div class="HomeContent enhanced-profile">
+              <h1 data-translate="549">
+                👋 مرحبا, أنا
+                <span class="stylized-name">{{ student.name }}</span>
+              </h1>
+
+              <div class="info-card">
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-envelope"></i>
+                    <span data-translate="398">البريد</span>
+                  </span>
+                  <span class="info-value">{{ student.email }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-graduation-cap"></i>
+                    <span data-translate="348">الدورة</span>
+                  </span>
+                  <span class="info-value">{{ student.class }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-calendar-alt"></i>
+                    <span data-translate="349">السنة</span>
+                  </span>
+                  <span class="info-value">{{ student.year }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-id-badge"></i>
+                    <span data-translate="456">رقم الطالب</span>
+                  </span>
+                  <span class="info-value">{{ student.student_number }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-barcode"></i>
+                    <span data-translate="100">كود مسار</span>
+                  </span>
+                  <span class="info-value">{{ student.code_massar }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-id-card"></i>
+                    <span data-translate="560">بطاقة الوطنية</span>
+                  </span>
+                  <span class="info-value">{{ student.id_card }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-phone"></i>
+                    <span data-translate="363">الهاتف</span>
+                  </span>
+                  <span class="info-value">{{ student.contact }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-birthday-cake"></i>
+                    <span data-translate="352">تاريخ ازدياد</span>
+                  </span>
+                  <span class="info-value">{{ student.dob }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-map-marker-alt"></i>
+                    <span data-translate="397">العنوان</span>
+                  </span>
+                  <span class="info-value">{{ student.address }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"
+                    ><i class="fas fa-book-open"></i>
+                    <span data-translate="561">جامعة</span>
+                  </span>
+                  <span class="info-value">{{ student.university }}</span>
+                </div>
               </div>
             </div>
+
             <div class="SideImg">
-              <div class="top-right-corner">
-                <hr class="hr1" />
-                <hr class="hr2" />
-              </div>
-              <!-- استبدال الصورة بأيقونة الحساب -->
-
-              <img
-                id="side-profile-image"
-                src="{{ profile_image }}"
-                style="width: 150px; height: 150px; border-radius: 0"
-                alt="Side Profile"
-              />
-
-              <!-- قائمة تحميل الصورة مع اقتراح صور أخرى -->
-
-              <div class="bottom-left-corner">
-                <hr class="hr1" />
-                <hr class="hr2" />
+              <div class="profile-image-wrapper">
+                <img
+                  id="side-profile-image"
+                  src="{{ student.profile_image }}"
+                  alt="Side Profile"
+                />
               </div>
             </div>
-
-            <p class="slide-help">
-              Scroll for next slide
-              <i class="fa-solid fa-chevron-right fa-shake"></i>
-            </p>
           </div>
 
           <!-- About Me Slide -->
           <div class="swiper-slide">
             <div class="about-us">
-              <h1 class="heading">About Me</h1>
+              <h1 class="heading" data-translate="354">عن الطالب</h1>
               <h3 class="sub-heading">
-                I'm Muzammal, <span class="proffesions">A Web Developer</span>
+                <span data-translate="355">أنا</span>
+
+                <span class="proffesions">{{ student.second_name }}</span>
+                <span data-translate="356">طالب جامعي في شعبة الجغرافيا</span>
               </h3>
-              <p class="aboutme-deatils">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-                iure, iste debitis unde maiores earum, ipsam quaerat quo magni
-                sunt nisi at ullam nostrum pariatur soluta mollitia omnis
-                consectetur qui similique doloribus vitae sit est in modi.
-                Officia libero, animi repellendus debitis labore ipsa
-                exercitationem ut ex. Natus ullam officiis qui fuga optio
-                incidunt, ipsum atque ducimus quas ad eveniet nulla sit
-                consectetur velit inventore possimus quae provident, repudiandae
-                eaque sed quos mollitia omnis error. Hic animi porro asperiores
-                ratione voluptatibus commodi, architecto officia nobis ducimus
-                sint, placeat enim? Ab obcaecati ad provident et possimus. Ullam
-                ipsa laborum sint autem!
+              <p class="aboutme-deatils" data-translate="562">
+                كطالب في شعبة الجغرافيا، أُعنى بدراسة الظواهر الطبيعية والبشرية
+                لفهم العلاقات المكانية وتحليل توزيعها على سطح الأرض. أمتلك شغفًا
+                باستكشاف الخرائط، وتحليل البيانات الجغرافية، وفهم تأثير الإنسان
+                على البيئة. أطمح إلى المساهمة في تطوير التخطيط الحضري، وحماية
+                الموارد الطبيعية، والمشاركة في بناء مستقبل أكثر استدامة باستخدام
+                المعرفة الجغرافية
               </p>
 
               <div class="about-me-divison">
                 <div class="about-me-table">
                   <ul>
-                    <li><span>Experience:</span> 5+ years</li>
-                    <li><span>Country:</span> Pakistan</li>
-                    <li><span>Avability:</span> 24/7</li>
-                    <li><span>Satisfied Clients:</span> 200+</li>
-                    <li><span>Age:</span> 20</li>
-                    <li><span>Phone:</span> 123-456-7890</li>
-                    <li><span>Language Used:</span> HTML</li>
-                    <li><span>Degree:</span> CS</li>
+                    <li>
+                      <span data-translate="563">الكلية: </span>{{
+                      student.university }}
+                    </li>
+                    <li>
+                      <span data-translate="564">الخبرة:</span>{{
+                      student.university }}
+                    </li>
+                    <li>
+                      <span data-translate="359">المستوى الدراسي: </span> السنة
+                      الثالثة
+                    </li>
+                    <li>
+                      <span data-translate="361">التخصص: </span>{{
+                      student.specialization }}
+                    </li>
+                    <li><span data-translate="362">العمر:</span> 20</li>
+                    <li>
+                      <span data-translate="363">الهاتف:</span> 123-456-7890
+                    </li>
                   </ul>
-                  <div class="buttonGroup">
-                    <button>Hire Me</button>
-                    <button>Contact Me</button>
-                  </div>
                 </div>
 
                 <div class="skill-bar">
                   <ul>
+                    {% for semester, data in stats.semester_scores.items() %}
                     <li>
-                      <p>HTML</p>
+                      <p>{{ loop.index }} - {{ semester.replace('_', ' ') }}</p>
                       <div class="bar">
-                        <div class="active-bar" style="width: 99%"></div>
+                        {% if data.percent == 0 %}
+                        <!-- حالة عدم وجود بيانات -->
+                        <div
+                          data-translate="366"
+                          class="active-bar"
+                          style="
+                            width: 100%;
+                            background-color: orange;
+                            text-align: center;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 30px;
+                          "
+                        >
+                          لم تصل بعد لهذا الفصل
+                        </div>
+                        {% else %}
+                        <div
+                          class="active-bar"
+                          style="width: {{ data.percent }}%;
+                   background: linear-gradient(to right, #00c6ff, #0072ff);"
+                        ></div>
+                        {% endif %}
                       </div>
+
+                      {% if data.percent == 0 %}
+                      <!-- لا نعرض أي نص نجاح أو فشل في حالة عدم وجود بيانات -->
+                      {% elif data.percent == 100 %}
+                      <p
+                        style="color: green; font-weight: bold; margin-top: 5px"
+                        data-translate="565"
+                      >
+                        ✅ مستوفي - المعدل: {{ data.avg }}
+                      </p>
+                      {% else %}
+                      <p
+                        style="color: red; font-weight: bold; margin-top: 5px"
+                        data-translate="566"
+                      >
+                        ❌ غير مستوفي - المعدل: {{ data.avg }}
+                      </p>
+                      {% endif %}
                     </li>
-                    <li>
-                      <p>CSS</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 80%"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>JavaScript</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 85%"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Python</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 50%"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Django</p>
-                      <div class="bar">
-                        <div class="active-bar" style="width: 60%"></div>
-                      </div>
-                    </li>
+                    {% endfor %}
                   </ul>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide services">
+            <h1 class="heading" data-translate="369">خدماتي الأكاديمية</h1>
+
+            <div class="service">
+              <a href="/withdraw_bac" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-file-arrow-down"></i>
+                </div>
+                <h2 data-translate="370">طلب سحب البكالوريا</h2>
+                <p data-translate="567">
+                  تقديم طلب رسمي لسحب شهادة البكالوريا من الجهات المختصة بطريقة
+                  مبسطة وسريعة
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request_points_statement" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <h2 data-translate="372">طلب بيان النقط</h2>
+                <p data-translate="373">
+                  تقديم طلب للحصول على بيان مفصل بالنقاط والدرجات للفصول
+                  والسنوات الدراسية
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request_data_audit" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-search"></i>
+                </div>
+                <h2 data-translate="374">طلب تدقيق المعطيات</h2>
+                <p data-translate="375">
+                  مراجعة وتدقيق المعلومات والبيانات الشخصية والأكاديمية للتأكد
+                  من صحتها
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/regrade_request" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                <h2 data-translate="376">طلب إعادة تصحيح الامتحان</h2>
+                <p data-translate="377">
+                  تقديم طلب لإعادة تصحيح أوراق الامتحان بناءً على مراجعة دقيقة
+                  لضمان العدالة
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+                <h2 data-translate="378">طلب آخر</h2>
+                <p data-translate="379">
+                  تقديم أي طلبات أكاديمية أخرى غير مدرجة ضمن الخدمات السابقة
+                  بطريقة سهلة ومباشرة
+                </p>
+              </a>
+            </div>
+
+            <div class="service">
+              <a href="/request" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-comments"></i>
+                </div>
+                <h2 data-translate="380">تقديم شكاية</h2>
+                <p data-translate="381">
+                  إمكانية تقديم شكوى رسمية حول أي مسائل أو مشاكل أكاديمية لضمان
+                  الحقوق
+                </p>
+              </a>
             </div>
           </div>
 
           <!-- Services Slide -->
           <div class="swiper-slide services">
-            <h1 class="heading">Services</h1>
+            <h1 class="heading" data-translate="382">
+              مشاريع وأبحاث جغرافية متقدمة
+            </h1>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-pen-ruler"></i>
-              </div>
-              <h2>Web Design</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/mawarid" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-water"></i>
+                </div>
+                <h2 data-translate="383">دراسات الموارد المائية</h2>
+                <p data-translate="384">
+                  إجراء أبحاث تحليلية للموارد المائية الطبيعية وتأثيرها على
+                  البيئة والتنمية المستدامة.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon"><i class="fa-solid fa-globe"></i></div>
-              <h2>Web Development</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/vegetation_studies" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-tree"></i>
+                </div>
+                <h2 data-translate="385">دراسات الغطاء النباتي</h2>
+                <p data-translate="386">
+                  تحليل التغيرات في الغطاء النباتي باستخدام تقنيات الاستشعار عن
+                  بُعد ونماذج النظم البيئية.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </div>
-              <h2>SEO</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/environmental_planning" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-city"></i>
+                </div>
+                <h2 data-translate="387">التخطيط البيئي</h2>
+                <p data-translate="388">
+                  وضع استراتيجيات للتخطيط البيئي المستدام بما يتناسب مع خصائص
+                  المناطق الحضرية والريفية.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon"><i class="fa-solid fa-image"></i></div>
-              <h2>Graphic Designer</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/transportation" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-route"></i>
+                </div>
+                <h2 data-translate="389">دراسة النقل والمواصلات</h2>
+                <p data-translate="390">
+                  تحليل أنظمة النقل وتخطيط شبكات المواصلات لتحسين الحركة وتقليل
+                  الأثر البيئي.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-              </div>
-              <h2>Software Developer</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/climate_change" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-temperature-half"></i>
+                </div>
+                <h2 data-translate="391">تغير المناخ وآثاره</h2>
+                <p data-translate="392">
+                  دراسة أسباب تغير المناخ وتأثيراته على الأنظمة البيئية
+                  والبشرية.
+                </p>
+              </a>
             </div>
+
             <div class="service">
-              <div class="service-icon">
-                <i class="fa-solid fa-database"></i>
-              </div>
-              <h2>Database Admin</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                quod.
-              </p>
+              <a href="/natural_resources" class="service-link">
+                <div class="service-icon">
+                  <i class="fa-solid fa-water"></i>
+                </div>
+                <h2 data-translate="393">الجيومورفولوجيا</h2>
+                <p data-translate="394">
+                  دراسة كيفية استغلال الموارد الطبيعية والمحافظة عليها بشكل
+                  مستدام.
+                </p>
+              </a>
             </div>
           </div>
 
           <!-- Gallery Slide -->
-          <div class="swiper-slide gallery">
-            <h1 class="heading">Gallery</h1>
-            <div class="project">
-              <img src="https://picsum.photos/200/300?random-1" alt="" />
-            </div>
-            <div class="project">
-              <img src="https://picsum.photos/200/300?random-2" alt="" />
-            </div>
-            <div class="project">
-              <img src="https://picsum.photos/200/300?random-3" alt="" />
-            </div>
-          </div>
 
           <!-- Contact Slide -->
           <div class="swiper-slide contactMe">
-            <h1 class="heading">Contact Me</h1>
+            <h1 class="heading" data-translate="395">اتصل بي</h1>
             <div class="contactinfo">
               <i class="fa-solid fa-phone"></i>
-              <h3>Mobile No</h3>
+              <h3 data-translate="396">رقم الهاتف</h3>
               <p>123-456-7890</p>
             </div>
             <div class="contactinfo">
               <i class="fa-solid fa-location-dot"></i>
-              <h3>Location</h3>
+              <h3 data-translate="397">العنوان</h3>
               <p>Somewhere On Earth</p>
             </div>
             <div class="contactinfo">
               <i class="fa-regular fa-envelope"></i>
-              <h3>Email</h3>
+              <h3 data-translate="398">البريد</h3>
               <p>abc123@gmail.com</p>
             </div>
             <div class="contactinfo">
               <i class="fa-solid fa-globe"></i>
-              <h3>Website</h3>
+              <h3 data-translate="399">الموقع</h3>
               <p>www.abc123.com</p>
             </div>
 
             <form>
-              <h2>Send Me A Message</h2>
+              <h2 data-translate="400">أرسل لي رسالة</h2>
               <div class="SocialLinks">
                 <i class="fa-brands fa-codepen"></i>
                 <i class="fa-brands fa-instagram"></i>
@@ -837,61 +450,79 @@
                 rows="10"
                 placeholder="Type your Message Here..."
               ></textarea>
-              <button class="primary">Send</button>
+              <button class="primary" data-translate="401">إرسال</button>
             </form>
-
-            <footer>
-              <li>Copyright © 2023 Muzammal.</li>
-            </footer>
           </div>
         </div>
       </div>
     </main>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        var swiper = new Swiper(".swiper", {
-          effect: "cube",
-          grabCursor: true,
-          allowTouchMove: true,
-          cubeEffect: {
-            shadow: true,
-            slideShadows: true,
-            shadowOffset: 20,
-            shadowScale: 0.94,
-          },
-          mousewheel: {
-            forceToAxis: true,
-            sensitivity: 0.3, // تخفيض الحساسية
-            releaseOnEdges: true, // يمنع الانتقال العنيف في الحواف
-            thresholdDelta: 30, // تجاهل الحركات الصغيرة
-            thresholdTime: 500, // يمنع الانتقالات المتتالية السريعة
-          },
-          on: {
-            slideChange: function () {
-              // تحديث الزر المحدد عند التمرير
-              const activeIndex = this.activeIndex;
-              document
-                .querySelectorAll(".Links li")
-                .forEach((li) => li.classList.remove("activeLink"));
-              document
-                .querySelectorAll(".Links li")
-                [activeIndex].classList.add("activeLink");
-            },
-          },
-        });
+        let pageGroup = document.body.getAttribute("data-page-group"); // تحديد مجموعة الصفحة
+        let savedLang = localStorage.getItem(`language_${pageGroup}`) || "ar"; // استرجاع اللغة المحفوظة أو الافتراضية
 
-        window.Navigate = function (indx) {
-          // إزالة التحديد من جميع الأزرار
-          document
-            .querySelectorAll(".Links li")
-            .forEach((li) => li.classList.remove("activeLink"));
-          // إضافة التحديد للزر الحالي
-          document
-            .querySelectorAll(".Links li")
-            [indx].classList.add("activeLink");
-          // التبديل إلى الشريحة المناسبة
-          swiper.slideTo(indx, 1000, true);
+        // ضبط اللغة عند تحميل الصفحة
+        fetch(`/set_language/${savedLang}`, { method: "POST" }).then(() =>
+          loadTranslations(savedLang)
+        );
+
+        function loadTranslations(lang) {
+          fetch(`/get_translations/${lang}`)
+            .then((response) => response.json())
+            .then((data) => updateTranslations(data.translations));
+        }
+
+        window.changeLanguage = function (lang) {
+          localStorage.setItem(`language_${pageGroup}`, lang); // حفظ اللغة الخاصة بالمجموعة فقط
+
+          fetch(`/change_language/${lang}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                updateTranslations(data.translations);
+              }
+            });
+
+          // تحديث الجلسة لضمان حفظ اللغة عند إعادة تشغيل الموقع
+          fetch(`/set_language/${lang}`, { method: "POST" });
+
+          // 🔥 إعلام الصفحات الأخرى داخل نفس المجموعة بتحديث الترجمة
+          localStorage.setItem(
+            "language_update",
+            JSON.stringify({ group: pageGroup, lang: lang })
+          );
         };
+
+        function updateTranslations(translations) {
+          document.querySelectorAll("[data-translate]").forEach((element) => {
+            let key = element.getAttribute("data-translate");
+            if (translations[key]) {
+              if (
+                element.tagName === "INPUT" ||
+                element.tagName === "TEXTAREA"
+              ) {
+                element.setAttribute("placeholder", translations[key]);
+              } else if (element.tagName === "OPTION") {
+                element.textContent = translations[key];
+              } else {
+                element.textContent = translations[key];
+              }
+            }
+          });
+        }
+
+        // 🔥 الاستماع لتحديث اللغة من الصفحات الأخرى داخل نفس المجموعة فقط
+        window.addEventListener("storage", function (event) {
+          if (event.key === "language_update") {
+            let data = JSON.parse(event.newValue);
+            if (data.group === pageGroup) {
+              loadTranslations(data.lang);
+            }
+          }
+        });
       });
     </script>
   </body>
