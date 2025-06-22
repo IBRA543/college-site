@@ -3338,6 +3338,5 @@ def get_users():
 
 
 if __name__ == '__main__':
-    init_db()  # إنشاء قاعدة البيانات إذا لم تكن موجودة
-    update_passwords_to_hashed()  # تحديث كلمات المرور غير المشفرة
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
